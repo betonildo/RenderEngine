@@ -20,6 +20,21 @@ public:
             SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)pThis);
 
             pThis->m_hwnd = hwnd;
+
+            // Get pixel format of current window
+            PIXELFORMATDESCRIPTOR pfd = pThis->GetPixelFormat();
+            // create device handle
+            pThis->m_windowHandleToDeviceContext = GetDC(pThis->m_hwnd);
+		    
+            // Try set pixel format
+            int letWindowsChooseThisPixelFormat = ChoosePixelFormat(pThis->m_windowHandleToDeviceContext, &pfd); 
+            SetPixelFormat(pThis->m_windowHandleToDeviceContext, letWindowsChooseThisPixelFormat, &pfd);
+
+            // create OpenGL rendering context
+            pThis->m_openGLRenderingContext = wglCreateContext(pThis->m_windowHandleToDeviceContext);
+            // Set opengl current context
+		    wglMakeCurrent (pThis->m_windowHandleToDeviceContext, pThis->m_openGLRenderingContext);
+            //MessageBoxA(0,(char*)glGetString(GL_VERSION), "OPENGL VERSION",0);
         }
         else pThis = (DERIVED_TYPE*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
 
@@ -50,6 +65,8 @@ public:
         wc.lpfnWndProc   = DERIVED_TYPE::WindowProc;
         wc.hInstance     = GetModuleHandle(NULL);
         wc.lpszClassName = ClassName();
+        wc.hbrBackground = (HBRUSH)(COLOR_BACKGROUND);
+        wc.style         = CS_OWNDC;
 
         RegisterClass(&wc);
 
@@ -78,6 +95,30 @@ public:
         }
     }
 
+    PIXELFORMATDESCRIPTOR GetPixelFormat() {
+        
+        PIXELFORMATDESCRIPTOR pfd = {
+			sizeof(PIXELFORMATDESCRIPTOR),
+			1,
+			PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,    //Flags
+			PFD_TYPE_RGBA,            //The kind of framebuffer. RGBA or palette.
+			32,                       //Colordepth of the framebuffer.
+			0, 0, 0, 0, 0, 0,
+			0,
+			0,
+			0,
+			0, 0, 0, 0,
+			24,                       //Number of bits for the depthbuffer
+			8,                        //Number of bits for the stencilbuffer
+			0,                        //Number of Aux buffers in the framebuffer.
+			PFD_MAIN_PLANE,
+			0,
+			0, 0, 0
+		};
+
+        return pfd;
+    }
+
 protected:
 
     virtual PCWSTR  ClassName() const = 0;
@@ -85,6 +126,9 @@ protected:
 
     HWND m_hwnd;
     PCWSTR m_lpWindowName;
+    HDC m_windowHandleToDeviceContext;
+    HGLRC m_openGLRenderingContext;
+
 };
 
 class WindowManager : public BaseWindow<WindowManager>

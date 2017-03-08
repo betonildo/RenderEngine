@@ -7,9 +7,11 @@
 #endif
 
 #include <windows.h>
+#include <GL/GL.h>
 #include <Winuser.h>
 #include <Windowsx.h>
 #include <stdio.h>
+#pragma comment (lib, "opengl32.lib")
 #else
 #error "Not implemented yet"
 #endif
