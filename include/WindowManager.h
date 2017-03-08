@@ -21,25 +21,18 @@ public:
 
             pThis->m_hwnd = hwnd;
         }
-        else
-        {
-            pThis = (DERIVED_TYPE*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
-        }
-        if (pThis)
-        {
-            return pThis->HandleMessage(uMsg, wParam, lParam);
-        }
-        else
-        {
-            return DefWindowProc(hwnd, uMsg, wParam, lParam);
-        }
+        else pThis = (DERIVED_TYPE*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+
+        // this handle messages on window instance i'm working on
+        if (pThis) return pThis->HandleMessage(uMsg, wParam, lParam);
+        else return DefWindowProc(hwnd, uMsg, wParam, lParam);
     }
 
     BaseWindow() : m_hwnd(NULL) { }
 
     BOOL Create(
         PCWSTR lpWindowName,
-        DWORD dwStyle,
+        DWORD dwStyle = WS_OVERLAPPEDWINDOW,
         DWORD dwExStyle = 0,
         int x = CW_USEDEFAULT,
         int y = CW_USEDEFAULT,
@@ -49,6 +42,9 @@ public:
         HMENU hMenu = 0
         )
     {
+        // store window name
+        m_lpWindowName = lpWindowName;
+
         WNDCLASS wc = {0};
 
         wc.lpfnWndProc   = DERIVED_TYPE::WindowProc;
@@ -59,7 +55,9 @@ public:
 
         m_hwnd = CreateWindowEx(
             dwExStyle, ClassName(), lpWindowName, dwStyle, x, y,
-            nWidth, nHeight, hWndParent, hMenu, GetModuleHandle(NULL), this
+            nWidth, nHeight, hWndParent, hMenu, GetModuleHandle(NULL), 
+            // window creation data to be reinterpreted on window proc calls of message handling
+            this
             );
 
         return (m_hwnd ? TRUE : FALSE);
@@ -67,8 +65,8 @@ public:
 
     HWND Window() const { return m_hwnd; }
 
-    void Show(int nCmdShow) {
-        ShowWindow(Window(), nCmdShow);
+    void Show(int nCmdShow = 10) {
+        ShowWindow(m_hwnd, nCmdShow);
     }
 
     int Watch() {
@@ -86,13 +84,17 @@ protected:
     virtual LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) = 0;
 
     HWND m_hwnd;
+    PCWSTR m_lpWindowName;
 };
 
 class WindowManager : public BaseWindow<WindowManager>
 {
 public:
-    PCWSTR  ClassName() const { return L"Sample Window Class"; }
+    PCWSTR  ClassName() const { return L"WindowManager Class"; }
     LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+private:
+    void OnSize(HWND hwnd, UINT flag, int width, int height);
 };
 
 #endif /*WINDOWMANAGER_H*/
