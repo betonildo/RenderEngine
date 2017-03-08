@@ -18,8 +18,10 @@ LRESULT WindowManager::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
             // Else: User canceled. Do nothing.
             return 0;
 
-    case WM_DESTROY:
-        PostQuitMessage(0);
+    case WM_DESTROY: {
+            wglDeleteContext(m_openGLRenderingContext);
+            PostQuitMessage(0);
+        }
         return 0;
 
     case WM_PAINT: {
