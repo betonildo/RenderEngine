@@ -1,0 +1,1 @@
+For g++ on windows use -municode for compilation.
