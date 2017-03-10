@@ -1,0 +1,27 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "0.1.0",
+    "command": "g++",
+    "isShellCommand": true,
+    "args": [
+        "-Wall", "-std=c++11", "-g",
+            "src/*.cpp",
+            //"external/Memallocator/src/*.cpp",
+            "-Iinclude/",
+            "-Iexternal/SDL2205/include/",
+            //"-Iexternal/Memallocator/include/",
+            //"-Iexternal/LinearMath/include/",
+            "-Lexternal/SDL2205/lib/",        
+        "-w", "-Wl,-Bstatic,-subsystem,windows",
+            "-lmingw32",
+            "-lSDL2",
+            "-lSDL2main",
+            "-lopengl32",
+            "-lgdi32",
+        "-o", "main"
+
+    ],
+    "showOutput": "always",
+    "echoCommand" : true
+}

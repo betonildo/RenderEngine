@@ -1,0 +1,18 @@
+{
+    "files.associations": {
+        "*.java": "java",
+        "exception": "cpp",
+        "typeinfo": "cpp",
+        "type_traits": "cpp",
+        "*hcstdint": "cpp",
+        "*h*h*h*h*h*h*hnew": "cpp",
+        "*h*h*hinitializer_list": "cpp",
+        "cwchar": "cpp",
+        "*hcctype": "cpp",
+        "cctype": "cpp",
+        "clocale": "cpp",
+        "cstdlib": "cpp",
+        "cstdio": "cpp",
+        "cwctype": "cpp"
+    }
+}
