@@ -2,6 +2,7 @@
 #define SCENE_H
 
 #include "renderer_local_includes.h"
+#include "SceneObject.h"
 
 class Scene {
 
@@ -13,7 +14,7 @@ public:
     virtual void end() = 0;
 
 private:
-    std::vector< std::unique_ptr<sceneObject> > m_children;
+    std::vector<SceneObject*> m_children;
     void m_cleanUp();
 
 };
