@@ -3,10 +3,10 @@
 
 
 
-int main() {
+int main( int argc, char **argv ) {
     WindowManager win;
 
-    if (!win.Create(L"Learn to Program Windows 2"))
+    if (!win.Create("Learn to Program Windows 2"))
     {
         return 0;
     }
