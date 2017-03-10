@@ -2,6 +2,7 @@
 #define RENDERER_LOCAL_INCLUDES_H
 
 #include "SDL2/SDL.h"
+#include <memory>
 
 #if defined(__WIN32__) || defined(__WIN64__)
     #ifndef UNICODE

@@ -36,11 +36,7 @@ bool WindowManager::Create(const char* title) {
     m_setupOpenGLAttributes();
 
 	// This makes our buffer swap syncronized with the monitor's vertical refresh
-	SDL_GL_SetSwapInterval(1);
-
-	glClearColor(0.0, 0.0, 0.0, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT);
-    
+	SDL_GL_SetSwapInterval(1);    
 
     // run!!!
     m_running = true;
@@ -75,6 +71,14 @@ void WindowManager::m_setupOpenGLAttributes() {
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 }
 
+void WindowManager::m_setupOpenGLColorsAndTests() {
+	glClearColor(0.0, 0.0, 0.0, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT);
+    glClearColor(0, 0, 0, 0);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_ALPHA_TEST);
+}
+
 void WindowManager::m_HandleEvents() {
    
     if (SDL_PollEvent(&m_event) != 0) {
@@ -92,6 +96,7 @@ void WindowManager::m_HandleEvents() {
 
 void WindowManager::m_callRenderers() {
     SDL_GL_SwapWindow(m_window);
+    glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void WindowManager::m_cleanUp() {

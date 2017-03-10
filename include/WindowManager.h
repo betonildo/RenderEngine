@@ -20,6 +20,7 @@ private:
     SDL_Event m_event;
     
     void m_setupOpenGLAttributes();
+    void m_setupOpenGLColorsAndTests();
     void m_HandleEvents();
     void m_callRenderers();
     void m_cleanUp();
