@@ -2,11 +2,11 @@
 
 Input* Input::m_instance = new Input();
 
-Point Input::getPointer() {
+MousePoint Input::getPointer() {
     return Input::m_instance->m_pointers[0];
 }
 
-Point* Input::getPointers() {
+MousePoint* Input::getPointers() {
     return Input::m_instance->m_pointers;
 }
 

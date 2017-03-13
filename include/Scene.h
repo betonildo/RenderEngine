@@ -3,6 +3,10 @@
 
 #include "renderer_local_includes.h"
 #include "SceneObject.h"
+#include "Renderer.h"
+
+class SceneObject;
+class Renderer;
 
 class Scene {
 
@@ -16,7 +20,7 @@ public:
 private:
     std::vector<SceneObject*> m_children;
     void m_cleanUp();
-
+    void m_renderSceneObject(SceneObject* sceneObject);
 };
 
 #endif /*SCENE_H*/

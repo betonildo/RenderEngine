@@ -15,7 +15,9 @@
             "name": "Linux",
             "includePath": [
                 "/usr/include",
-                "/usr/local/include"
+                "/usr/local/include",
+                "include/",
+                "external/Ubuntu14_x86_64/include/"
             ],
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,

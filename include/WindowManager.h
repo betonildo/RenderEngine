@@ -2,6 +2,7 @@
 #define WINDOWMANAGER_H
 
 #include "renderer_local_includes.h"
+#include "Input.h"
 
 class WindowManager {
 

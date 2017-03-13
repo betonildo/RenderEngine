@@ -1,0 +1,64 @@
+#include "WindowManager.h"
+
+//avoid lengthy processing inside window procedure, it is blocking other things
+LRESULT WindowManager::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) {
+    Input::clearLastInputs();
+    // always update mouse position
+    Input::m_instance->m_pointers[0].x = GET_X_LPARAM(lParam);
+    Input::m_instance->m_pointers[0].y = GET_Y_LPARAM(lParam);
+
+    switch (uMsg) {
+        case WM_CLOSE:
+            if (MessageBox(m_hwnd, L"Are you sure?", m_lpWindowName, MB_OKCANCEL) == IDOK) {
+                if (m_openGLRenderingContext) wglDeleteContext(m_openGLRenderingContext); 
+                if (m_windowHandleToDeviceContext)  ReleaseDC(m_hwnd, m_windowHandleToDeviceContext); 
+                m_windowHandleToDeviceContext = 0; 
+                m_openGLRenderingContext = 0; 
+                DestroyWindow(m_hwnd);
+            }
+            // Else: User canceled. Do nothing.
+            return 0;
+
+    case WM_DESTROY: {
+            if (m_openGLRenderingContext) wglDeleteContext(m_openGLRenderingContext); 
+            if (m_windowHandleToDeviceContext)  ReleaseDC(m_hwnd, m_windowHandleToDeviceContext); 
+            PostQuitMessage(0);
+        }
+        return 0;
+
+    case WM_PAINT: {
+
+            PAINTSTRUCT ps;
+            m_windowHandleToDeviceContext = BeginPaint(m_hwnd, &ps);
+            // All painting occurs here, between BeginPaint and EndPaint.
+            FillRect(m_windowHandleToDeviceContext, &ps.rcPaint, (HBRUSH) (COLOR_WINDOW+1));
+            EndPaint(m_hwnd, &ps);
+        }
+        return 0;
+
+    case WM_SIZE: {
+
+            GetClientRect(m_hwnd, &m_rect); 
+            resize(m_rect.right, m_rect.bottom);
+            // Respond to the message:
+            //OnSize(m_hwnd, (UINT)wParam, width, height);
+        }
+        break;
+    
+    case WM_LBUTTONDOWN:
+        Input::m_instance->m_leftWasPressed = true;
+        break;
+    case WM_RBUTTONDOWN:
+        Input::m_instance->m_rightWasPressed = true;
+        break;
+
+    default:
+        return DefWindowProc(m_hwnd, uMsg, wParam, lParam);
+    }
+
+    return TRUE;
+}
+
+void WindowManager::OnSize(HWND hwnd, UINT flag, int width, int height) {
+
+}

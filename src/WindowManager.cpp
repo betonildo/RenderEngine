@@ -54,6 +54,8 @@ int  WindowManager::Watch() {
         m_callRenderers();
     }
 
+    m_cleanUp();
+
     return 0;
 }
 
@@ -64,7 +66,7 @@ void WindowManager::m_setupOpenGLAttributes() {
 
 	// 3.2 is part of the modern versions of OpenGL, but most video cards whould be able to run it
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 
 	// Turn on double buffering with a 24bit Z buffer.
 	// You may need to change this to 16 or 32 for your system
@@ -72,31 +74,43 @@ void WindowManager::m_setupOpenGLAttributes() {
 }
 
 void WindowManager::m_setupOpenGLColorsAndTests() {
-	glClearColor(0.0, 0.0, 0.0, 1.0);
+	
+    glClearColor(1.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
-    glClearColor(0, 0, 0, 0);
+    
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_ALPHA_TEST);
 }
 
 void WindowManager::m_HandleEvents() {
    
-    if (SDL_PollEvent(&m_event) != 0) {
+    while (SDL_PollEvent(&m_event) != 0) {
         if (m_event.type == SDL_QUIT) {
-            m_cleanUp();
             m_running = false;
         }
         
-        if (m_event.type == SDL_WINDOWEVENT_MOVED)
-            SDL_Log("Window %d moved to %d,%d",
-                    m_event.window.windowID, m_event.window.data1,
-                    m_event.window.data2);
+        if (m_event.type == SDL_WINDOWEVENT_MOVED) {
+            SDL_Log("Window %d moved to %d,%d", m_event.window.windowID, m_event.window.data1,  m_event.window.data2);
+        }
     }
+
+    // get mouse coordinates
+    Input::clearLastInputs();
+
+    SDL_GetRelativeMouseState(
+        &Input::m_instance->m_pointers[0].x,
+        &Input::m_instance->m_pointers[0].y
+    );
+
+    Uint32 mouseBitmask = SDL_GetMouseState(NULL, NULL);
+    if (mouseBitmask & SDL_BUTTON(SDL_BUTTON_LEFT)) Input::m_instance->m_leftWasPressed = true;
+    if (mouseBitmask & SDL_BUTTON(SDL_BUTTON_RIGHT)) Input::m_instance->m_rightWasPressed = true;
 }
 
 void WindowManager::m_callRenderers() {
+    glClearColor(1.0, 0.0, 0.0, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT);    
     SDL_GL_SwapWindow(m_window);
-    glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void WindowManager::m_cleanUp() {

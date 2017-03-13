@@ -3,22 +3,22 @@
 
 #include "WindowManager.h"
 
-struct Point {
-    float x, y;
+struct MousePoint {
+    int x, y;
 };
 
 class Input {
 
 public:
-    static Point getPointer();
-    static Point* getPointers();
+    static MousePoint getPointer();
+    static MousePoint* getPointers();
     static bool leftButtonPressed();
     static bool rightButtonPressed();
 
 private:
     static Input* m_instance;
 
-    Point m_pointers[5];
+    MousePoint m_pointers[5];
     bool m_leftWasPressed;
     bool m_rightWasPressed;
 
