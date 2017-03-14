@@ -29,8 +29,9 @@
             "includePath": [
                 "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/*",
                 "include/*",
-                "C:/Portables/mingw64/x86_64-w64-mingw32/include",
-                "${workspaceRoot}/external/SDL2-2.0.5/include/SDL2"
+                "C:/Portables/mingw64/x86_64-w64-mingw32/include/*",
+                "${workspaceRoot}/external/LinearMath/include/*",
+                "${workspaceRoot}/external/SDL2-2.0.5/WinMinGW64/include/SDL2/*"
             ],
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,

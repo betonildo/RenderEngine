@@ -9,6 +9,7 @@ void Scene::render() {
 }
 
 void Scene::addChild(SceneObject* sceneObject) {
+    sceneObject->m_parentScene = this;
     m_children.push_back(sceneObject);
 }
 

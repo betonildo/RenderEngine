@@ -1,13 +1,20 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
-    
-    
-    // BE AWARE OF SDL2 ARCH VERSION, 1 HOUR TO REMEMBER THAT SDL2 64 WAS BEING USED
     "version": "0.1.0",
-    "command": "./build.sh",
-    "isShellCommand": true,
-    "args": [],
-    "showOutput": "always",
-    "echoCommand" : true
+    "tasks": [
+        {
+            "taskName": "build",
+            "command": "build",
+            "isShellCommand": true,
+            "echoCommand": true,
+            "windows": {
+                "args": []
+            },
+            "linux": {
+                "args": []
+            },
+            "osx": {
+                "args": []
+            }
+        }
+    ]
 }

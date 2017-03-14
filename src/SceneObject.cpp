@@ -17,6 +17,6 @@ void SceneObject::attachRenderer(Renderer* renderer) {
 
 void SceneObject::m_renderWithCameraAndParentTransform(Transform* parentTransform, Camera* camera) {
     // TODO: add to renderer pipeline logic
-    Transform* resulting = m_transform->returnAddedTransformWithParent(parentTransform);
+    Transform t = m_transform->returnAddedTransformWithParent(parentTransform);
     m_renderer->enqueue(this, resulting); /// DON'T KNOW YET
 }

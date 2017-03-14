@@ -22,7 +22,7 @@ private:
 
     friend class Scene;
 
-    Transform* m_transform;
+    Transform m_transform;
     Renderer* m_renderer;
     Scene* m_parentScene;
     SceneObject* m_parent;
