@@ -17,7 +17,7 @@ class Transform;
 class Scene {
 
 public:
-    void render();
+    void update();
     void addChild(SceneObject* sceneObject);
     void addCamera(Camera* camera);
     virtual void start() = 0;

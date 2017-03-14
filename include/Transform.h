@@ -15,10 +15,12 @@ public:
     void setScale(const Vector3& s);
     Vector3 getScale();
 
-    void setQuaternion(const Quaternion& r);
-    Quaternion getQuaternion();
+    void setRotation(const Quaternion& r);
+    Quaternion getRotation();
     
     Matrix4& getModelMatrix();
+
+    static void concatenateTo(Transform& t1, Transform& t2, Transform& r);
 
 private:
     bool m_dirty;
@@ -26,7 +28,7 @@ private:
 
     Vector3 m_position;
     Vector3 m_scale;
-    Quaternion m_quaternion;
+    Quaternion m_rotation;
 
 };
 

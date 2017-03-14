@@ -4,31 +4,55 @@
 #include "renderer_local_includes.h"
 #include "Camera.h"
 #include "Scene.h"
-#include "Renderer.h"
 #include "Transform.h"
+#include "Components/Component.h"
 
 class Scene;
-class Renderer;
 class Transform;
+class Component;
 
 class SceneObject {
 
 public:
+
+    Transform transform;
+
     SceneObject();
     void addChild(SceneObject* child);
     void attachRenderer(Renderer* renderer);
 
+    void addComponent(Component* component);
+
+    template <class T>
+    inline T* getComponent() {
+        for(auto component : m_components)
+            if (T* downcastedComponent = dynamic_cast<T*>(component))
+                return downcastedComponent;
+        return nullptr;
+    }
+
+    template <class T>
+    inline std::vector<T*>& getComponents() {
+
+        std::vector<T*>* gotComponents = new std::vector<T>;
+        for(auto component : m_components)
+            if (T* downcastedComponent = dynamic_cast<T*>(component))
+                gotComponents->push_back(downcastedComponent);
+
+        return *gotComponents;
+    }
+
 private:
-
-    friend class Scene;
-
-    Transform m_transform;
-    Renderer* m_renderer;
+    
     Scene* m_parentScene;
     SceneObject* m_parent;
-    std::vector<SceneObject*> m_children;
 
-    void m_renderWithCameraAndParentTransform(Transform* parentTransform, Camera* camera);
+    std::vector<SceneObject*> m_children;
+    std::vector<Component*> m_components;
+
+    void m_updateComponents();
+
+    friend class Scene;
 };
 
 #endif /*SCENEOBJECT_H*/

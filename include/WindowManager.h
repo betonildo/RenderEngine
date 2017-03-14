@@ -11,8 +11,8 @@ public:
     void setSize(int width, int height);
     void setPosition(int x, int y);
     bool Create(const char* title);
-    void Show();
-    int Watch();
+    bool Showing();
+    void SwapScreen();
 
 private:
     int m_width, m_height;

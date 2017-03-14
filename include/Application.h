@@ -3,9 +3,10 @@
 
 #include "Scene.h"
 #include "WindowManager.h"
+#include "RenderManager.h"
 
 class WindowManager;
-class Renderer;
+class RenderManager;
 
 class Application {
 
@@ -19,7 +20,7 @@ public:
 private:
     Scene* m_currentScene;
     WindowManager m_window;
-    Renderer* m_renderer;
+    RenderManager m_renderer;
     static Application* m_instance;
 };
 
