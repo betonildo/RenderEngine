@@ -49,19 +49,14 @@ bool WindowManager::Create(const char* title) {
     return true;
 }
 
-void WindowManager::Show() {
-
+bool WindowManager::Showing() {
+    m_HandleEvents();
+    m_callRenderers();
+    return m_running;
 }
 
-int  WindowManager::Watch() {
-    while(m_running) {
-        m_HandleEvents();
-        m_callRenderers();
-    }
-
-    m_cleanUp();
-
-    return 0;
+void WindowManager::SwapScreen() {
+    SDL_GL_SwapWindow(m_window);
 }
 
 void WindowManager::m_setupOpenGLAttributes() {
@@ -92,6 +87,7 @@ void WindowManager::m_HandleEvents() {
     while (SDL_PollEvent(&m_event) != 0) {
         if (m_event.type == SDL_QUIT) {
             m_running = false;
+            m_cleanUp();
         }
         
         if (m_event.type == SDL_WINDOWEVENT_MOVED) {
@@ -114,9 +110,7 @@ void WindowManager::m_HandleEvents() {
 
 void WindowManager::m_callRenderers() {
     glClearColor(1.0, 0.0, 0.0, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT);
-
-    SDL_GL_SwapWindow(m_window);
+	glClear(GL_COLOR_BUFFER_BIT);    
 }
 
 void WindowManager::m_cleanUp() {

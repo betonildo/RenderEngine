@@ -5,7 +5,7 @@ void Scene::render() {
 
     for(auto sceneObject: m_children)
         if (!sceneObject->m_parent)
-            m_renderSceneObject(sceneObject); 
+            m_renderSceneObject(sceneObject, sceneObject->transform); 
 }
 
 void Scene::addChild(SceneObject* sceneObject) {
@@ -27,15 +27,17 @@ void Scene::m_cleanUp() {
     }
 }
 
-void Scene::m_renderSceneObject(SceneObject* sceneObject, Transform* cumulative = nullptr) {
+void Scene::m_renderSceneObject(SceneObject* sceneObject, Transform& cumulative) {
 
     // render all children first
-    for (auto child : sceneObject->m_children) {
-        m_renderSceneObject(child);
-    }
+    Transform r;
+    Transform::concatenateTo(sceneObject->transform, cumulative, r);
 
-    for (auto cam : m_cameras) {
-        // render it self
-        sceneObject->render();
-    }
+    for (auto child : sceneObject->m_children)
+        m_renderSceneObject(child, r);
+
+    // send all renderers to RenderManager to render with each Camera
+    std::vector<Renderer*> objectRenderers = sceneObject->getComponents<Renderer>();
+    for (auto cam : m_cameras) 
+        RenderManager::enqueueRenderers(objectRenderers, cam, cumulative);
 }

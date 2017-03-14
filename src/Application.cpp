@@ -6,8 +6,14 @@ Application::Application(const char* name) {
 }
 
 int Application::run() {
-    m_window.Show();
-    return m_window.Watch(m_renderer->render);
+    
+    while(m_window.Showing()) {
+        m_currentScene->update();
+        m_renderer.renderAllEnqueued();        
+        m_window.SwapScreen();
+    }
+
+    return 0;
 }
 
 void Application::initWithScene(Scene* mainScene) {
@@ -20,7 +26,8 @@ void Application::changeScene(Scene* scene) {
         m_currentScene->end();
         m_currentScene->m_cleanUp();
     }
-    m_currentScene = scene;    
+    m_currentScene = scene;
+    m_currentScene->start(); 
 }
 
 Application* Application::getInstance() {
