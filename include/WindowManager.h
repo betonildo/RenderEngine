@@ -15,6 +15,7 @@ public:
     int Watch();
 
 private:
+    int m_width, m_height;
     bool m_running;
     SDL_Window* m_window;
     SDL_GLContext m_glContext;

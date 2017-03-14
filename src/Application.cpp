@@ -7,7 +7,7 @@ Application::Application(const char* name) {
 
 int Application::run() {
     m_window.Show();
-    return m_window.Watch();
+    return m_window.Watch(m_renderer->render);
 }
 
 void Application::initWithScene(Scene* mainScene) {

@@ -6,6 +6,7 @@
 #include <vector>
 #include <stdio.h>
 #include <GL/gl.h>
+#include <functional>
 
 #if defined(__WIN32__) || defined(__WIN64__)
     #ifndef UNICODE

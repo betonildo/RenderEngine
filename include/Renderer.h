@@ -6,9 +6,10 @@
 class Renderer {
 
 public:
+    void render();
+    virtual void attachData(void* data, unsigned long size);
+    virtual void attachMaterial(Material* m);
 
-private:
-    std::queue<SceneObject*> m_queue;
 };
 
 #endif /*RENDERER_H*/

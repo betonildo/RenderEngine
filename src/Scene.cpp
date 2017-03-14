@@ -13,6 +13,11 @@ void Scene::addChild(SceneObject* sceneObject) {
     m_children.push_back(sceneObject);
 }
 
+void addCamera(Camera* camera) {
+    m_cameras.push_back(camera);
+}
+
+
 void Scene::m_cleanUp() {
     // clear children
     while(!m_children.empty()) {
@@ -22,13 +27,15 @@ void Scene::m_cleanUp() {
     }
 }
 
-void Scene::m_renderSceneObject(SceneObject* sceneObject) {
+void Scene::m_renderSceneObject(SceneObject* sceneObject, Transform* cumulative = nullptr) {
 
     // render all children first
     for (auto child : sceneObject->m_children) {
         m_renderSceneObject(child);
     }
 
-    // render it self
-    sceneObject->render();
+    for (auto cam : m_cameras) {
+        // render it self
+        sceneObject->render();
+    }
 }

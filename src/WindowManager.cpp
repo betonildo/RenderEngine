@@ -1,7 +1,8 @@
 #include "WindowManager.h"
 
 void WindowManager::setSize(int width, int height) {
-
+    m_width = width;
+    m_height = height;
 }
 
 void WindowManager::setPosition(int x, int y) {
@@ -12,13 +13,17 @@ bool WindowManager::Create(const char* title) {
     
     SDL_Init(SDL_INIT_VIDEO);   // Initialize SDL2
 
+    // defaults width and height
+    m_width = 640;
+    m_height = 480;
+
     // Create an application window with the following settings:
     m_window = SDL_CreateWindow( 
         title,                    //    const char* title
         SDL_WINDOWPOS_CENTERED,   //    int x: initial x position
         SDL_WINDOWPOS_CENTERED,   //    int y: initial y position
-        640,                      //    int w: width, in pixels
-        480,                      //    int h: height, in pixels
+        m_width,                  //    int w: width, in pixels
+        m_height,                 //    int h: height, in pixels
         SDL_WINDOW_OPENGL         //    Uint32 flags: window options, see docs
     );
 
@@ -109,7 +114,8 @@ void WindowManager::m_HandleEvents() {
 
 void WindowManager::m_callRenderers() {
     glClearColor(1.0, 0.0, 0.0, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT);    
+	glClear(GL_COLOR_BUFFER_BIT);
+
     SDL_GL_SwapWindow(m_window);
 }
 
