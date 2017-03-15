@@ -3,7 +3,7 @@
 
 #include "renderer_local_includes.h"
 #include "SceneObject.h"
-#include "Renderer.h"
+#include "Components/Renderer.h"
 #include "Application.h"
 #include "Camera.h"
 #include "Transform.h"
@@ -17,10 +17,11 @@ class Transform;
 class Scene {
 
 public:
-    void update();
+    void render();
     void addChild(SceneObject* sceneObject);
     void addCamera(Camera* camera);
     virtual void start() = 0;
+    virtual void update() = 0;
     virtual void end() = 0;
 
 private:

@@ -5,18 +5,26 @@
 #include "Quaternion.h"
 #include "Matrix4.h"
 
+struct Vector3;
+class Quaternion;
+class Matrix4;
+
+//TODO: Create the extract position, scale and rotation from model matrix to avoid storing it on this class
+
 class Transform {
 
 public:
 
+    Transform();
+
     void setPosition(const Vector3& p);
-    Vector3 getPosition();
+    const Vector3& getPosition();
 
     void setScale(const Vector3& s);
-    Vector3 getScale();
+    const Vector3& getScale();
 
     void setRotation(const Quaternion& r);
-    Quaternion getRotation();
+    const Quaternion& getRotation();
     
     Matrix4& getModelMatrix();
 
@@ -25,7 +33,6 @@ public:
 private:
     bool m_dirty;
     Matrix4 m_modelMatrix;
-
     Vector3 m_position;
     Vector3 m_scale;
     Quaternion m_rotation;

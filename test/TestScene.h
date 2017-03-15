@@ -11,6 +11,10 @@ public:
         addChild(one);
     }
 
+    inline virtual void update() {
+        
+    }
+
     inline virtual void end() {
 
     }

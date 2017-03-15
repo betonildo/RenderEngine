@@ -4,6 +4,7 @@
 #include "SDL2/SDL.h"
 #include <memory>
 #include <vector>
+#include <queue>
 #include <stdio.h>
 #include <GL/gl.h>
 #include <functional>

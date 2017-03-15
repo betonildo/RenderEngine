@@ -4,6 +4,13 @@ SceneObject::SceneObject() {
     m_parent = nullptr;
 }
 
+SceneObject::~SceneObject() {
+    for(auto component : components) {
+        component->end();
+        delete component;
+    }
+}
+
 void SceneObject::addChild(SceneObject* child) {
     
     child->m_parent = this;
@@ -11,6 +18,8 @@ void SceneObject::addChild(SceneObject* child) {
     m_children.push_back(child);
 }
 
-void SceneObject::addComponent(Component* component) {
-    m_components.push_back(component);
+void SceneObject::m_updateComponents() {
+    for(auto component : components) {
+        component->update();
+    }
 }

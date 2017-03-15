@@ -2,7 +2,7 @@
 #define RENDERMANAGER_H
 
 #include "renderer_local_includes.h"
-#include "Renderer.h"
+#include "Components/Renderer.h"
 #include "Camera.h"
 #include "Transform.h"
 
@@ -18,7 +18,7 @@ public:
 
 private:
     
-    std::queue<std::tuple<Camera*, Transform*, std::vector<Renderer*> > > m_queue;
+    std::queue<std::tuple<std::vector<Renderer*>, Camera*, Transform* > > m_queue;
 };
 
 #endif /*RENDERMANAGER_H*/

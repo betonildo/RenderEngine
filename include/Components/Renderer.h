@@ -3,18 +3,28 @@
 
 #include "renderer_local_includes.h"
 #include "Component.h"
+#include "../RenderManager.h"
+#include "../Camera.h"
+#include "../Transform.h"
+#include "../Assets/Material.h"
 
-//TODO: set correct viewport based on window format
+class RenderManager;
+class Camera;
+class Transform;
+class Material;
+
 class Renderer : public Component {
 
-public:
-    void render();
-    virtual void attachData(void* data, unsigned long size);
-    virtual void attachMaterial(Material* m);
+public:    
+    inline void setMaterial(Material* m) {
+        m_material = m;
+    }
 
-private:
-    // TODO: insert sprite notation
+protected:
+    Material* m_material;
+    virtual void m_render(Camera* camera, Transform* transform) = 0;
 
+    friend class RenderManager;
 };
 
 #endif /*RENDERER_H*/

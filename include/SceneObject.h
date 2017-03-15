@@ -18,29 +18,17 @@ public:
     Transform transform;
 
     SceneObject();
+    ~SceneObject();
     void addChild(SceneObject* child);
-    void attachRenderer(Renderer* renderer);
-
-    void addComponent(Component* component);
 
     template <class T>
-    inline T* getComponent() {
-        for(auto component : m_components)
-            if (T* downcastedComponent = dynamic_cast<T*>(component))
-                return downcastedComponent;
-        return nullptr;
-    }
+    inline void addComponent();
 
     template <class T>
-    inline std::vector<T*>& getComponents() {
+    inline T* getComponent();
 
-        std::vector<T*>* gotComponents = new std::vector<T>;
-        for(auto component : m_components)
-            if (T* downcastedComponent = dynamic_cast<T*>(component))
-                gotComponents->push_back(downcastedComponent);
-
-        return *gotComponents;
-    }
+    template <class T>
+    inline std::vector<T*>& getComponents();
 
 private:
     
@@ -54,5 +42,34 @@ private:
 
     friend class Scene;
 };
+
+// Implementation
+
+template <class T>
+inline void SceneObject::addComponent() {
+    T* component = new T;
+    component->m_sceneObject = this;
+    component->start();
+    m_components.push_back(component);
+}
+
+template <class T>
+inline T* SceneObject::getComponent() {
+    for(auto component : m_components)
+        if (T* downcastedComponent = dynamic_cast<T*>(component))
+            return downcastedComponent;
+    return nullptr;
+}
+
+template <class T>
+inline std::vector<T*>& SceneObject::getComponents() {
+
+    std::vector<T*>* gotComponents = new std::vector<T*>;
+    for(auto component : m_components)
+        if (T* downcastedComponent = dynamic_cast<T*>(component))
+            gotComponents->push_back(downcastedComponent);
+
+    return *gotComponents;
+}
 
 #endif /*SCENEOBJECT_H*/

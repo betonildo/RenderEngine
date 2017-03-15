@@ -5,6 +5,7 @@
 #include "WindowManager.h"
 #include "RenderManager.h"
 
+class Scene;
 class WindowManager;
 class RenderManager;
 
@@ -22,6 +23,7 @@ private:
     WindowManager m_window;
     RenderManager m_renderer;
     static Application* m_instance;
+    
 };
 
 #endif /*APPLICATION_H*/
