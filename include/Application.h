@@ -1,13 +1,13 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
+#include "RenderManager.h"
 #include "Scene.h"
 #include "WindowManager.h"
-#include "RenderManager.h"
 
+// class RenderManager;
 class Scene;
 class WindowManager;
-class RenderManager;
 
 class Application {
 
@@ -16,7 +16,7 @@ public:
     int run();
     void initWithScene(Scene* mainScene);
     void changeScene(Scene* scene);
-    Application* getInstance();
+    static Application* getInstance();
     
 private:
     Scene* m_currentScene;
@@ -24,6 +24,8 @@ private:
     RenderManager m_renderer;
     static Application* m_instance;
     
+    friend class Scene;
+    friend class RenderManager;
 };
 
 #endif /*APPLICATION_H*/

@@ -3,12 +3,10 @@
 
 #include "renderer_local_includes.h"
 #include "Component.h"
-#include "../RenderManager.h"
 #include "../Camera.h"
 #include "../Transform.h"
 #include "../Assets/Material.h"
 
-class RenderManager;
 class Camera;
 class Transform;
 class Material;

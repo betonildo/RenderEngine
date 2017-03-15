@@ -7,7 +7,6 @@ class Shader : public Asset {
 
 public:
     virtual void load(const char* relativePath);
-    void 
     void compile();
     void use();
 

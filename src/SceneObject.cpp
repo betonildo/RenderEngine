@@ -5,7 +5,7 @@ SceneObject::SceneObject() {
 }
 
 SceneObject::~SceneObject() {
-    for(auto component : components) {
+    for(auto component : m_components) {
         component->end();
         delete component;
     }
@@ -19,7 +19,7 @@ void SceneObject::addChild(SceneObject* child) {
 }
 
 void SceneObject::m_updateComponents() {
-    for(auto component : components) {
+    for(auto component : m_components) {
         component->update();
     }
 }

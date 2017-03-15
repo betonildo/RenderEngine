@@ -7,7 +7,13 @@ class SceneObject;
 
 class Component {
 
+public:
+    
+
 protected:
+
+    virtual ~Component() { }
+
     virtual void start() = 0;
     virtual void update() = 0;
     virtual void end() = 0;

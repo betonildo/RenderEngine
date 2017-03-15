@@ -38,5 +38,5 @@ void Scene::m_renderSceneObject(SceneObject* sceneObject, Transform* cumulative)
     // send all renderers to RenderManager to render with each Camera
     std::vector<Renderer*> objectRenderers = sceneObject->getComponents<Renderer>();
     for (auto cam : m_cameras) 
-        RenderManager::enqueueRenderersWithCameraAndTransform(objectRenderers, cam, cumulative);
+        Application::getInstance()->m_renderer.enqueueRenderersWithCameraAndTransform(objectRenderers, cam, cumulative);
 }

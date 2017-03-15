@@ -44,6 +44,6 @@ Matrix4& Transform::getModelMatrix() {
 void Transform::concatenateTo(Transform& t1, Transform& t2, Transform& r) {
     r.setPosition(t1.getPosition() + t2.getPosition());
     //TODO: Discover if concatenation of scale is made by multiplication or addition
-    r.setScale(t1.getScale() * t2.getScale());
+    r.setScale(t1.getScale() + t2.getScale());
     r.setRotation(t1.getRotation() * t2.getRotation());
 }
