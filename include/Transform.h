@@ -26,9 +26,13 @@ public:
     void setRotation(const Quaternion& r);
     const Quaternion& getRotation();
     
+    Vector3 getFront();
+
     Matrix4& getModelMatrix();
 
     static void concatenateTo(Transform& t1, Transform& t2, Transform& r);
+    
+    inline bool isDirty() { return m_dirty; }
 
 private:
     bool m_dirty;

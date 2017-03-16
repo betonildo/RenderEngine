@@ -31,6 +31,14 @@ const Quaternion& Transform::getRotation() {
     return m_rotation;
 }
 
+Vector3 Transform::getFront() {
+    Vector4 front = m_rotation.v;
+    Matrix4 rotation = m_rotation.getMatrix();
+    front = front * rotation;
+    return Vector3(front.x, front.y, front.z);
+}
+
+
 Matrix4& Transform::getModelMatrix() {
     if (m_dirty) {
         m_modelMatrix = m_rotation.getMatrix();
