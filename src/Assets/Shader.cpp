@@ -29,26 +29,31 @@ void Shader::use() {
 
 
 void Shader::setUniformv(const char* uniform, const Vector2& v) {
-
+    unsigned int uid = glGetUniformLocation(m_program, uniform);
+    glUniform2fv(uid, 1, &v);
 }
 
 void Shader::setUniformv(const char* uniform, const Vector3& v) {
-
+    unsigned int uid = glGetUniformLocation(m_program, uniform);
+    glUniform3fv(uid, 1, &v);
 }
 
 void Shader::setUniformv(const char* uniform, const Vector4& v) {
-
+    unsigned int uid = glGetUniformLocation(m_program, uniform);
+    glUniform4fv(uid, 1, &v);
+    
 }
 
 void Shader::setUniformv(const char* uniform, const Matrix4& m) {
-
+    unsigned int uid = glGetUniformLocation(m_program, uniform);
+    glUniformMatrix4fv(uid, 1, GL_TRUE, m());
 }
 
-void Shader::setUniformv(const char* uniform, const Texture& t) {
-
+void Shader::setUniformv(const char* uniform, const Texture& t, unsigned int index) {
+    t.setTextureIndex(index);
+    unsigned int uid = glGetUniformLocation(m_program, uniform);
+    glUniform1i(uid, t.use());
 }
-
-
 
 void Shader::m_compileProgram(unsigned int programID, char* source) {
 

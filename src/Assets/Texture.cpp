@@ -33,8 +33,16 @@ void Texture::load(const char* relativePath) {
     SDL_FreeSurface(Surface);
 }
 
-void Texture::use() {
+void Texture::setTextureIndex(unsigned int textureIndex) {
+    m_textureIndex = textureIndex;
+}   
+
+
+unsigned int Texture::use() {
     // TODO: Create bind active buffer index
-    // glActiveTexture(GL_TEXTURE0); 
+    unsigned int textureRealID = GL_TEXTURE0 + m_textureIndex;
+    glActiveTexture(textureRealID); 
     glBindTexture(GL_TEXTURE_2D, m_textureID);
+
+    return textureRealID;
 }

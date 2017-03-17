@@ -12,11 +12,12 @@ public:
     Texture();
     ~Texture();
     virtual void load(const char* relativePath);
-    void use();
+    void setTextureIndex(unsigned int textureIndex);
+    unsigned int use();
     
 private:
     unsigned int m_textureID;
-
+    unsigned int m_textureIndex;
 };
 
 #endif /*TEXTURE_H*/
