@@ -1,5 +1,4 @@
 #include "Assets/Shader.h"
-#include "SDL2/SDL_opengl.h"
 
 Shader::Shader() {
     m_program = glCreateProgram();
@@ -14,8 +13,8 @@ Shader::~Shader() {
 void Shader::load(const char* relativePath) {
     #if defined(OPENGL)
 
-        char* vert = FileUtils::readAllText(relativePath + ".vert");
-        char* frag = FileUtils::readAllText(relativePath + ".frag");
+        char* vert = FileUtils::readAllText(relativePath + std::string(".vert"));
+        char* frag = FileUtils::readAllText(relativePath + std::string(".frag"));
 
         m_compileProgram(m_vertex, vert);
         m_compileProgram(m_fragment, frag);
@@ -31,26 +30,26 @@ void Shader::use() {
 
 void Shader::setUniformv(const char* uniform, const Vector2& v) {
     unsigned int uid = glGetUniformLocation(m_program, uniform);
-    glUniform2fv(uid, 1, &v);
+    glUniform2fv(uid, 1, (const GLfloat*)&v);
 }
 
 void Shader::setUniformv(const char* uniform, const Vector3& v) {
     unsigned int uid = glGetUniformLocation(m_program, uniform);
-    glUniform3fv(uid, 1, &v);
+    glUniform3fv(uid, 1, (const GLfloat*)&v);
 }
 
 void Shader::setUniformv(const char* uniform, const Vector4& v) {
     unsigned int uid = glGetUniformLocation(m_program, uniform);
-    glUniform4fv(uid, 1, &v);
+    glUniform4fv(uid, 1, (const GLfloat*)&v);
     
 }
 
 void Shader::setUniformv(const char* uniform, const Matrix4& m) {
     unsigned int uid = glGetUniformLocation(m_program, uniform);
-    glUniformMatrix4fv(uid, 1, GL_TRUE, m());
+    glUniformMatrix4fv(uid, 1, GL_TRUE, (const GLfloat*) &m);
 }
 
-void Shader::setUniformv(const char* uniform, const Texture& t, unsigned int index) {
+void Shader::setUniformv(const char* uniform, Texture& t, unsigned int index) {
     t.setTextureIndex(index);
     unsigned int uid = glGetUniformLocation(m_program, uniform);
     glUniform1i(uid, t.use());
@@ -69,7 +68,7 @@ void Shader::m_compileProgram(unsigned int programID, char* source) {
     
     if(isCompiled == false) {
 
-        unsigned int maxLength = 0;
+        GLsizei maxLength = 0;
         glGetShaderiv(programID, GL_INFO_LOG_LENGTH, &maxLength);
 
         //The maxLength includes the NULL character
@@ -101,7 +100,7 @@ void Shader::m_link() {
 
     if(isLinked == false) {
 
-        unsigned int maxLength = 0;
+        GLsizei maxLength = 0;
         glGetProgramiv(m_program, GL_INFO_LOG_LENGTH, &maxLength);
 
         //The maxLength includes the NULL character

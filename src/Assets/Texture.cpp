@@ -5,7 +5,7 @@ Texture::Texture() {
 }
 
 Texture::~Texture() {
-    glDeleteTextures(1, &textureID);
+    glDeleteTextures(1, &m_textureID);
 }
 
 void Texture::load(const char* relativePath) {

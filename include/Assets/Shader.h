@@ -28,7 +28,7 @@ public:
     void setUniformv(const char* uniform, const Vector3& v);
     void setUniformv(const char* uniform, const Vector4& v);
     void setUniformv(const char* uniform, const Matrix4& m);
-    void setUniformv(const char* uniform, const Texture& t);
+    void setUniformv(const char* uniform, Texture& t, unsigned int index);
 
 
 private:
