@@ -32,7 +32,7 @@ const Quaternion& Transform::getRotation() {
 }
 
 Vector3 Transform::getFront() {
-    Vector4 front = m_rotation.v;
+    Vector4 front(m_rotation.v.x, m_rotation.v.y, m_rotation.v.z, 1);
     Matrix4 rotation = m_rotation.getMatrix();
     front = front * rotation;
     return Vector3(front.x, front.y, front.z);
@@ -51,7 +51,7 @@ Matrix4& Transform::getModelMatrix() {
 
 void Transform::concatenateTo(Transform& t1, Transform& t2, Transform& r) {
     r.setPosition(t1.getPosition() + t2.getPosition());
-    //TODO: Discover if concatenation of scale is made by multiplication or addition
+    //TODO: Multiplication to scale children
     r.setScale(t1.getScale() + t2.getScale());
     r.setRotation(t1.getRotation() * t2.getRotation());
 }

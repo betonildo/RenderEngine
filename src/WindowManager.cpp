@@ -75,7 +75,7 @@ void WindowManager::m_setupOpenGLAttributes() {
 
 void WindowManager::m_setupOpenGLColorsAndTests() {
 	
-    glClearColor(1.0, 0.0, 0.0, 1.0);
+    glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
     
     glEnable(GL_DEPTH_TEST);
@@ -109,7 +109,7 @@ void WindowManager::m_HandleEvents() {
 }
 
 void WindowManager::m_callRenderers() {
-    glClearColor(1.0, 0.0, 0.0, 1.0);
+    glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);    
 }
 

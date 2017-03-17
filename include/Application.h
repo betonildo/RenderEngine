@@ -5,7 +5,7 @@
 #include "Scene.h"
 #include "WindowManager.h"
 
-// class RenderManager;
+class RenderManager;
 class Scene;
 class WindowManager;
 

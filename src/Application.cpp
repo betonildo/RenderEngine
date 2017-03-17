@@ -1,7 +1,9 @@
 #include "Application.h"
 
+Application* Application::m_instance = nullptr;
+
 Application::Application(const char* name) {
-    m_instance = this;
+    Application::m_instance = this;
     m_window.Create(name);
 }
 
@@ -36,5 +38,5 @@ void Application::changeScene(Scene* scene) {
 }
 
 Application* Application::getInstance() {
-    return m_instance;
+    return Application::m_instance;
 }

@@ -1,10 +1,10 @@
-#ifndef RENDERMANAGER_H
-#define RENDERMANAGER_H
-
 #include "renderer_local_includes.h"
 #include "Components/Renderer.h"
 #include "Camera.h"
 #include "Transform.h"
+
+#ifndef RENDERMANAGER_H
+#define RENDERMANAGER_H
 
 class Renderer;
 class Camera;
