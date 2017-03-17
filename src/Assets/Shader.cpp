@@ -1,4 +1,5 @@
-#include "Shader.h"
+#include "Assets/Shader.h"
+#include "SDL2/SDL_opengl.h"
 
 Shader::Shader() {
     m_program = glCreateProgram();

@@ -8,7 +8,10 @@ include_directories(external/SDL2-2.0.5/WinMinGW64/include/)
 include_directories(include/)
 
 
-file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp)
+file(GLOB SOURCES 
+    ${PROJECT_SOURCE_DIR}/src/*.cpp 
+    ${PROJECT_SOURCE_DIR}/src/Assets/*.cpp
+    ${PROJECT_SOURCE_DIR}/src/Components/*.cpp)
 
 link_directories(${PROJECT_SOURCE_DIR}/external/SDL2-2.0.5/WinMinGW64/lib/)
 add_library(RenderEngine SHARED ${SOURCES})
