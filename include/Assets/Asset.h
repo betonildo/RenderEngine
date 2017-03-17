@@ -1,3 +1,5 @@
+#include "renderer_local_includes.h"
+
 #ifndef ASSET_H
 #define ASSET_H
 

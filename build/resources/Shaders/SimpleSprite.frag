@@ -6,5 +6,5 @@ varying vec2 UV;
 
 void main() {
 
-    gl_FragColor = tex2D(spriteTexture);
+    gl_FragColor = texture(spriteTexture, UV);
 }

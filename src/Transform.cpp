@@ -50,8 +50,11 @@ Matrix4& Transform::getModelMatrix() {
 }
 
 void Transform::concatenateTo(Transform& t1, Transform& t2, Transform& r) {
+
     r.setPosition(t1.getPosition() + t2.getPosition());
-    //TODO: Multiplication to scale children
-    r.setScale(t1.getScale() + t2.getScale());
+    Vector3 t1Scale(t1.getScale());
+    Vector3 t2Scale(t2.getScale());
+    Vector3 finalScale(t1Scale.x * t2Scale.x, t1Scale.y * t2Scale.y, t1Scale.z * t2Scale.z);
+    r.setScale(finalScale);
     r.setRotation(t1.getRotation() * t2.getRotation());
 }
