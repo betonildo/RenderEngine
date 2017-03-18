@@ -21,7 +21,7 @@ public:
     }
 
     inline virtual void update() {
-        printf("UPdate Scene\n");
+        
     }
 
     inline virtual void end() {

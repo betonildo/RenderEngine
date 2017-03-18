@@ -12,6 +12,7 @@ int Application::run() {
     // The Main Loop
     while(m_window.Showing()) {
         m_currentScene->update();
+        m_currentScene->m_updateAllObjects();
         // TODO: Add all subsystems managers
         // TODO: Calculate Physics
         m_renderer.renderAllEnqueued();

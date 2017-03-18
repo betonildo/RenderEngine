@@ -29,7 +29,7 @@ private:
     std::vector<Camera*> m_cameras;
     void m_cleanUp();
     void m_renderSceneObject(SceneObject* sceneObject, Transform* cumulative = nullptr);
-
+    void m_updateAllObjects();
     friend class Application;
 };
 

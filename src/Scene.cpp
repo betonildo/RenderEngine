@@ -40,3 +40,9 @@ void Scene::m_renderSceneObject(SceneObject* sceneObject, Transform* cumulative)
     for (auto cam : m_cameras) 
         Application::getInstance()->m_renderer.enqueueRenderersWithCameraAndTransform(objectRenderers, cam, cumulative);
 }
+
+void Scene::m_updateAllObjects() {
+    for (auto child : m_children) {
+        child->m_updateComponents();
+    }
+}
