@@ -1,7 +1,7 @@
 #include "SceneObject.h"
 
 SceneObject::SceneObject() {
-    m_parent = nullptr;
+    m_parent = NULL;
 }
 
 SceneObject::~SceneObject() {

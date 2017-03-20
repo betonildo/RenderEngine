@@ -3,14 +3,14 @@
     "tasks": [
         {
             "taskName": "build",
-            "command": "build",
+            "command": "",
             "isShellCommand": true,
             "echoCommand": true,
             "windows": {
-                "args": []
+                "args": ["build"]
             },
             "linux": {
-                "args": []
+                "args": ["./build.sh"]
             },
             "osx": {
                 "args": []

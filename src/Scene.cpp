@@ -3,8 +3,9 @@
 
 void Scene::render() {
     for(auto sceneObject: m_children)
-        if (!sceneObject->m_parent)
+        if (!sceneObject->m_parent) {
             m_renderSceneObject(sceneObject, &sceneObject->transform); 
+        }
 }
 
 void Scene::addChild(SceneObject* sceneObject) {

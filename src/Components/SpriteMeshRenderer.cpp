@@ -1,11 +1,15 @@
 #include "Components/SpriteMeshRenderer.h"
 
+SpriteMeshRenderer::SpriteMeshRenderer() {
+    
+}
+
 void SpriteMeshRenderer::start() {
     
 }
 
 void SpriteMeshRenderer::update() {
-    printf("UPdate Sprite Mesh Render\n");
+    
 }
 
 void SpriteMeshRenderer::end() {
