@@ -28,8 +28,15 @@ public:
     void setUniformv(const char* uniform, const Vector3& v);
     void setUniformv(const char* uniform, const Vector4& v);
     void setUniformv(const char* uniform, const Matrix4& m);
-    void setUniformv(const char* uniform, Texture& t, unsigned int index);
+    void setUniformv(const char* uniform, Texture& t);
 
+    void setUniformv(unsigned int uniform, const Vector2& v);
+    void setUniformv(unsigned int uniform, const Vector3& v);
+    void setUniformv(unsigned int uniform, const Vector4& v);
+    void setUniformv(unsigned int uniform, const Matrix4& m);
+    void setUniformv(unsigned int uniform, Texture& t);
+
+    unsigned int getUniformLocation(const char* uniform);
 
 private:
     unsigned int m_program;

@@ -24,35 +24,57 @@ void Shader::load(const char* relativePath) {
 
 
 void Shader::use() {
-    
+    glUseProgram(m_program);
 }
 
 
 void Shader::setUniformv(const char* uniform, const Vector2& v) {
-    unsigned int uid = glGetUniformLocation(m_program, uniform);
-    glUniform2fv(uid, 1, (const GLfloat*)&v);
+    unsigned int uid = getUniformLocation(uniform);
+    setUniformv(uid, v);
 }
 
 void Shader::setUniformv(const char* uniform, const Vector3& v) {
-    unsigned int uid = glGetUniformLocation(m_program, uniform);
-    glUniform3fv(uid, 1, (const GLfloat*)&v);
+    unsigned int uid = getUniformLocation(uniform);
+    setUniformv(uid, v);
 }
 
 void Shader::setUniformv(const char* uniform, const Vector4& v) {
-    unsigned int uid = glGetUniformLocation(m_program, uniform);
-    glUniform4fv(uid, 1, (const GLfloat*)&v);
-    
+    unsigned int uid = getUniformLocation(uniform);
+    setUniformv(uid, v);    
 }
 
 void Shader::setUniformv(const char* uniform, const Matrix4& m) {
-    unsigned int uid = glGetUniformLocation(m_program, uniform);
-    glUniformMatrix4fv(uid, 1, GL_TRUE, (const GLfloat*) &m);
+    unsigned int uid = getUniformLocation(uniform);
+    setUniformv(uid, m);
 }
 
-void Shader::setUniformv(const char* uniform, Texture& t, unsigned int index) {
-    t.setTextureIndex(index);
-    unsigned int uid = glGetUniformLocation(m_program, uniform);
-    glUniform1i(uid, t.use());
+void Shader::setUniformv(const char* uniform, Texture& t) {
+    unsigned int uid = getUniformLocation(uniform);
+    setUniformv(uid, t);
+}
+
+void Shader::setUniformv(unsigned int uniform, const Vector2& v) {
+    glUniform2fv(uniform, 1, (const GLfloat*)&v);
+}
+
+void Shader::setUniformv(unsigned int uniform, const Vector3& v) {
+    glUniform3fv(uniform, 1, (const GLfloat*)&v);
+}
+
+void Shader::setUniformv(unsigned int uniform, const Vector4& v) {
+    glUniform4fv(uniform, 1, (const GLfloat*)&v);
+}
+
+void Shader::setUniformv(unsigned int uniform, const Matrix4& m) {
+    glUniformMatrix4fv(uniform, 1, GL_TRUE, (const GLfloat*) &m);
+}
+
+void Shader::setUniformv(unsigned int uniform, Texture& t) {
+    glUniform1i(uniform, t.use());
+}
+
+unsigned int Shader::getUniformLocation(const char* uniform) {
+    return glGetUniformLocation(m_program, uniform);
 }
 
 void Shader::m_compileProgram(unsigned int programID, char* source) {

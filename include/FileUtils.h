@@ -6,9 +6,10 @@
 class FileUtils {
 
 public:
-    static char* readAllText(std::string filePaht);
+    static char* readAllText(std::string filePath);
     static char* readAllText(const char* filePath);
-
+    static std::vector<std::string> readAllLinesAsText(std::string filePath);
+    static std::vector<std::string> readAllLinesAsText(const char* filePath);
 };
 
 #endif /*FILEUTILS_H*/
