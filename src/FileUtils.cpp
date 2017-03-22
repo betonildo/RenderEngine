@@ -6,13 +6,18 @@ std::string FileUtils::readAllText(std::string filePath) {
 
 std::string FileUtils::readAllText(const char* filePath) {
 
-    FILE* fp = fopen(filePath, "rb");
-    fseek(fp, 0, SEEK_END);
-    unsigned long fileSize = ftell(fp);
-    rewind(fp);
+    std::string content = "";
+    std::ifstream ifs (filePath, std::ifstream::binary);
 
-    char* buffer = (char*)malloc(sizeof(char) * fileSize);
-    fread(buffer, sizeof(char), fileSize, fp);
-    fclose(fp);
-    return std::string(buffer);
+    if (ifs) {
+        content = ifs.get();
+
+        while (ifs.good()) {
+            content += ifs.get();
+        }
+
+        ifs.close();
+    }
+
+    return content;
 }

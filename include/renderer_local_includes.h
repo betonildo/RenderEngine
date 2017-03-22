@@ -36,6 +36,7 @@
 #include <stdlib.h>
 #include <functional>
 #include <utility>
+#include <fstream>
 #include <string>
 
 #endif /*RENDERER_LOCAL_INCLUDES_H*/

@@ -1,2 +1,2 @@
 Shader SimpleSprite resources/Shaders/SimpleSprite 
-Texture MainTexture resources/test/Textures/Default_SimpleSprite.jpg 
+Texture spriteTexture resources/test/Textures/Default_SimpleSprite.png 

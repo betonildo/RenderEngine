@@ -2,40 +2,32 @@
 
 Sprite::Sprite() {
     glGenBuffers(1, &m_vertexVBO);
-    // glGenBuffers(1, &m_normalVBO);
-    // glGenBuffers(1, &m_uvVBO);
+    glGenBuffers(1, &m_normalVBO);
+    glGenBuffers(1, &m_uvVBO);
     glGenBuffers(1, &m_elementVBO);
 
-    SpriteVertex a = {
-        Vector3(-0.5, -0.5, 0),
+    m_vertices = {
+        Vector3(-0.5, -0.5, 0), 
+        Vector3(0.5, -0.5, 0), 
+        Vector3(0.5, 0.5, 0), 
+        Vector3(-0.5, 0.5, 0)
+    };
+    
+    m_normals = {
         Vector3(0, 0, 1),
-        Vector2(0, 0)
+        Vector3(0, 0, 1),
+        Vector3(0, 0, 1),
+        Vector3(0, 0, 1)
     };
 
-    SpriteVertex b = {
-        Vector3(0.5, -0.5, 0),
-        Vector3(0, 0, 1),
-        Vector2(1, 0)
-    };
-
-    SpriteVertex c = {
-        Vector3(0.5, 0.5, 0),
-        Vector3(0, 0, 1),
-        Vector2(1, 1)
-    };
-
-    SpriteVertex d = {
-        Vector3(-0.5, 0.5, 0),
-        Vector3(0, 0, 1),
+    m_uvs = {
+        Vector2(0, 0),
+        Vector2(1, 0),
+        Vector2(1, 1),
         Vector2(0, 1)
     };
 
-    m_vertices.push_back(a);
-    m_vertices.push_back(b);
-    m_vertices.push_back(c);
-    m_vertices.push_back(d);
-
-    m_indexes = {0, 1, 2, 3};
+    m_indexes = {0, 1, 2, 1, 2, 3};
 }
 
 void Sprite::load(const char* relativePath) {
@@ -46,7 +38,15 @@ void Sprite::load(const char* relativePath) {
 void Sprite::m_uploadToGPU() {
     // Load it into a VBO
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexVBO);
-    glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(SpriteVertex), &m_indexes[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(Vector3), &m_vertices[0], GL_STATIC_DRAW);
+
+    // Load it into a VBO
+    glBindBuffer(GL_ARRAY_BUFFER, m_normalVBO);
+    glBufferData(GL_ARRAY_BUFFER, m_normals.size() * sizeof(Vector3), &m_normals[0], GL_STATIC_DRAW);
+
+        // Load it into a VBO
+    glBindBuffer(GL_ARRAY_BUFFER, m_uvVBO);
+    glBufferData(GL_ARRAY_BUFFER, m_uvs.size() * sizeof(Vector2), &m_uvs[0], GL_STATIC_DRAW);
 
     // Generate a buffer for the indices as well
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_elementVBO);

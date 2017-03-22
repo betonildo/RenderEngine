@@ -22,7 +22,7 @@ void Texture::load(const char* relativePath) {
     
     int Mode = GL_RGB;
     
-    if(Surface->format->BytesPerPixel == 4)
+    if(Surface && Surface->format->BytesPerPixel == 4)
         Mode = GL_RGBA;
     
     glTexImage2D(GL_TEXTURE_2D, 0, Mode, Surface->w, Surface->h, 0, Mode, GL_UNSIGNED_BYTE, Surface->pixels);
@@ -49,5 +49,5 @@ unsigned int Texture::use() const{
     glActiveTexture(textureRealID); 
     glBindTexture(GL_TEXTURE_2D, m_textureID);
 
-    return textureRealID;
+    return m_textureIndex;
 }
