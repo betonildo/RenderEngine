@@ -17,15 +17,17 @@
     //#include <Winuser.h>
     //#include <Windowsx.h>
 
-    //#pragma comment (lib, "opengl32.lib")
+    // #pragma comment (lib, "opengl32.lib")
+    // #pragma comment (lib, "gdi32.lib")
 #else
     //#error "Not implemented yet"
 #endif
 
 #include "SDL2/SDL.h"
-#include "SDL2/SDL_image.h"
+#include "GL/glew.h"
 #include "SDL2/SDL_opengl.h"
-//#include <gl.h>
+#include "SDL2/SDL_image.h"
+//#include <GL/gl.h>
 #include <map>
 #include <memory>
 #include <vector>

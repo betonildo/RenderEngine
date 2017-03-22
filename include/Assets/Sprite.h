@@ -6,6 +6,11 @@
 #ifndef SPRITE_H
 #define SPRITE_H
 
+class Texture;
+class Material;
+class SpriteVertex;
+class SpriteMeshRenderer;
+
 class Sprite : public Asset {
 
 public:
@@ -23,6 +28,7 @@ private:
 
     void m_uploadToGPU();
 
+    friend class SpriteMeshRenderer;
 };
 
 #endif /*SPRITE_H*/

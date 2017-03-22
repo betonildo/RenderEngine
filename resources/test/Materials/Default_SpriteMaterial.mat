@@ -1,2 +1,2 @@
-Shader     SimpleSprite = "Shaders/SimpleSprite";
-Texture{0} MainTexture  = "test/Textures/Default_SimpleSprite.jpg";
+Shader SimpleSprite resources/Shaders/SimpleSprite 
+Texture MainTexture resources/test/Textures/Default_SimpleSprite.jpg 

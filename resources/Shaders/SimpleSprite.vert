@@ -1,18 +1,14 @@
-// Input vertex data, different for all executions of this shader.
-struct SpriteVertex {
-    vec3 position;
-    vec3 normal;
-    vec2 uv;
-};
-
-
-layout(location = 0) in SpriteVertex vertex;
+#version 330
 
 // Values that stay constant for the whole mesh.
 uniform mat4 MVP;
 varying vec2 UV;
 
+layout(location = 0) in vec3 position;
+layout(location = 1) in vec3 normal;
+layout(location = 2) in vec2 uv;
+    
 void main() {
-    UV = vertex.uv;
-    gl_Position = MVP * vec4(vertex.position, 1);
-}
+    UV = uv;
+    gl_Position = MVP * vec4(position, 1);
+} 

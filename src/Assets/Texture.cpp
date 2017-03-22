@@ -4,12 +4,17 @@ Texture::Texture() {
     glGenTextures(1, &m_textureID);
 }
 
+Texture::Texture(const Texture& other) {
+    m_textureID = other.m_textureID;
+    m_textureIndex = other.m_textureIndex;
+}
+
 Texture::~Texture() {
     glDeleteTextures(1, &m_textureID);
 }
 
 void Texture::load(const char* relativePath) {
-    
+    printf("Image SOurce: %s\n", relativePath);
     SDL_Surface* Surface = IMG_Load(relativePath);
     
     
@@ -38,7 +43,7 @@ void Texture::setTextureIndex(unsigned int textureIndex) {
 }   
 
 
-unsigned int Texture::use() {
+unsigned int Texture::use() const{
     // TODO: Create bind active buffer index
     unsigned int textureRealID = GL_TEXTURE0 + m_textureIndex;
     glActiveTexture(textureRealID); 

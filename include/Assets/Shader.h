@@ -24,17 +24,11 @@ public:
     
     void use();
 
-    void setUniformv(const char* uniform, const Vector2& v);
-    void setUniformv(const char* uniform, const Vector3& v);
-    void setUniformv(const char* uniform, const Vector4& v);
-    void setUniformv(const char* uniform, const Matrix4& m);
-    void setUniformv(const char* uniform, Texture& t);
-
-    void setUniformv(unsigned int uniform, const Vector2& v);
-    void setUniformv(unsigned int uniform, const Vector3& v);
-    void setUniformv(unsigned int uniform, const Vector4& v);
-    void setUniformv(unsigned int uniform, const Matrix4& m);
-    void setUniformv(unsigned int uniform, Texture& t);
+    void setVector2(unsigned int uniform, const Vector2& v);
+    void setVector3(unsigned int uniform, const Vector3& v);
+    void setVector4(unsigned int uniform, const Vector4& v);
+    void setMatrix4(unsigned int uniform, const Matrix4& m);
+    void setTexture(unsigned int uniform, const Texture& t);
 
     unsigned int getUniformLocation(const char* uniform);
 

@@ -35,8 +35,14 @@ bool WindowManager::Create(const char* title) {
         return false;
     }
 
-    
     m_glContext = SDL_GL_CreateContext(m_window);
+
+    //Initialize GLEW
+    glewExperimental = GL_TRUE; 
+    GLenum glewError = glewInit();
+    if( glewError != GLEW_OK ) {
+        printf( "Error initializing GLEW! %s\n", glewGetErrorString( glewError ) );
+    }
 
     m_setupOpenGLAttributes();
 

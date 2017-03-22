@@ -1,5 +1,4 @@
-#ifndef MATERIAL_H
-#define MATERIAL_H
+
 
 #include "Asset.h"
 #include "Shader.h"
@@ -21,6 +20,15 @@ class Matrix3;
 class Matrix4;
 class FileUtils;
 
+#ifndef MATERIAL_H
+#define MATERIAL_H
+
+struct MaterialEntry {
+    std::string type;
+    std::string name;
+    std::string value;
+};
+
 class Material : public Asset {
 
 public:
@@ -28,24 +36,18 @@ public:
     void save();
 
     void use();
-    void setTexture(const char* uniform, Texture texture, unsigned int index);
+    void setTexture(const char* uniform, Texture t);
     void setVector2(const char* uniform, Vector2 v);
     void setVector3(const char* uniform, Vector3 v);
     void setVector4(const char* uniform, Vector4 v);
-    void setMatrix3(const char* uniform, Matrix3 m3);
-    void setMatrix4(const char* uniform, Matrix4 m4);
+    void setMatrix3(const char* uniform, Matrix3 m);
+    void setMatrix4(const char* uniform, Matrix4 m);
 
-private:
     Shader m_shader;
+    
+private:
 
     std::string m_relativePath;
-
-    std::map<std::string, unsigned int> m_location_textures;
-    std::map<std::string, unsigned int> m_location_vectors2;
-    std::map<std::string, unsigned int> m_location_vectors3;
-    std::map<std::string, unsigned int> m_location_vectors4;
-    std::map<std::string, unsigned int> m_location_matrices3;
-    std::map<std::string, unsigned int> m_location_matrices4;
 
     std::map<unsigned int, Texture> m_textures;
     std::map<unsigned int, Vector2> m_vectors2;
@@ -53,6 +55,10 @@ private:
     std::map<unsigned int, Vector4> m_vectors4;
     std::map<unsigned int, Matrix3> m_matrices3;
     std::map<unsigned int, Matrix4> m_matrices4;
+
+    std::vector<std::string>& m_getMatLines(std::string& matSource);
+    MaterialEntry m_getMaterialEntry(std::string& materialLine);
+    std::vector<std::string>& m_splitLineIntoFields(std::string& line);
 };
 
 #endif /*MATERIAL_H*/

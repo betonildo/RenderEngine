@@ -12,64 +12,44 @@ Shader::~Shader() {
 
 void Shader::load(const char* relativePath) {
     #if defined(OPENGL)
+        printf("Source Path: %s\n", relativePath);
 
-        char* vert = FileUtils::readAllText(relativePath + std::string(".vert"));
-        char* frag = FileUtils::readAllText(relativePath + std::string(".frag"));
+        std::string vertFilePath = std::string(relativePath).append(".vert");
+        std::string fragFilePath = std::string(relativePath).append(".frag");
 
-        m_compileProgram(m_vertex, vert);
-        m_compileProgram(m_fragment, frag);
+        std::string vert = FileUtils::readAllText(vertFilePath);
+        std::string frag = FileUtils::readAllText(fragFilePath);
+
+        std::cout << "Vertex Source: \n" << vert << "\n";
+        std::cout << "Fragment Source: \n" << frag << "\n";
+
+        m_compileProgram(m_vertex, (char*)vert.c_str());
+        m_compileProgram(m_fragment, (char*)frag.c_str());
+        m_link();
     #endif
 }
-
-
 
 void Shader::use() {
     glUseProgram(m_program);
 }
 
-
-void Shader::setUniformv(const char* uniform, const Vector2& v) {
-    unsigned int uid = getUniformLocation(uniform);
-    setUniformv(uid, v);
+void Shader::setVector2(unsigned int uniform, const Vector2& v) {
+    glUniform2fv(uniform, 1, (const float*)&v);
 }
 
-void Shader::setUniformv(const char* uniform, const Vector3& v) {
-    unsigned int uid = getUniformLocation(uniform);
-    setUniformv(uid, v);
+void Shader::setVector3(unsigned int uniform, const Vector3& v) {
+    glUniform3fv(uniform, 1, (const float*)&v);
 }
 
-void Shader::setUniformv(const char* uniform, const Vector4& v) {
-    unsigned int uid = getUniformLocation(uniform);
-    setUniformv(uid, v);    
+void Shader::setVector4(unsigned int uniform, const Vector4& v) {
+    glUniform4fv(uniform, 1, (const float*)&v);
 }
 
-void Shader::setUniformv(const char* uniform, const Matrix4& m) {
-    unsigned int uid = getUniformLocation(uniform);
-    setUniformv(uid, m);
+void Shader::setMatrix4(unsigned int uniform, const Matrix4& m) {
+    glUniformMatrix4fv(uniform, 1, true, (const float*) &m);
 }
 
-void Shader::setUniformv(const char* uniform, Texture& t) {
-    unsigned int uid = getUniformLocation(uniform);
-    setUniformv(uid, t);
-}
-
-void Shader::setUniformv(unsigned int uniform, const Vector2& v) {
-    glUniform2fv(uniform, 1, (const GLfloat*)&v);
-}
-
-void Shader::setUniformv(unsigned int uniform, const Vector3& v) {
-    glUniform3fv(uniform, 1, (const GLfloat*)&v);
-}
-
-void Shader::setUniformv(unsigned int uniform, const Vector4& v) {
-    glUniform4fv(uniform, 1, (const GLfloat*)&v);
-}
-
-void Shader::setUniformv(unsigned int uniform, const Matrix4& m) {
-    glUniformMatrix4fv(uniform, 1, GL_TRUE, (const GLfloat*) &m);
-}
-
-void Shader::setUniformv(unsigned int uniform, Texture& t) {
+void Shader::setTexture(unsigned int uniform, const Texture& t) {
     glUniform1i(uniform, t.use());
 }
 

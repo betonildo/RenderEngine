@@ -7,10 +7,28 @@ void Material::load(const char* relativePath) {
     Texture MainTexture = "<path/to/image>"
     Vector3 color = {1, 0.5, 0.9, 1}
     */
-    m_relativePath(relativePath);
+    m_relativePath = relativePath;
 
-    std::vector<std::string> matLines = FileUtils::readAllLinesAsText(m_relativePath);
+    std::string matSource = FileUtils::readAllText(relativePath);
+    printf("Material Source at: %s\n%s\n\n", relativePath, matSource.c_str());
+
+    auto matLines = m_getMatLines(matSource);
+    for(auto line : matLines) {
         
+        auto entry = m_getMaterialEntry(line);
+        printf("Type: %s\n", entry.type.c_str());
+        printf("Name: %s\n", entry.name.c_str());
+        printf("Valu: %s\n", entry.value.c_str());
+
+        if (entry.type == "Shader") {
+            m_shader.load(entry.value.c_str());
+        }
+        else if (entry.type == "Texture") {
+            Texture t;
+            t.load(entry.value.c_str());
+            setTexture(entry.name.c_str(), t);
+        }
+    }
 }
 
 void Material::use() {
@@ -18,35 +36,32 @@ void Material::use() {
 
     //TODO : maybe create an asset abstraction to get value and TYPE
     //       and the shader selects what glUniform{t} to apply
+    unsigned int index = 0;
     for(auto uniform : m_textures) {
-        m_shader.setUniformv(uniform->first, uniform->second);
+        uniform.second.setTextureIndex(index++);
+        m_shader.setTexture(uniform.first, uniform.second);
     }
 
     for(auto uniform : m_vectors2) {
-        m_shader.setUniformv(uniform->first, uniform->second);
+        m_shader.setVector2(uniform.first, uniform.second);
     }
 
     for(auto uniform : m_vectors3) {
-        m_shader.setUniformv(uniform->first, uniform->second);
+        m_shader.setVector3(uniform.first, uniform.second);
     }
 
     for(auto uniform : m_vectors4) {
-        m_shader.setUniformv(uniform->first, uniform->second);
-    }
-
-    for(auto uniform : m_matrices3) {
-        m_shader.setUniformv(uniform->first, uniform->second);
+        m_shader.setVector4(uniform.first, uniform.second);
     }
 
     for(auto uniform : m_matrices4) {
-        m_shader.setUniformv(uniform->first, uniform->second);
+        m_shader.setMatrix4(uniform.first, uniform.second);
     }
 }
 
-void Material::setTexture(const char* uniform, Texture texture, unsigned int index) {
-    unsigned int uniformLocation = m_shader.getUniformLocation(uniform);
-    texture.setTextureIndex(index);
-    m_textures[uniformLocation] = texture;
+void Material::setTexture(const char* uniform, Texture t) {
+    unsigned int uniformLocation = m_shader.getUniformLocation(uniform);    
+    m_textures[uniformLocation] = t;
 }
 
 void Material::setVector2(const char* uniform, Vector2 v) {
@@ -64,12 +79,68 @@ void Material::setVector4(const char* uniform, Vector4 v) {
     m_vectors4[uniformLocation] = v;
 }
 
-void Material::setMatrix3(const char* uniform, Matrix3 m3) {
+void Material::setMatrix3(const char* uniform, Matrix3 m) {
     unsigned int uniformLocation = m_shader.getUniformLocation(uniform);
     m_matrices3[uniformLocation] = m;
 }
 
-void Material::setMatrix4(const char* uniform, Matrix4 m4) {
+void Material::setMatrix4(const char* uniform, Matrix4 m) {
     unsigned int uniformLocation = m_shader.getUniformLocation(uniform);
     m_matrices4[uniformLocation] = m;
+}
+
+
+std::vector<std::string>& Material::m_getMatLines(std::string& matSource) {
+
+    std::vector<std::string>* lines = new std::vector<std::string>;
+    std::string currentLine = "";
+    for(int i = 0; i < matSource.size(); i++) {
+
+        unsigned char c = matSource[i];
+        if (c == '\n' || i >= matSource.size() - 1) {
+            currentLine += '\0';
+            lines->push_back(currentLine);
+            currentLine = "";
+        }
+        else {
+            currentLine += c;
+        }
+    }
+
+    return *lines;
+}
+
+MaterialEntry Material::m_getMaterialEntry(std::string& materialLine) {
+
+    MaterialEntry entry;
+
+    std::vector<std::string> fields = m_splitLineIntoFields(materialLine);
+
+    entry.type = fields[0];
+    entry.name = fields[1];
+    entry.value = fields[2];
+    
+    return entry;
+}
+
+std::vector<std::string>& Material::m_splitLineIntoFields(std::string& line) {
+    
+    std::vector<std::string>* fields = new std::vector<std::string>;
+    std::string current = "";
+
+    for(int i = 0; i < line.size(); i++) {
+        unsigned char c = line[i];
+        if (c != ' ') {
+            current += c;
+        }
+        else {
+            fields->push_back(current);
+            current = "";
+        }
+    }
+    
+    fields->push_back(current);
+    current = "";
+
+    return *fields;
 }

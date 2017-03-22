@@ -18,6 +18,9 @@ public:
         addCamera(cam);
 
         one->addComponent<SpriteMeshRenderer>();
+
+        Material m;
+        m.load("resources/test/Materials/Default_SpriteMaterial.mat");
     }
 
     inline virtual void update() {
