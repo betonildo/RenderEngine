@@ -18,19 +18,17 @@ public:
     Transform();
 
     void setPosition(const Vector3& p);
-    const Vector3& getPosition();
+    Vector3& getPosition();
 
     void setScale(const Vector3& s);
-    const Vector3& getScale();
+    Vector3& getScale();
 
     void setRotation(const Quaternion& r);
-    const Quaternion& getRotation();
+    Quaternion& getRotation();
     
     Vector3 getFront();
 
-    Matrix4& getModelMatrix();
-
-    static void concatenateTo(Transform& t1, Transform& t2, Transform& r);
+    const Matrix4& getModelMatrix();
     
     inline bool isDirty() { return m_dirty; }
 

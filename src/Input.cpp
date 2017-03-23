@@ -19,6 +19,9 @@ bool Input::rightButtonPressed() {
 }
 
 void Input::clearLastInputs() {
-    (*Input::m_instance) = {};
+
+    // Input::m_instance->m_pointers[5];
+    Input::m_instance->m_leftWasPressed = false;
+    Input::m_instance->m_rightWasPressed = false;
 }
 

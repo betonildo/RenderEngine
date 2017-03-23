@@ -13,12 +13,12 @@ class Transform;
 class RenderManager {
 
 public:
-    void enqueueRenderersWithCameraAndTransform(std::vector<Renderer*>& renderers, Camera* camera, Transform* transform);
+    void enqueueRenderersWithCameraAndTransform(std::vector<Renderer*>& renderers, Camera* camera, Matrix4& concatenatedMatrix);
     void renderAllEnqueued();
 
 private:
     
-    std::queue<std::tuple<std::vector<Renderer*>, Camera*, Transform* > > m_queue;
+    std::queue<std::tuple<std::vector<Renderer*>, Camera*, Matrix4 > > m_queue;
 };
 
 #endif /*RENDERMANAGER_H*/

@@ -83,7 +83,7 @@ void WindowManager::m_setupOpenGLColorsAndTests() {
 	
     glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
-    
+    glFrontFace(GL_CW);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_ALPHA_TEST);
 }
@@ -117,6 +117,8 @@ void WindowManager::m_HandleEvents() {
 void WindowManager::m_callRenderers() {
     glClearColor(1.0, 1.0, 1.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);    
+	glCullFace(GL_FRONT_AND_BACK);
+
 }
 
 void WindowManager::m_cleanUp() {

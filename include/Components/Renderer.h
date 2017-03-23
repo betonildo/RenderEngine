@@ -20,7 +20,7 @@ public:
 
 protected:
     Material* m_material;
-    virtual void m_render(Camera* camera, Transform* transform) = 0;
+    virtual void m_render(Camera* camera, Matrix4& concatenatedMatrix) = 0;
 
     friend class RenderManager;
 };

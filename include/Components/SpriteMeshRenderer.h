@@ -17,7 +17,7 @@ public:
     virtual void end();
 
 protected:
-    virtual void m_render(Camera* camera, Transform* transform);
+    virtual void m_render(Camera* camera, Matrix4& concatenatedMatrix);
 
 private:
     Sprite m_sprite;

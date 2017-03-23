@@ -1,7 +1,17 @@
 #include "Transform.h"
 
-Transform::Transform() : m_modelMatrix(1.0) {
-    
+Transform::Transform() {
+    m_modelMatrix.turnIdentity();
+    m_position.x = 0;
+    m_position.y = 0;
+    m_position.z = 0;
+    m_scale.x = 0;
+    m_scale.y = 0;
+    m_scale.z = 0;
+    m_rotation.v.x = 0;
+    m_rotation.v.y = 0;
+    m_rotation.v.y = 0;
+    m_rotation.s = 0;
 }
 
 void Transform::setPosition(const Vector3& p) {
@@ -9,7 +19,7 @@ void Transform::setPosition(const Vector3& p) {
     m_position = p;
 }
 
-const Vector3& Transform::getPosition() {
+Vector3& Transform::getPosition() {
     return m_position;
 }
 
@@ -18,7 +28,7 @@ void Transform::setScale(const Vector3& s) {
     m_scale = s;
 }
 
-const Vector3& Transform::getScale() {
+Vector3& Transform::getScale() {
     return m_scale;
 }
 
@@ -27,7 +37,7 @@ void Transform::setRotation(const Quaternion& r) {
     m_rotation = r;
 }
 
-const Quaternion& Transform::getRotation() {
+Quaternion& Transform::getRotation() {
     return m_rotation;
 }
 
@@ -39,22 +49,12 @@ Vector3 Transform::getFront() {
 }
 
 
-Matrix4& Transform::getModelMatrix() {
+const Matrix4& Transform::getModelMatrix() {
     if (m_dirty) {
-        m_modelMatrix = m_rotation.getMatrix();
+        //m_modelMatrix = m_rotation.getMatrix();
         m_modelMatrix.setTranslation(m_position);
-        m_modelMatrix.setScale(m_scale);
+        //m_modelMatrix.setScale(m_scale);
     }
 
     return m_modelMatrix;
-}
-
-void Transform::concatenateTo(Transform& t1, Transform& t2, Transform& r) {
-
-    r.setPosition(t1.getPosition() + t2.getPosition());
-    Vector3 t1Scale(t1.getScale());
-    Vector3 t2Scale(t2.getScale());
-    Vector3 finalScale(t1Scale.x * t2Scale.x, t1Scale.y * t2Scale.y, t1Scale.z * t2Scale.z);
-    r.setScale(finalScale);
-    r.setRotation(t1.getRotation() * t2.getRotation());
 }

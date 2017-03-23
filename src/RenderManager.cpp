@@ -1,8 +1,8 @@
 #include "RenderManager.h"
 
-void RenderManager::enqueueRenderersWithCameraAndTransform(std::vector<Renderer*>& renderers, Camera* camera, Transform* transform) {
+void RenderManager::enqueueRenderersWithCameraAndTransform(std::vector<Renderer*>& renderers, Camera* camera, Matrix4& concatenatedMatrix) {
 
-    std::tuple<std::vector<Renderer*>, Camera*, Transform*> cameraRenderers(renderers, camera, transform);
+    std::tuple<std::vector<Renderer*>, Camera*, Matrix4> cameraRenderers(renderers, camera, concatenatedMatrix);
     m_queue.push(cameraRenderers);
 }
 
@@ -14,10 +14,10 @@ void RenderManager::renderAllEnqueued() {
 
         std::vector<Renderer*> renderers = std::get<0>(cameraRenderers);
         Camera* camera = std::get<1>(cameraRenderers);
-        Transform* transform = std::get<2>(cameraRenderers);
+        Matrix4 concatenatedMatrix = std::get<2>(cameraRenderers);
 
         for(auto renderer : renderers)
-            renderer->m_render(camera, transform);
+            renderer->m_render(camera, concatenatedMatrix);
 
         m_queue.pop();
     }

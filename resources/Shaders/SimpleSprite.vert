@@ -1,7 +1,7 @@
 #version 330
 
 // Values that stay constant for the whole mesh.
-uniform mat4 MVP;
+uniform mat4 MVP = mat4(1.0);
 varying vec2 UV;
 
 layout(location = 0) in vec3 position;
@@ -10,6 +10,6 @@ layout(location = 2) in vec2 uv;
     
 void main() {
     UV = uv;
-    gl_Position = vec4(position, 1);
+    gl_Position = MVP * vec4(position, 1);
 }
 
