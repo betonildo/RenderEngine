@@ -17,16 +17,17 @@ void SpriteMeshRenderer::end() {
 }
 
 void SpriteMeshRenderer::m_render(Camera* camera, Matrix4& concatenatedMatrix) {
-    Matrix4 M = concatenatedMatrix;
+    
+	Matrix4 M = concatenatedMatrix;
     Matrix4 V = camera->getView();
     Matrix4 P = camera->getProjection();
-    Matrix4 MVP = M;
+    Matrix4 MVP = P * V * M;
 
     m_sprite.m_material.use();
 	
 	unsigned int MVPlocation = m_sprite.m_material.m_shader.getUniformLocation("MVP");
     m_sprite.m_material.m_shader.setMatrix4(MVPlocation, MVP);
-	// printf("m_render call\n");
+
 	// 1rst attribute buffer : vertices
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, m_sprite.m_vertexVBO);
@@ -62,7 +63,8 @@ void SpriteMeshRenderer::m_render(Camera* camera, Matrix4& concatenatedMatrix) {
 		0,                                // stride
 		(void*)0                          // array buffer offset
 		);
-
+ //set size to 5 for another group of points
+//  glPointSize(5);  
 	// Index buffer
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_sprite.m_elementVBO);
 

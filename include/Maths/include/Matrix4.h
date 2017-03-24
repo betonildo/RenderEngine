@@ -1,12 +1,17 @@
-#ifndef MATRIX4_H
-#define MATRIX4_H
-
 #define DEBUG
 #include "linearmath_local_definitions.h"
 #include <Debug.h>
 #include <Vector4.h>
+#include <Quaternion.h>
+
+#ifndef MATRIX4_H
+#define MATRIX4_H
+
+struct Quaternion;
 
 class Matrix4 {
+
+public:
 
     union {
         float m_1d[16];
@@ -16,8 +21,6 @@ class Matrix4 {
         #endif
         Vector4 m_vecrows[4];
     };
-
-public:
 
     inline Matrix4() {
 
@@ -91,6 +94,16 @@ public:
         return mr;
     }
 
+    inline Matrix4& operator*=(const Matrix4& m1) {
+        
+        m_vecrows[0] = m1.m_vecrows[0] * (*this);
+        m_vecrows[1] = m1.m_vecrows[1] * (*this);
+        m_vecrows[2] = m1.m_vecrows[2] * (*this);
+        m_vecrows[3] = m1.m_vecrows[3] * (*this);
+
+        return *this;
+    }
+
     inline friend Vector4 operator*(const Vector4& u, const Matrix4& m) {
         
         Vector4 v;
@@ -107,6 +120,7 @@ public:
         
         return v;
     }
+    
 
     inline Matrix4& operator=(const Matrix4& mo) {
         m_vecrows[0] = mo.m_vecrows[0];
@@ -123,18 +137,50 @@ public:
                 m1.m_vecrows[3] == m2.m_vecrows[3]);
     }
 
-    inline void setTranslation(const Vector3& position) {
-        
-        m_2d[0][3] += position.x;
-        m_2d[1][3] += position.y;
-        m_2d[2][3] += position.z;
+    static inline Matrix4 Rotation(Quaternion& q) {
+
+		Matrix4 result(1.0);
+
+		float qx, qy, qz, qw, qx2, qy2, qz2, qxqx2, qyqy2, qzqz2, qxqy2, qyqz2, qzqw2, qxqz2, qyqw2, qxqw2;
+		qx = q.v.x;
+		qy = q.v.y;
+		qz = q.v.z;
+		qw = q.s;
+		qx2 = (qx + qx);
+		qy2 = (qy + qy);
+		qz2 = (qz + qz);
+		qxqx2 = (qx * qx2);
+		qxqy2 = (qx * qy2);
+		qxqz2 = (qx * qz2);
+		qxqw2 = (qw * qx2);
+		qyqy2 = (qy * qy2);
+		qyqz2 = (qy * qz2);
+		qyqw2 = (qw * qy2);
+		qzqz2 = (qz * qz2);
+		qzqw2 = (qw * qz2);
+
+		result.m_vecrows[0] = Vector4(((1.0f - qyqy2) - qzqz2), (qxqy2 - qzqw2), (qxqz2 + qyqw2), 0.0f);
+		result.m_vecrows[1] = Vector4((qxqy2 + qzqw2), ((1.0f - qxqx2) - qzqz2), (qyqz2 - qxqw2), 0.0f);
+		result.m_vecrows[2] = Vector4((qxqz2 - qyqw2), (qyqz2 + qxqw2), ((1.0f - qxqx2) - qyqy2), 0.0f);
+		return result;
     }
 
-    inline void setScale(const Vector3& scale) {
+    static inline Matrix4 Translation(const Vector3& position) {
         
-        m_2d[0][0] *= scale.x;
-        m_2d[1][1] *= scale.y;
-        m_2d[2][2] *= scale.z;
+        Matrix4 m(1.0f);
+        m[0][3] = position.x;
+        m[1][3] = position.y;
+        m[2][3] = position.z;
+        return m;
+    }
+
+    static inline Matrix4 Scale(const Vector3& scale) {
+        
+        Matrix4 m(1.0f);
+        m[0][0] = scale.x;
+        m[1][1] = scale.y;
+        m[2][2] = scale.z;
+        return m;
     }
 
     inline friend std::ostream& operator<<(std::ostream& os, const Matrix4& m) {
@@ -149,11 +195,11 @@ public:
 
     inline static Matrix4 lookAt(Vector3 eye, Vector3 target, Vector3 up) {
 
-        Vector3 vz = (eye - target).normalize();
-        Vector3 vx = cross(up, vz).normalize();
+        Vector3 vz((eye - target).normalize());
+        Vector3 vx(cross(up, vz).normalize());
         // vy doesn't need to be normalized because it's a cross
         // product of 2 normalized vectors
-        Vector3 vy = cross(vz, vx);
+        Vector3 vy(cross(vz, vx));
         float matrix[] = {
             vx.x, vx.y, vx.z, 0,
             vy.x, vy.y, vy.z, 0,
@@ -166,27 +212,18 @@ public:
     }
 
     inline static Matrix4 orthoProjection(float left, float right, float bottom, float top, float Znear, float Zfar) {
-            
-            Matrix4 orthomatrix;
 
-            orthomatrix[0][0] = 2.0/(right-left);
-            orthomatrix[0][1] = 0;
-            orthomatrix[0][2] = 0;
-            orthomatrix[0][3] = 0;
+            Matrix4 orthomatrix(1.0f);
+
+            orthomatrix[0][0] = 2.0f / (right - left);
+            
+            orthomatrix[1][1] = 2.0f / (top - bottom);
+            
+            orthomatrix[2][2] = 2.0f / (Znear-Zfar);
  
-            orthomatrix[1][0] = 0;
-            orthomatrix[1][1] = 2.0/(top-bottom);
-            orthomatrix[1][2] = 0;
-            orthomatrix[1][3] = 0;
- 
-            orthomatrix[2][0] = 0;
-            orthomatrix[2][1] = 0;
-            orthomatrix[2][2] = 2.0/(Zfar-Znear);
-            orthomatrix[2][3] = 0;
- 
-            orthomatrix[3][0] = -(right+left)/(right-left);
-            orthomatrix[3][1] = -(top+bottom)/(top-bottom);
-            orthomatrix[3][2] = -(Zfar+Znear)/(Zfar-Znear);
+            orthomatrix[3][0] = (left + right) / (left - right);
+            orthomatrix[3][1] = (bottom + top) / (bottom - top);
+            orthomatrix[3][2] = (Zfar + Znear) / (Zfar - Znear);
             orthomatrix[3][3] = 1;
 
             return orthomatrix;

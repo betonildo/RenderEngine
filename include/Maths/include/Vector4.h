@@ -40,13 +40,9 @@ struct Vector4 {
 
     inline Vector4& operator=(const Vector3& v) {
 
-        #ifdef USE_SSE
-            _sse_var = v._sse_var;
-        #else
-            x = v.x;
-            y = v.y;
-            z = v.z;
-        #endif
+        x = v.x;
+        y = v.y;
+        z = v.z;
 
         return *this;
     }

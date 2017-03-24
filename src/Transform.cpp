@@ -1,13 +1,14 @@
 #include "Transform.h"
 
 Transform::Transform() {
+    m_dirty = true;
     m_modelMatrix.turnIdentity();
     m_position.x = 0;
     m_position.y = 0;
     m_position.z = 0;
-    m_scale.x = 0;
-    m_scale.y = 0;
-    m_scale.z = 0;
+    m_scale.x = 1;
+    m_scale.y = 1;
+    m_scale.z = 1;
     m_rotation.v.x = 0;
     m_rotation.v.y = 0;
     m_rotation.v.y = 0;
@@ -42,18 +43,22 @@ Quaternion& Transform::getRotation() {
 }
 
 Vector3 Transform::getFront() {
-    Vector4 front(m_rotation.v.x, m_rotation.v.y, m_rotation.v.z, 1);
-    Matrix4 rotation = m_rotation.getMatrix();
+    Vector4 front(0, 0, -1, 1);
+    Matrix4 rotation = Matrix4::Rotation(m_rotation);
     front = front * rotation;
     return Vector3(front.x, front.y, front.z);
 }
 
 
-const Matrix4& Transform::getModelMatrix() {
+Matrix4& Transform::getModelMatrix() {
     if (m_dirty) {
-        //m_modelMatrix = m_rotation.getMatrix();
-        m_modelMatrix.setTranslation(m_position);
-        //m_modelMatrix.setScale(m_scale);
+        m_modelMatrix.turnIdentity();
+        Matrix4 r = Matrix4::Rotation(m_rotation);
+        Matrix4 t = Matrix4::Translation(m_position);
+        Matrix4 s = Matrix4::Scale(m_scale);
+        m_dirty = false;
+
+        m_modelMatrix = t * r * s;
     }
 
     return m_modelMatrix;

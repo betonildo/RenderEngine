@@ -12,10 +12,10 @@ const Matrix4& Camera::getProjection() {
     if (m_isDirty) {
         // only Orthographic projection yet
         m_projection = Matrix4::orthoProjection(
-            -m_rect.width/2.0,
-            m_rect.width/2.0,
-            -m_rect.height/2.0,
-            m_rect.height/2.0,
+            -m_rect.width/2.0 + m_rect.x,
+            m_rect.width/2.0 + m_rect.x,
+            -m_rect.height/2.0 + m_rect.y,
+            m_rect.height/2.0 + m_rect.y,
             m_near,
             m_far
         );

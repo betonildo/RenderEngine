@@ -6,12 +6,10 @@ Sprite::Sprite() {
     glGenBuffers(1, &m_uvVBO);
     glGenBuffers(1, &m_elementVBO);
 
-    m_vertices = {
-        Vector3(-0.5, -0.5, 0), 
-        Vector3(0.5, -0.5, 0), 
-        Vector3(0.5, 0.5, 0), 
-        Vector3(-0.5, 0.5, 0)
-    };
+    m_vertices.push_back(Vector3(-1,-1, 0));
+    m_vertices.push_back(Vector3( 1,-1, 0));
+    m_vertices.push_back(Vector3( 1, 1, 0));
+    m_vertices.push_back(Vector3(-1, 1, 0));
     
     m_normals = {
         Vector3(0, 0, 1),
@@ -27,7 +25,12 @@ Sprite::Sprite() {
         Vector2(0, 1)
     };
 
-    m_indexes = {0, 1, 2, 1, 2, 3};
+    m_indexes.push_back(0);
+    m_indexes.push_back(1);
+    m_indexes.push_back(2);
+    m_indexes.push_back(2);
+    m_indexes.push_back(3);
+    m_indexes.push_back(0);
 }
 
 void Sprite::load(const char* relativePath) {

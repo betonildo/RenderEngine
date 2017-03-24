@@ -28,7 +28,7 @@ public:
     
     Vector3 getFront();
 
-    const Matrix4& getModelMatrix();
+    Matrix4& getModelMatrix();
     
     inline bool isDirty() { return m_dirty; }
 

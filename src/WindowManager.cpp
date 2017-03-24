@@ -72,7 +72,7 @@ void WindowManager::m_setupOpenGLAttributes() {
 
 	// 3.2 is part of the modern versions of OpenGL, but most video cards whould be able to run it
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
 	// Turn on double buffering with a 24bit Z buffer.
 	// You may need to change this to 16 or 32 for your system
@@ -83,9 +83,13 @@ void WindowManager::m_setupOpenGLColorsAndTests() {
 	
     glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
-    glFrontFace(GL_CW);
+    glFrontFace(GL_CCW);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_ALPHA_TEST);
+    // // Accept fragment if it closer to the camera than the former one
+	glDepthFunc(GL_LESS);
+	// Cull triangles which normal is not towards the camera
+	glEnable(GL_CULL_FACE);
 }
 
 void WindowManager::m_HandleEvents() {
@@ -117,7 +121,7 @@ void WindowManager::m_HandleEvents() {
 void WindowManager::m_callRenderers() {
     glClearColor(1.0, 1.0, 1.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);    
-	glCullFace(GL_FRONT_AND_BACK);
+	glCullFace(GL_BACK);
 
 }
 

@@ -3,21 +3,15 @@
 
 #include "linearmath_local_definitions.h"
 
+
+#pragma pack(push, 0)
+
 struct Vector3 {
 
-    union {
-        struct {
-            float x, y, z;
-        };
-        
-        #ifdef USE_SSE
-        __m128 _sse_var;
-        #endif
-    };
-    
+    float x, y, z;    
 
     inline Vector3() {
-
+        x = y = z = 0;
     }
 
     inline Vector3(float x, float y, float z) {
@@ -27,16 +21,22 @@ struct Vector3 {
     }
 
     inline Vector3(const Vector3& v) {
-        (*this) = v;
+        this->x = v.x;
+        this->y = v.y;
+        this->z = v.z;
     }
 
     inline Vector3 normalize() {        
         float mag = magnitude();
-        return Vector3(x / mag, y / mag, z / mag);
+        mag = mag > 0 ? mag : 1;
+        Vector3 result(x / mag, y / mag, z / mag);
+        return result;
     }
 
     inline float magnitude() {
-        return sqrt(squaredMagnitude());
+        float sqrd = squaredMagnitude();
+        float sqrtRes = sqrtf(sqrd);
+        return sqrtRes;
     }
 
     inline float squaredMagnitude() {
@@ -129,5 +129,7 @@ struct Vector3 {
         return os;
     };
 };
+
+#pragma pack(pop)
 
 #endif /*VECTOR3_H*/

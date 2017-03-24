@@ -27,9 +27,9 @@ void Scene::m_cleanUp() {
     }
 }
 
-void Scene::m_renderSceneObject(SceneObject* sceneObject, const Matrix4& cumulative) {
-
-    Matrix4 concatenatedMatrix = sceneObject->transform.getModelMatrix() * cumulative;
+void Scene::m_renderSceneObject(SceneObject* sceneObject, Matrix4 cumulative) {
+    Matrix4 model = sceneObject->transform.getModelMatrix();
+    Matrix4 concatenatedMatrix = model * cumulative;
 
     // render all children first
     for (auto child : sceneObject->m_children)
@@ -38,7 +38,7 @@ void Scene::m_renderSceneObject(SceneObject* sceneObject, const Matrix4& cumulat
     // send all renderers to RenderManager to render with each Camera
     std::vector<Renderer*> objectRenderers = sceneObject->getComponents<Renderer>();
     for (auto cam : m_cameras) 
-        Application::getInstance()->m_renderer.enqueueRenderersWithCameraAndTransform(objectRenderers, cam, concatenatedMatrix);
+        Application::getInstance()->m_renderer.enqueueRenderersWithCameraAndTransform(objectRenderers, cam, cumulative);
 }
 
 void Scene::m_updateAllObjects() {
