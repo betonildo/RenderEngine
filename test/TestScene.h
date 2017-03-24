@@ -42,18 +42,26 @@ public:
 
         if (Input::leftButtonPressed()) {
             printf("Left Pressed\n");
-            Quaternion p = one->transform.getRotation();
-            p.v = {1, 0, 1};
-            p.s += -0.1f;
-            one->transform.setRotation(p);
+            // Quaternion p = one->transform.getRotation();
+            // p.v = Vector3(0, 1, 0);
+            // p.s += -1.0f;
+            // one->transform.setRotation(p);
+
+            Vector3 q = one->transform.getPosition();
+            q.x -= 0.1f;
+            one->transform.setPosition(q);
         }
 
         if (Input::rightButtonPressed()) {
             printf("Right Pressed\n");
-            Quaternion p = one->transform.getRotation();
-            p.v = {1, 0, 1};
-            p.s += +0.1f;
-            one->transform.setRotation(p);
+            // Quaternion p = one->transform.getRotation();
+            // p.v = Vector3(0, 1, 0);
+            // p.s += +1.0f;
+            // one->transform.setRotation(p);
+
+            Vector3 q = one->transform.getPosition();
+            q.x += 0.1f;
+            one->transform.setPosition(q);
         }
     }
 

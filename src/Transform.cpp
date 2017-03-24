@@ -56,9 +56,9 @@ Matrix4& Transform::getModelMatrix() {
         Matrix4 r = Matrix4::Rotation(m_rotation);
         Matrix4 t = Matrix4::Translation(m_position);
         Matrix4 s = Matrix4::Scale(m_scale);
-        m_dirty = false;
-
         m_modelMatrix = t * r * s;
+        
+        m_dirty = false;
     }
 
     return m_modelMatrix;
