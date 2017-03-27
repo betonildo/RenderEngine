@@ -18,13 +18,13 @@ public:
     Transform();
 
     void setPosition(const Vector3& p);
-    Vector3& getPosition();
+    const Vector3& getPosition();
 
     void setScale(const Vector3& s);
-    Vector3& getScale();
+    const Vector3& getScale();
 
     void setRotation(const Quaternion& r);
-    Quaternion& getRotation();
+    const Quaternion& getRotation();
     
     Vector3 getFront();
 

@@ -57,6 +57,10 @@ unsigned int Shader::getUniformLocation(const char* uniform) {
     return glGetUniformLocation(m_program, uniform);
 }
 
+unsigned int Shader::getAttributeLocation(const char* attribute) {
+    return glGetAttribLocation(m_program, attribute);
+}
+
 void Shader::m_compileProgram(unsigned int programID, char* source) {
 
     //Send the vertex shader source code to GL

@@ -52,6 +52,8 @@ bool WindowManager::Create(const char* title) {
     // run!!!
     m_running = true;
 
+    std::cout << "GLSL VERSION: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+
     return true;
 }
 
@@ -93,6 +95,8 @@ void WindowManager::m_setupOpenGLColorsAndTests() {
 }
 
 void WindowManager::m_HandleEvents() {
+    
+    Input::clearLastInputs();
    
     while (SDL_PollEvent(&m_event) != 0) {
         if (m_event.type == SDL_QUIT) {
@@ -103,11 +107,26 @@ void WindowManager::m_HandleEvents() {
         if (m_event.type == SDL_WINDOWEVENT_MOVED) {
             SDL_Log("Window %d moved to %d,%d", m_event.window.windowID, m_event.window.data1,  m_event.window.data2);
         }
+
+        if (
+            m_event.type == SDL_KEYDOWN && m_event.key.state == SDL_PRESSED 
+            || m_event.type == SDL_KEYUP && m_event.key.state == SDL_RELEASED
+        ) {
+
+            bool keyUp = m_event.type == SDL_KEYUP && !Input::m_instance->m_keyup;
+            bool keyDown = m_event.type == SDL_KEYDOWN && !Input::m_instance->m_keydown;
+            bool keyPressed = m_event.key.state == SDL_PRESSED;
+            bool keyReleased = m_event.key.state == SDL_RELEASED;
+            
+            Input::m_instance->m_keyname.assign(SDL_GetScancodeName(m_event.key.keysym.scancode));
+            Input::m_instance->m_keyup = keyUp;
+            Input::m_instance->m_keydown = keyDown;
+            Input::m_instance->m_keypressed = keyPressed;
+            Input::m_instance->m_keyreleased = keyReleased;
+        }
     }
 
     // get mouse coordinates
-    Input::clearLastInputs();
-
     SDL_GetRelativeMouseState(
         &Input::m_instance->m_pointers[0].x,
         &Input::m_instance->m_pointers[0].y

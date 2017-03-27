@@ -38,5 +38,5 @@
 #include <utility>
 #include <fstream>
 #include <string>
-
+#include <iostream>
 #endif /*RENDERER_LOCAL_INCLUDES_H*/

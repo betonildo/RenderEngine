@@ -1,4 +1,8 @@
 #include "Transform.h"
+#include <glm/vec3.hpp> // glm::vec3
+#include <glm/vec4.hpp> // glm::vec4
+#include <glm/mat4x4.hpp> // glm::mat4
+#include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
 
 Transform::Transform() {
     m_dirty = true;
@@ -20,7 +24,7 @@ void Transform::setPosition(const Vector3& p) {
     m_position = p;
 }
 
-Vector3& Transform::getPosition() {
+const Vector3& Transform::getPosition() {
     return m_position;
 }
 
@@ -29,7 +33,7 @@ void Transform::setScale(const Vector3& s) {
     m_scale = s;
 }
 
-Vector3& Transform::getScale() {
+const Vector3& Transform::getScale() {
     return m_scale;
 }
 
@@ -38,7 +42,7 @@ void Transform::setRotation(const Quaternion& r) {
     m_rotation = r;
 }
 
-Quaternion& Transform::getRotation() {
+const Quaternion& Transform::getRotation() {
     return m_rotation;
 }
 
@@ -56,9 +60,24 @@ Matrix4& Transform::getModelMatrix() {
         Matrix4 r = Matrix4::Rotation(m_rotation);
         Matrix4 t = Matrix4::Translation(m_position);
         Matrix4 s = Matrix4::Scale(m_scale);
-        m_modelMatrix = t * r * s;
-        
         m_dirty = false;
+        
+        m_modelMatrix = t * r * s;
+        // using namespace glm;
+        // mat4x4 model(1.0);
+
+        // vec3 gp(m_position.x, m_position.y, m_position.z);
+        // model = glm::translate(model, gp);
+
+        // vec3 gr(m_rotation.v.x, m_rotation.v.y, m_rotation.v.z);
+        // model = glm::rotate(model, m_rotation.s, gr);
+
+        // vec3 gs(m_scale.x, m_scale.y, m_scale.z);
+        // model = glm::scale(model, gs);
+
+        // memcpy(&m_modelMatrix, &model[0], sizeof(model));
+
+        std::cout << m_modelMatrix << std::endl;
     }
 
     return m_modelMatrix;

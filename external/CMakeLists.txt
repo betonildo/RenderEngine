@@ -21,6 +21,8 @@ set(GLEW_HEADERS
 )
 
 
+set(CMAKE_C_FLAGS " -g -fPIC ")
+
 add_library( GLEW_200 STATIC
 	${GLEW_SOURCE}
 	${GLEW_INCLUDE}

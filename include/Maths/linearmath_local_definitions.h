@@ -1,7 +1,7 @@
 #ifndef DEFINITIONS_H
 #define DEFINITIONS_H
 
-#define USE_SSE 1
+//#define USE_SSE 1
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>

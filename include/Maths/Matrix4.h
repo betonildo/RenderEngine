@@ -69,37 +69,36 @@ public:
 
     inline float* operator[](int index) {
         ASSERT(index < 4, "matrix4 vector index out of bounds");
-        return m_2d[index];
+        return &m_1d[index];
     }
 
-    inline float& operator()(int rowIdx, int colIdx) {
-        ASSERT(rowIdx < 4 && colIdx < 4, "matrix4 access out of bounds");
+    // inline float& operator()(int rowIdx, int colIdx) {
+    //     ASSERT(rowIdx < 4 && colIdx < 4, "matrix4 access out of bounds");
+    //     return m_2d[rowIdx][colIdx];
+    // }
 
-        return m_2d[rowIdx][colIdx];
-    }
-
-    inline float* operator()() {
-        return m_1d;
-    }
+    // inline float* operator()() {
+    //     return m_1d;
+    // }
 
     inline friend Matrix4 operator*(const Matrix4& m1, const Matrix4& m2) {
         
         Matrix4 mr;
 
-        mr.m_vecrows[0] = m1.m_vecrows[0] * m2;
-        mr.m_vecrows[1] = m1.m_vecrows[1] * m2;
-        mr.m_vecrows[2] = m1.m_vecrows[2] * m2;
-        mr.m_vecrows[3] = m1.m_vecrows[3] * m2;
+        mr.m_vecrows[0] = m2.m_vecrows[0] * m1;
+        mr.m_vecrows[1] = m2.m_vecrows[1] * m1;
+        mr.m_vecrows[2] = m2.m_vecrows[2] * m1;
+        mr.m_vecrows[3] = m2.m_vecrows[3] * m1;
 
         return mr;
     }
 
     inline Matrix4& operator*=(const Matrix4& m1) {
         
-        m_vecrows[0] = m1.m_vecrows[0] * (*this);
-        m_vecrows[1] = m1.m_vecrows[1] * (*this);
-        m_vecrows[2] = m1.m_vecrows[2] * (*this);
-        m_vecrows[3] = m1.m_vecrows[3] * (*this);
+        m_vecrows[0] = m_vecrows[0] * m1;
+        m_vecrows[1] = m_vecrows[1] * m1;
+        m_vecrows[2] = m_vecrows[2] * m1;
+        m_vecrows[3] = m_vecrows[3] * m1;
 
         return *this;
     }
@@ -215,12 +214,9 @@ public:
 
             Matrix4 orthomatrix(1.0f);
 
-            orthomatrix[0][0] = 2.0f / (right - left);
-            
-            orthomatrix[1][1] = 2.0f / (top - bottom);
-            
-            orthomatrix[2][2] = 2.0f / (Znear-Zfar);
- 
+            orthomatrix[0][0] = 2.0f / (right - left);            
+            orthomatrix[1][1] = 2.0f / (top - bottom);            
+            orthomatrix[2][2] = 2.0f / (Znear-Zfar); 
             orthomatrix[3][0] = (left + right) / (left - right);
             orthomatrix[3][1] = (bottom + top) / (bottom - top);
             orthomatrix[3][2] = (Zfar + Znear) / (Zfar - Znear);

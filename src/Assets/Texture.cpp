@@ -17,7 +17,11 @@ void Texture::load(const char* relativePath) {
     printf("Image SOurce: %s\n", relativePath);
     SDL_Surface* Surface = IMG_Load(relativePath);
     
-    
+    if (Surface == NULL) {
+        printf("Image: \"%s\" not loaded\n", relativePath);
+        return;
+    }
+
     glBindTexture(GL_TEXTURE_2D, m_textureID);
     
     int Mode = GL_RGB;
@@ -34,6 +38,9 @@ void Texture::load(const char* relativePath) {
     // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     // glGenerateMipmap(GL_TEXTURE_2D);
+
+    printf("Image Width: %d\n", Surface->w);
+    printf("Image height: %d\n", Surface->h);
 
     SDL_FreeSurface(Surface);
 }

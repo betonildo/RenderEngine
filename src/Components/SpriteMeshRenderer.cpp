@@ -23,13 +23,27 @@ void SpriteMeshRenderer::m_render(Camera* camera, Matrix4& concatenatedMatrix) {
     Matrix4 P = camera->getProjection();
     Matrix4 MVP = P * V * M;
 
+	// std::cout << "M" << std::endl;
+	// std::cout << M << std::endl;
+	// std::cout << "V" << std::endl;
+	// std::cout << V << std::endl;
+	// std::cout << "P" << std::endl;
+	// std::cout << P << std::endl;
+	// std::cout << "MVP" << std::endl;
+	// std::cout << MVP << std::endl;
+	
     m_sprite.m_material.use();
 	
 	unsigned int MVPlocation = m_sprite.m_material.m_shader.getUniformLocation("MVP");
     m_sprite.m_material.m_shader.setMatrix4(MVPlocation, MVP);
 
+	// Specify the layout of the vertex data
+    unsigned int positionLocation = m_sprite.m_material.m_shader.getAttributeLocation("position");
+	unsigned int normalLocation = m_sprite.m_material.m_shader.getAttributeLocation("normal");
+	unsigned int uvLocation = m_sprite.m_material.m_shader.getAttributeLocation("uv");
+
 	// 1rst attribute buffer : vertices
-	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(positionLocation);
 	glBindBuffer(GL_ARRAY_BUFFER, m_sprite.m_vertexVBO);
 	glVertexAttribPointer(
 		0,                  // attribute
@@ -40,8 +54,8 @@ void SpriteMeshRenderer::m_render(Camera* camera, Matrix4& concatenatedMatrix) {
 		(void*)0            // array buffer offset
 		);
 
-	// 2nd attribute buffer : UVs
-	glEnableVertexAttribArray(1);
+	// 2nd attribute buffer : NORMAL
+	glEnableVertexAttribArray(normalLocation);
 	glBindBuffer(GL_ARRAY_BUFFER, m_sprite.m_normalVBO);
 	glVertexAttribPointer(
 		1,                                // attribute
@@ -53,7 +67,7 @@ void SpriteMeshRenderer::m_render(Camera* camera, Matrix4& concatenatedMatrix) {
 		);
 
 	// 3rd attribute buffer : normals
-	glEnableVertexAttribArray(2);
+	glEnableVertexAttribArray(uvLocation);
 	glBindBuffer(GL_ARRAY_BUFFER, m_sprite.m_uvVBO);
 	glVertexAttribPointer(
 		2,                                // attribute

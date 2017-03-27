@@ -31,7 +31,8 @@ public:
     void setTexture(unsigned int uniform, const Texture& t);
 
     unsigned int getUniformLocation(const char* uniform);
-
+    unsigned int getAttributeLocation(const char* attribute);
+    
 private:
     unsigned int m_program;
     unsigned int m_vertex;

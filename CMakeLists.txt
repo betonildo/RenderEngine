@@ -17,7 +17,7 @@ if(UNIX)
     set(LINK_DIRECTORIES ${PROJECT_SOURCE_DIR}/external/SDL2-2.0.5/Ubuntu14_x86_64/lib/)
     set(SHARED_OBJECTS_DIRECTORIES ${PROJECT_SOURCE_DIR}/external/SDL2-2.0.5/Ubuntu14_x86_64/bin/)
     set(LINK_LIBRARIES SDL2 SDL2main SDL2_image GL m)
-    SET(CMAKE_CXX_FLAGS " -std=c++11 -msse3 ")
+    SET(CMAKE_CXX_FLAGS " -g -std=c++11 -msse3 ")
 else()
     set(EXTERNAL_PLATFORM_DEP_INCLUDES external/SDL2-2.0.5/WinMinGW64/include/)
     set(LINK_DIRECTORIES ${PROJECT_SOURCE_DIR}/external/SDL2-2.0.5/WinMinGW64/lib/ )
@@ -26,7 +26,8 @@ else()
     SET(CMAKE_CXX_FLAGS " -g -std=c++11 -msse3 ")
 endif()
 
-include_directories (external/glew-2.0.0/include/)
+include_directories(external/glm/)
+include_directories(external/glew-2.0.0/include/)
 include_directories(include/Maths/)
 include_directories(${EXTERNAL_PLATFORM_DEP_INCLUDES})
 include_directories(include/)
@@ -34,7 +35,7 @@ include_directories(include/)
 link_directories(${LINK_DIRECTORIES})
 
 file(GLOB SOURCES 
-    ${PROJECT_SOURCE_DIR}/src/*.cpp 
+    ${PROJECT_SOURCE_DIR}/src/*.cpp
     ${PROJECT_SOURCE_DIR}/src/Assets/*.cpp
     ${PROJECT_SOURCE_DIR}/src/Components/*.cpp)
 

@@ -5,7 +5,7 @@
             "name": "C++ Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/build/RenderEngine_Test.exe",
+            "program": "${workspaceRoot}/build/RenderEngine_Test",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
@@ -46,7 +46,7 @@
             "name": "C++ Attach",
             "type": "cppdbg",
             "request": "attach",
-            "program": "${workspaceRoot}/build/RenderEngine_Test.exe",
+            "program": "${workspaceRoot}/build/RenderEngine_Test",
             "processId": "${command.pickProcess}",
             "linux": {
                 "MIMode": "gdb",
