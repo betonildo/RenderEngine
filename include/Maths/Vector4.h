@@ -94,7 +94,7 @@ struct Vector4 {
     }
 
     inline friend Vector4 operator+(const Vector4& u, const Vector4& v) {
-        return Vector4(u.x + v.x, u.y + v.y, u.z + v.z, u.w + v.w);
+        return Vector4({u.x + v.x, u.y + v.y, u.z + v.z, u.w + v.w});
     }
 
     inline friend bool operator==(const Vector4& u, const Vector4& v) {

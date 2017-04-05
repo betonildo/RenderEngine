@@ -122,6 +122,11 @@ struct Vector3 {
         return *this;
     }
 
+    inline float operator[](int index) {
+        // ASSERT(index < 3, "Wrong address Vector3");
+        return *(((float*)this) + index);
+    }
+
     inline friend std::ostream& operator<<(std::ostream& os, const Vector3& v) {
       
         os << "[" << v.x << ", " << v.y << ", " << v.z << "]";
