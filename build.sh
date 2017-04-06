@@ -1,4 +1,5 @@
 echo "Starting Compilation..."
+mkdir build
 cd build
 cmake ..
 make

@@ -160,78 +160,36 @@ public:
                 m1.m_vecrows[3] == m2.m_vecrows[3]);
     }
 
+    static inline Matrix4 Rotation(float angle, const Vector3& axis)
+	{
+		Matrix4 result(1.0f);
+
+		float r = ToRadians(angle);
+		float c = cos(r);
+		float s = sin(r);
+		float omc = 1.0f - c;
+		
+		float x = axis.x;
+		float y = axis.y;
+		float z = axis.z;
+
+		result.m_1d[0 + 0 * 4] = x * x * omc + c;
+		result.m_1d[0 + 1 * 4] = y * x * omc + z * s;
+		result.m_1d[0 + 2 * 4] = x * z * omc - y * s;
+
+		result.m_1d[1 + 0 * 4] = x * y * omc - z * s;
+		result.m_1d[1 + 1 * 4] = y * y * omc + c;
+		result.m_1d[1 + 2 * 4] = y * z * omc + x * s;
+
+		result.m_1d[2 + 0 * 4] = x * z * omc + y * s;
+		result.m_1d[2 + 1 * 4] = y * z * omc - x * s;
+		result.m_1d[2 + 2 * 4] = z * z * omc + c;
+		
+		return result;
+	}
+
     static inline Matrix4 Rotation(Quaternion& q) {
-
-		float a = q.s;
-		float c = cos(a);
-		float s = sin(a);
-
-        Vector3 v(q.v.x, q.v.y, q.v.z);
-        
-		Vector3 axis(v.normalize());
-		Vector3 temp((1.0 - c) * axis);
-
-		Matrix4 Rotate;
-		Rotate[0][0] = c + temp[0] * axis[0];
-		Rotate[0][1] = temp[0] * axis[1] + s * axis[2];
-		Rotate[0][2] = temp[0] * axis[2] - s * axis[1];
-
-		Rotate[1][0] = temp[1] * axis[0] - s * axis[2];
-		Rotate[1][1] = c + temp[1] * axis[1];
-		Rotate[1][2] = temp[1] * axis[2] + s * axis[0];
-
-		Rotate[2][0] = temp[2] * axis[0] + s * axis[1];
-		Rotate[2][1] = temp[2] * axis[1] - s * axis[0];
-		Rotate[2][2] = c + temp[2] * axis[2];
-
-		Matrix4 Result;
-		Result[0] = m[0] * Rotate[0][0] + m[1] * Rotate[0][1] + m[2] * Rotate[0][2];
-		Result[1] = m[0] * Rotate[1][0] + m[1] * Rotate[1][1] + m[2] * Rotate[1][2];
-		Result[2] = m[0] * Rotate[2][0] + m[1] * Rotate[2][1] + m[2] * Rotate[2][2];
-		Result[3] = m[3];
-		return Result;
-
-		// Matrix4 result(1.0);
-
-        // Vector3 v3(q.v.x, q.v.y, q.v.z);
-        // v3 = v3.normalize();
-        // float radians = q.s * 3.1415 / 180.0;
-        // Vector4 v(v3.x, v3.y, v3.z, radians);
-
-        // result[0][0] = 1 - 2 * v.y * v.y - 2 * v.z * v.z;
-        // result[1][0] = 2 * (v.x * v.y - v.z * v.w);
-        // result[2][0] = 2 * (v.x * v.z + v.y * v.w);
-        // result[0][1] = 2 * (v.x * v.y + v.z * v.w);
-        // result[1][1] = 1 - 2 * v.x * v.x - 2 * v.z * v.z;
-        // result[2][1] = 2 * (v.y * v.z - v.x * v.w);
-        // result[0][2] = 2 * (v.x * v.z - v.y * v.w);
-        // result[1][2] = 2 * (v.y * v.z + v.x * v.w);
-        // result[2][2] = 1 - 2 * v.x * v.x - 2 * v.y * v.y;
-
-
-
-		// float qx, qy, qz, qw, qx2, qy2, qz2, qxqx2, qyqy2, qzqz2, qxqy2, qyqz2, qzqw2, qxqz2, qyqw2, qxqw2;
-		// qx = q.v.x;
-		// qy = q.v.y;
-		// qz = q.v.z;
-		// qw = q.s;
-		// qx2 = (qx + qx);
-		// qy2 = (qy + qy);
-		// qz2 = (qz + qz);
-		// qxqx2 = (qx * qx2);
-		// qxqy2 = (qx * qy2);
-		// qxqz2 = (qx * qz2);
-		// qxqw2 = (qw * qx2);
-		// qyqy2 = (qy * qy2);
-		// qyqz2 = (qy * qz2);
-		// qyqw2 = (qw * qy2);
-		// qzqz2 = (qz * qz2);
-		// qzqw2 = (qw * qz2);
-
-		// result.m_vecrows[0] = Vector4(((1.0f - qyqy2) - qzqz2), (qxqy2 - qzqw2), (qxqz2 + qyqw2), 0.0f);
-		// result.m_vecrows[1] = Vector4((qxqy2 + qzqw2), ((1.0f - qxqx2) - qzqz2), (qyqz2 - qxqw2), 0.0f);
-		// result.m_vecrows[2] = Vector4((qxqz2 - qyqw2), (qyqz2 + qxqw2), ((1.0f - qxqx2) - qyqy2), 0.0f);
-		// return result;
+        return Matrix4::Rotation(q.s, q.v);
     }
 
     static inline Matrix4 Translation(const Vector3& position) {

@@ -43,7 +43,7 @@ public:
         if (Input::leftButtonPressed()) {
             printf("Left Pressed\n");
             Quaternion p = one->transform.getRotation();
-            p.v = Vector3(0, 0, 1);
+            p.v = Vector3(0, 1, 0);
             p.s += -1.0f;
             one->transform.setRotation(p);
 
