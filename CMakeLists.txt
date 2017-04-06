@@ -18,12 +18,14 @@ if(UNIX)
     set(SHARED_OBJECTS_DIRECTORIES ${PROJECT_SOURCE_DIR}/external/SDL2-2.0.5/Ubuntu14_x86_64/bin/)
     set(LINK_LIBRARIES SDL2 SDL2main SDL2_image GL m)
     SET(CMAKE_CXX_FLAGS " -g -std=c++11 -msse3 ")
+    set(SHARED_LIBRARIES_EXTENSION "*.so*")
 else()
     set(EXTERNAL_PLATFORM_DEP_INCLUDES external/SDL2-2.0.5/WinMinGW64/include/)
     set(LINK_DIRECTORIES ${PROJECT_SOURCE_DIR}/external/SDL2-2.0.5/WinMinGW64/lib/ )
     set(SHARED_OBJECTS_DIRECTORIES ${PROJECT_SOURCE_DIR}/external/SDL2-2.0.5/WinMinGW64/bin/)
     set(LINK_LIBRARIES mingw32 SDL2 SDL2main SDL2_image SDL2.dll opengl32 gdi32 m)
     SET(CMAKE_CXX_FLAGS " -g -std=c++11 -msse3 ")
+    set(SHARED_LIBRARIES_EXTENSION "*.dll")
 endif()
 
 include_directories(external/glm/)
@@ -60,7 +62,7 @@ install(
 install(
     DIRECTORY ${SHARED_OBJECTS_DIRECTORIES}
     DESTINATION ${PROJECT_BINARY_DIR}/
-    FILES_MATCHING PATTERN "*.dll"
+    FILES_MATCHING PATTERN ${SHARED_LIBRARIES_EXTENSION}
 )
 
 install(

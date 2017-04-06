@@ -12,16 +12,12 @@ Shader::~Shader() {
 
 void Shader::load(const char* relativePath) {
     #if defined(OPENGL)
-        printf("Source Path: %s\n", relativePath);
 
         std::string vertFilePath = std::string(relativePath).append(".vert");
         std::string fragFilePath = std::string(relativePath).append(".frag");
 
         std::string vert = FileUtils::readAllText(vertFilePath);
         std::string frag = FileUtils::readAllText(fragFilePath);
-
-        std::cout << "Vertex Source: \n" << vert << "\n";
-        std::cout << "Fragment Source: \n" << frag << "\n";
 
         m_compileProgram(m_vertex, (char*)vert.c_str());
         m_compileProgram(m_fragment, (char*)frag.c_str());

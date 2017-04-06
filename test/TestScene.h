@@ -19,7 +19,6 @@ public:
     inline virtual void start() {
 
         one = new SceneObject();
-        std::cout << one->transform.getModelMatrix() << std::endl;
         addChild(one);
         cam = new Camera(Camera::ProjectionType::Orthographic);
         cam->setNearPlane(0.01f);
@@ -41,9 +40,8 @@ public:
     inline virtual void update() {
 
         if (Input::leftButtonPressed()) {
-            printf("Left Pressed\n");
             Quaternion p = one->transform.getRotation();
-            p.v = Vector3(0, 1, 0);
+            p.v = Vector3(0, 0, 1);
             p.s += -1.0f;
             one->transform.setRotation(p);
 
@@ -53,7 +51,6 @@ public:
         }
 
         if (Input::rightButtonPressed()) {
-            printf("Right Pressed\n");
             Quaternion p = one->transform.getRotation();
             p.v = Vector3(0, 0, 1);
             p.s += +1.0f;

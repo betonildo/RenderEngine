@@ -10,15 +10,11 @@ void Material::load(const char* relativePath) {
     m_relativePath = relativePath;
 
     std::string matSource = FileUtils::readAllText(relativePath);
-    printf("Material Source at: %s\n%s\n\n", relativePath, matSource.c_str());
 
     auto matLines = m_getMatLines(matSource);
     for(auto line : matLines) {
         
         auto entry = m_getMaterialEntry(line);
-        printf("Type: %s\n", entry.type.c_str());
-        printf("Name: %s\n", entry.name.c_str());
-        printf("Valu: %s\n", entry.value.c_str());
 
         if (entry.type == "Shader") {
             m_shader.load(entry.value.c_str());

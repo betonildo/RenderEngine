@@ -66,40 +66,6 @@ Matrix4& Transform::getModelMatrix() {
         Matrix4 s = Matrix4::Scale(m_scale);
         
         m_modelMatrix = t * r * s;
-
-        std::cout << "r" << std::endl;
-        std::cout << r << std::endl;
-        std::cout << "t" << std::endl;
-        std::cout << t << std::endl;
-        std::cout << "s" << std::endl;
-        std::cout << s << std::endl;
-        std::cout << "model" << std::endl;
-        std::cout << m_modelMatrix << std::endl;
-
-        // using namespace glm;
-        // mat4x4 model(1.0);
-
-        // vec3 gp(m_position.x, m_position.y, m_position.z);
-        // auto t = glm::translate(model, gp);
-
-        // vec3 gr(m_rotation.v.x, m_rotation.v.y, m_rotation.v.z);
-        // auto r = glm::rotate(model, m_rotation.s, gr);
-
-        // vec3 gs(m_scale.x, m_scale.y, m_scale.z);
-        // auto s = glm::scale(model, gs);
-        // model = t * r * s;
-
-        // memcpy(&m_modelMatrix, &model[0], sizeof(model));
-
-        
-        // std::cout << "r" << std::endl;
-        // std::cout << to_string(r) << std::endl;
-        // std::cout << "t" << std::endl;
-        // std::cout << to_string(t) << std::endl;
-        // std::cout << "s" << std::endl;
-        // std::cout << to_string(s) << std::endl;
-        // std::cout << "model" << std::endl;
-        // std::cout << m_modelMatrix << std::endl;
     }
 
     return m_modelMatrix;
