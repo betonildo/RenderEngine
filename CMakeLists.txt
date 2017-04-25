@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 
 project(RenderEngine)
 
-find_package(OpenGL REQUIRED)
+#find_package(OpenGL REQUIRED)
 
 # Compile external dependencies 
 add_subdirectory (external)

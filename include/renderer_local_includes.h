@@ -6,7 +6,13 @@
 #define OPENGL 1 // Use opengl on this project 
 #define GL_GLEXT_PROTOTYPES 1
 
+#define PI 3.1415
 
+// Converts degrees to radians.
+#define ToRadians(angleDegrees) ((angleDegrees) * PI / 180.0)
+
+// Converts radians to degrees.
+#define ToDegrees(angleRadians) ((angleRadians) * 180.0 / PI)
 
 #if defined(__WIN32__) || defined(__WIN64__)
     #ifndef UNICODE

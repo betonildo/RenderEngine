@@ -42,7 +42,7 @@ void Shader::setVector4(unsigned int uniform, const glm::vec4& v) {
 }
 
 void Shader::setMatrix4(unsigned int uniform, const glm::mat4& m) {
-    glUniformMatrix4fv(uniform, 1, true, (const float*) &m);
+    glUniformMatrix4fv(uniform, 1, false, (const float*) &m);
 }
 
 void Shader::setTexture(unsigned int uniform, const Texture& t) {

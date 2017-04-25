@@ -41,8 +41,8 @@ public:
 
         if (Input::leftButtonPressed()) {
             glm::quat p = one->transform.getRotation();
-            p.z = 1;
-            p.w += -1.0f;
+            //p.z = 1;
+            p.z += -1;
             one->transform.setRotation(p);
 
             // glm::vec3 q = one->transform.getPosition();
@@ -52,8 +52,8 @@ public:
 
         if (Input::rightButtonPressed()) {
             glm::quat p = one->transform.getRotation();
-            p.z = 1;
-            p.w += +1.0f;
+            //p.z = 1;
+            p.z += 1;
             one->transform.setRotation(p);
 
             // glm::vec3 q = one->transform.getPosition();
