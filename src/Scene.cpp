@@ -27,9 +27,9 @@ void Scene::m_cleanUp() {
     }
 }
 
-void Scene::m_renderSceneObject(SceneObject* sceneObject, Matrix4 cumulative) {
-    Matrix4 model = sceneObject->transform.getModelMatrix();
-    Matrix4 concatenatedMatrix = model * cumulative;
+void Scene::m_renderSceneObject(SceneObject* sceneObject, glm::mat4 cumulative) {
+    glm::mat4 model = sceneObject->transform.getModelMatrix();
+    glm::mat4 concatenatedMatrix = model * cumulative;
 
     // render all children first
     for (auto child : sceneObject->m_children)

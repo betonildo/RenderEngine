@@ -3,9 +3,9 @@
 void Material::load(const char* relativePath) {
     // read line by line with a TYPE KEY=VALUE
     /*
-    Matrix4 MVP={{}}
+    glm::mat4 MVP={{}}
     Texture MainTexture = "<path/to/image>"
-    Vector3 color = {1, 0.5, 0.9, 1}
+    glm::vec3 color = {1, 0.5, 0.9, 1}
     */
     m_relativePath = relativePath;
 
@@ -60,27 +60,22 @@ void Material::setTexture(const char* uniform, Texture t) {
     m_textures[uniformLocation] = t;
 }
 
-void Material::setVector2(const char* uniform, Vector2 v) {
+void Material::setVector2(const char* uniform, glm::vec2 v) {
     unsigned int uniformLocation = m_shader.getUniformLocation(uniform);
     m_vectors2[uniformLocation] = v;
 }
 
-void Material::setVector3(const char* uniform, Vector3 v) {
+void Material::setVector3(const char* uniform, glm::vec3 v) {
     unsigned int uniformLocation = m_shader.getUniformLocation(uniform);
     m_vectors3[uniformLocation] = v;
 }
 
-void Material::setVector4(const char* uniform, Vector4 v) {
+void Material::setVector4(const char* uniform, glm::vec4 v) {
     unsigned int uniformLocation = m_shader.getUniformLocation(uniform);
     m_vectors4[uniformLocation] = v;
 }
 
-void Material::setMatrix3(const char* uniform, Matrix3 m) {
-    unsigned int uniformLocation = m_shader.getUniformLocation(uniform);
-    m_matrices3[uniformLocation] = m;
-}
-
-void Material::setMatrix4(const char* uniform, Matrix4 m) {
+void Material::setMatrix4(const char* uniform, glm::mat4 m) {
     unsigned int uniformLocation = m_shader.getUniformLocation(uniform);
     m_matrices4[uniformLocation] = m;
 }

@@ -1,4 +1,4 @@
-#include "Vector2.h"
+#include "renderer_local_includes.h"
 #include "../Assets/Sprite.h"
 #include "Renderer.h"
 
@@ -17,7 +17,7 @@ public:
     virtual void end();
 
 protected:
-    virtual void m_render(Camera* camera, Matrix4& concatenatedMatrix);
+    virtual void m_render(Camera* camera, glm::mat4& concatenatedMatrix);
 
 private:
     Sprite m_sprite;

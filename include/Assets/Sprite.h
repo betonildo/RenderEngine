@@ -18,9 +18,9 @@ public:
     virtual void load(const char* relativePath);
 
 private:
-    std::vector<Vector3> m_vertices;
-    std::vector<Vector3> m_normals;
-    std::vector<Vector2> m_uvs;
+    std::vector<glm::vec3> m_vertices;
+    std::vector<glm::vec3> m_normals;
+    std::vector<glm::vec2> m_uvs;
     std::vector<unsigned short> m_indexes;
     Material m_material;
     unsigned int m_vertexVBO;

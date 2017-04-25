@@ -1,9 +1,6 @@
+#include "renderer_local_includes.h"
 #include "Asset.h"
 #include "FileUtils.h"
-#include "Vector2.h"
-#include "Vector3.h"
-#include "Vector4.h"
-#include "Matrix4.h"
 #include "Texture.h"
 
 #ifndef SHADER_H
@@ -24,10 +21,10 @@ public:
     
     void use();
 
-    void setVector2(unsigned int uniform, const Vector2& v);
-    void setVector3(unsigned int uniform, const Vector3& v);
-    void setVector4(unsigned int uniform, const Vector4& v);
-    void setMatrix4(unsigned int uniform, const Matrix4& m);
+    void setVector2(unsigned int uniform, const glm::vec2& v);
+    void setVector3(unsigned int uniform, const glm::vec3& v);
+    void setVector4(unsigned int uniform, const glm::vec4& v);
+    void setMatrix4(unsigned int uniform, const glm::mat4& m);
     void setTexture(unsigned int uniform, const Texture& t);
 
     unsigned int getUniformLocation(const char* uniform);

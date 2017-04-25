@@ -29,19 +29,19 @@ void Shader::use() {
     glUseProgram(m_program);
 }
 
-void Shader::setVector2(unsigned int uniform, const Vector2& v) {
+void Shader::setVector2(unsigned int uniform, const glm::vec2& v) {
     glUniform2fv(uniform, 1, (const float*)&v);
 }
 
-void Shader::setVector3(unsigned int uniform, const Vector3& v) {
+void Shader::setVector3(unsigned int uniform, const glm::vec3& v) {
     glUniform3fv(uniform, 1, (const float*)&v);
 }
 
-void Shader::setVector4(unsigned int uniform, const Vector4& v) {
+void Shader::setVector4(unsigned int uniform, const glm::vec4& v) {
     glUniform4fv(uniform, 1, (const float*)&v);
 }
 
-void Shader::setMatrix4(unsigned int uniform, const Matrix4& m) {
+void Shader::setMatrix4(unsigned int uniform, const glm::mat4& m) {
     glUniformMatrix4fv(uniform, 1, true, (const float*) &m);
 }
 

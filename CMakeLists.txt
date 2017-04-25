@@ -30,7 +30,6 @@ endif()
 
 include_directories(external/glm/)
 include_directories(external/glew-2.0.0/include/)
-include_directories(include/Maths/)
 include_directories(${EXTERNAL_PLATFORM_DEP_INCLUDES})
 include_directories(include/)
 

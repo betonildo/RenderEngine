@@ -1,3 +1,4 @@
+
 #ifndef SCENE_H
 #define SCENE_H
 
@@ -7,6 +8,7 @@
 #include "Application.h"
 #include "Camera.h"
 #include "Transform.h"
+
 
 class Application;
 class SceneObject;
@@ -28,7 +30,7 @@ private:
     std::vector<SceneObject*> m_children;
     std::vector<Camera*> m_cameras;
     void m_cleanUp();
-    void m_renderSceneObject(SceneObject* sceneObject, Matrix4 cumulative);
+    void m_renderSceneObject(SceneObject* sceneObject, glm::mat4 cumulative);
     void m_updateAllObjects();
     friend class Application;
 };

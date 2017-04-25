@@ -16,12 +16,12 @@ void SpriteMeshRenderer::end() {
     
 }
 
-void SpriteMeshRenderer::m_render(Camera* camera, Matrix4& concatenatedMatrix) {
+void SpriteMeshRenderer::m_render(Camera* camera, glm::mat4& concatenatedMatrix) {
     
-	Matrix4 M = concatenatedMatrix;
-    Matrix4 V = camera->getView();
-    Matrix4 P = camera->getProjection();
-    Matrix4 MVP = P * V * M;
+	glm::mat4 M = concatenatedMatrix;
+    glm::mat4 V = camera->getView();
+    glm::mat4 P = camera->getProjection();
+    glm::mat4 MVP = P * V * M;
 
 	// std::cout << "M" << std::endl;
 	// std::cout << M << std::endl;

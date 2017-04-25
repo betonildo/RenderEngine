@@ -29,34 +29,34 @@ public:
         r.x = 0;
         r.y = 0;
         cam->setViewportRect(r);
-        cam->transform.setPosition(Vector3(0, 0, 1));
-        cam->transform.setRotation(Quaternion(0, 0, 0, 1));
+        cam->transform.setPosition(glm::vec3(0, 0, 1));
+        cam->transform.setRotation(glm::quat(0, 0, 0, 1));
         addCamera(cam);
 
         one->addComponent<SpriteMeshRenderer>();
-        one->transform.setScale(Vector3(3,3,3));
+        one->transform.setScale(glm::vec3(3,3,3));
     }
 
     inline virtual void update() {
 
         if (Input::leftButtonPressed()) {
-            Quaternion p = one->transform.getRotation();
-            p.v = Vector3(0, 0, 1);
-            p.s += -1.0f;
+            glm::quat p = one->transform.getRotation();
+            p.z = 1;
+            p.w += -1.0f;
             one->transform.setRotation(p);
 
-            // Vector3 q = one->transform.getPosition();
+            // glm::vec3 q = one->transform.getPosition();
             // q.x -= 0.1f;
             // one->transform.setPosition(q);
         }
 
         if (Input::rightButtonPressed()) {
-            Quaternion p = one->transform.getRotation();
-            p.v = Vector3(0, 0, 1);
-            p.s += +1.0f;
+            glm::quat p = one->transform.getRotation();
+            p.z = 1;
+            p.w += +1.0f;
             one->transform.setRotation(p);
 
-            // Vector3 q = one->transform.getPosition();
+            // glm::vec3 q = one->transform.getPosition();
             // q.x += 0.1f;
             // one->transform.setPosition(q);
         }

@@ -1,13 +1,7 @@
+#include "renderer_local_includes.h"
+
 #ifndef TRANSFORM_H
 #define TRANSFORM_H
-
-#include "Vector3.h"
-#include "Quaternion.h"
-#include "Matrix4.h"
-
-struct Vector3;
-class Quaternion;
-class Matrix4;
 
 //TODO: Create the extract position, scale and rotation from model matrix to avoid storing it on this class
 
@@ -17,27 +11,27 @@ public:
 
     Transform();
 
-    void setPosition(const Vector3& p);
-    const Vector3& getPosition();
+    void setPosition(const glm::vec3& p);
+    const glm::vec3& getPosition();
 
-    void setScale(const Vector3& s);
-    const Vector3& getScale();
+    void setScale(const glm::vec3& s);
+    const glm::vec3& getScale();
 
-    void setRotation(const Quaternion& r);
-    const Quaternion& getRotation();
+    void setRotation(const glm::quat& r);
+    const glm::quat& getRotation();
     
-    Vector3 getFront();
+    glm::vec3 getFront();
 
-    Matrix4& getModelMatrix();
+    glm::mat4& getModelMatrix();
     
     inline bool isDirty() { return m_dirty; }
 
 private:
     bool m_dirty;
-    Matrix4 m_modelMatrix;
-    Vector3 m_position;
-    Vector3 m_scale;
-    Quaternion m_rotation;
+    glm::mat4 m_modelMatrix;
+    glm::vec3 m_position;
+    glm::vec3 m_scale;
+    glm::quat m_rotation;
 
 };
 
