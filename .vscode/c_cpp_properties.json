@@ -8,7 +8,11 @@
             ],
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
+                "databaseFilename": "",
+                "path": [
+                    "/usr/include",
+                    "/usr/local/include"
+                ]
             }
         },
         {
@@ -17,11 +21,19 @@
                 "/usr/include",
                 "/usr/local/include",
                 "include/",
-                "external/Ubuntu14_x86_64/include/"
+                "external/Ubuntu14_x86_64/include/",
+                "external/SOIL/"
+
             ],
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
+                "databaseFilename": "",
+                "path": [
+                    "/usr/include",
+                    "/usr/local/include",
+                    "include/",
+                    "external/Ubuntu14_x86_64/include/"
+                ]
             }
         },
         {
@@ -30,11 +42,18 @@
                 "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/*",
                 "include/*",
                 "external/glm/",
+                "external/SOIL/",
                 "C:/Portables/mingw64/x86_64-w64-mingw32/include/*"
             ],
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
+                "databaseFilename": "",
+                "path": [
+                    "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/*",
+                    "include/*",
+                    "external/glm/",
+                    "C:/Portables/mingw64/x86_64-w64-mingw32/include/*"
+                ]
             }
         }
     ]

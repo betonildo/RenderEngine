@@ -12,9 +12,6 @@ void WindowManager::setPosition(int x, int y) {
 bool WindowManager::Create(const char* title) {
     
     SDL_Init(SDL_INIT_VIDEO);   // Initialize SDL2
-    if (!IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG)) {
-        printf("Image Loading System is not initialized\n");
-    }
 
     // defaults width and height
     m_width = 640;

@@ -46,7 +46,7 @@ void Shader::setMatrix4(unsigned int uniform, const glm::mat4& m) {
 }
 
 void Shader::setTexture(unsigned int uniform, const Texture& t) {
-    glUniform1i(uniform, t.use());
+    glUniform1i(uniform, 0);  
 }
 
 unsigned int Shader::getUniformLocation(const char* uniform) {

@@ -5,6 +5,7 @@ endif()
 
 add_definitions(
 	-DGLEW_STATIC
+	-DSOIL_STATIC
 	-D_CRT_SECURE_NO_WARNINGS
 )
 
@@ -32,3 +33,18 @@ target_link_libraries(GLEW_200
 	${OPENGL_LIBRARY}
 	${EXTRA_LIBS}
 )
+
+#SOIL
+include_directories(SOIL/)
+
+set(SOIL_SOURCES
+	SOIL/image_DXT.c
+	SOIL/image_helper.c
+	SOIL/SOIL.c
+	SOIL/stb_image_aug.c)
+
+add_library(SOIL STATIC
+	${SOIL_SOURCES}
+	SOIL/)
+
+target_link_libraries(SOIL)

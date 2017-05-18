@@ -14,10 +14,15 @@ Texture::~Texture() {
 }
 
 void Texture::load(const char* relativePath) {
-    printf("Image SOurce: %s\n", relativePath);
-    SDL_Surface* Surface = IMG_Load(relativePath);
     
-    if (Surface == NULL) {
+    /* load an image as a heightmap, forcing greyscale (so channels should be 1) */
+    int width, height, channels;
+    unsigned char *ht_map = SOIL_load_image
+	(
+		relativePath, &width, &height, &channels, SOIL_LOAD_L
+	);
+    
+    if (ht_map == NULL) {
         printf("Image: \"%s\" not loaded\n", relativePath);
         return;
     }
@@ -26,11 +31,11 @@ void Texture::load(const char* relativePath) {
     
     int Mode = GL_RGB;
     
-    if(Surface && Surface->format->BytesPerPixel == 4)
+    if(channels == 4)
         Mode = GL_RGBA;
     
-    glTexImage2D(GL_TEXTURE_2D, 0, Mode, Surface->w, Surface->h, 0, Mode, GL_UNSIGNED_BYTE, Surface->pixels);
-    
+    glTexImage2D(GL_TEXTURE_2D, 0, Mode, width, height, 0, Mode, GL_UNSIGNED_BYTE, ht_map);
+    glGetError();
     // Nice trilinear filtering.
     // TODO: Parameterize texture parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -39,10 +44,12 @@ void Texture::load(const char* relativePath) {
     // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     // glGenerateMipmap(GL_TEXTURE_2D);
 
-    printf("Image Width: %d\n", Surface->w);
-    printf("Image height: %d\n", Surface->h);
+    printf("Image Width: %d\n", width);
+    printf("Image height: %d\n", height);
 
-    SDL_FreeSurface(Surface);
+	
+    /* done with the heightmap, free up the RAM */
+    SOIL_free_image_data( ht_map );
 }
 
 void Texture::setTextureIndex(unsigned int textureIndex) {

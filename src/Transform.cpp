@@ -42,12 +42,12 @@ glm::vec3 Transform::getFront() {
 glm::mat4& Transform::getModelMatrix() {
     if (m_dirty) {
         m_dirty = false;
-        glm::vec3 ra = ToRadians(glm::eulerAngleXYZ(m_rotation));
+        m_modelMatrix = glm::mat4(1);
         m_modelMatrix = glm::translate(m_modelMatrix, m_position);
-        m_modelMatrix = glm::rotate(m_modelMatrix, m_rotation.w, ra);
+        m_modelMatrix = glm::rotate(m_modelMatrix, m_rotation.x, glm::vec3(1, 0, 0));
+        m_modelMatrix = glm::rotate(m_modelMatrix, m_rotation.y, glm::vec3(0, 1, 0));
+        m_modelMatrix = glm::rotate(m_modelMatrix, m_rotation.z, glm::vec3(0, 0, 1));
         m_modelMatrix = glm::scale(m_modelMatrix, m_scale);
-        
-        std::cout << glm::to_string(ra) << std::endl;
     }
 
     return m_modelMatrix;
