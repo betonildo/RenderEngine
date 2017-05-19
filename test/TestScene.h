@@ -20,7 +20,7 @@ public:
 
         one = new SceneObject();
         addChild(one);
-        cam = new Camera(Camera::ProjectionType::Orthographic);
+        cam = new Camera(Camera::ProjectionType::Perspective);
         cam->setNearPlane(0.01f);
         cam->setFarPlane(1000.0f);
         
@@ -29,12 +29,12 @@ public:
         r.x = 0;
         r.y = 0;
         cam->setViewportRect(r);
-        cam->transform.setPosition(glm::vec3(0, 0, 1));
+        cam->transform.setPosition(glm::vec3(0, 0, 500));
         cam->transform.setRotation(glm::quat(0, 0, 0, 1));
         addCamera(cam);
 
         one->addComponent<SpriteMeshRenderer>();
-        one->transform.setScale(glm::vec3(3,3,3));
+        one->transform.setScale(glm::vec3(64,64,1));
     }
 
     inline virtual void update() {
@@ -42,7 +42,7 @@ public:
         if (Input::leftButtonPressed()) {
             glm::quat p = one->transform.getRotation();
             //p.z = 1;
-            p.z += -1;
+            p.y += -0.1;
             one->transform.setRotation(p);
 
             // glm::vec3 q = one->transform.getPosition();
@@ -53,7 +53,7 @@ public:
         if (Input::rightButtonPressed()) {
             glm::quat p = one->transform.getRotation();
             //p.z = 1;
-            p.z += 1;
+            p.y += 0.1;
             one->transform.setRotation(p);
 
             // glm::vec3 q = one->transform.getPosition();

@@ -5,11 +5,12 @@ Camera::Camera(Camera::ProjectionType type) {
     m_near = 0.01f;
     m_far = 1000.0f;
     m_isDirty = true;
+    m_fov = ToRadians(45);
 }
 
 const glm::mat4& Camera::getProjection() {
     // only setting viewport or near or far planes can dirty projection calculation
-    if (m_isDirty) {
+    if (m_isDirty && m_projType == ProjectionType::Orthographic) {
         // only Orthographic projection yet
         m_projection = glm::ortho (
             (float)(-m_rect.width/2.0 + m_rect.x),
@@ -20,6 +21,11 @@ const glm::mat4& Camera::getProjection() {
             m_far
         );
     }
+    else if (m_isDirty && m_projType == ProjectionType::Perspective) {
+        // only Orthographic projection yet
+        m_projection = glm::perspective(m_fov, m_rect.width / m_rect.height, m_near, m_far);
+    }
+
 
     return m_projection;
 }
@@ -54,4 +60,8 @@ void Camera::setNearPlane(float nearPlane) {
 void Camera::setFarPlane(float farPlane) {
     m_isDirty = true;
     m_far = farPlane;
+}
+
+void Camera::setFOV(float fov) {
+    m_fov = fov;
 }

@@ -58,4 +58,5 @@
 
 #include <glm/gtx/string_cast.hpp>
 
+#include "GLerror.h"
 #endif /*RENDERER_LOCAL_INCLUDES_H*/

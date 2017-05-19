@@ -22,18 +22,12 @@ void SpriteMeshRenderer::m_render(Camera* camera, glm::mat4& concatenatedMatrix)
     glm::mat4 V = camera->getView();
     glm::mat4 P = camera->getProjection();
     glm::mat4 MVP = P * V * M;
+	
 
-	// std::cout << "M" << std::endl;
-	// std::cout << M << std::endl;
-	// std::cout << "V" << std::endl;
-	// std::cout << V << std::endl;
-	// std::cout << "P" << std::endl;
-	// std::cout << P << std::endl;
-	// std::cout << "MVP" << std::endl;
-	// std::cout << MVP << std::endl;
-	
-    m_sprite.m_material.use();
-	
+	// check_gl_error();
+
+    m_sprite.m_material.m_shader.use();
+
 	unsigned int MVPlocation = m_sprite.m_material.m_shader.getUniformLocation("MVP");
     m_sprite.m_material.m_shader.setMatrix4(MVPlocation, MVP);
 
@@ -42,6 +36,11 @@ void SpriteMeshRenderer::m_render(Camera* camera, glm::mat4& concatenatedMatrix)
 	unsigned int normalLocation = m_sprite.m_material.m_shader.getAttributeLocation("normal");
 	unsigned int uvLocation = m_sprite.m_material.m_shader.getAttributeLocation("uv");
 
+	
+	Texture t = m_sprite.m_material.getTexture("spriteTexture");
+	int unid = m_sprite.m_material.m_shader.getUniformLocation("spriteTexture");
+	m_sprite.m_material.m_shader.setTexture(unid, t);
+	
 	// 1rst attribute buffer : vertices
 	glEnableVertexAttribArray(positionLocation);
 	glBindBuffer(GL_ARRAY_BUFFER, m_sprite.m_vertexVBO);
@@ -81,7 +80,6 @@ void SpriteMeshRenderer::m_render(Camera* camera, glm::mat4& concatenatedMatrix)
 //  glPointSize(5);  
 	// Index buffer
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_sprite.m_elementVBO);
-
 	// Draw the triangles !
 	glDrawElements(
 		GL_TRIANGLES,        // mode

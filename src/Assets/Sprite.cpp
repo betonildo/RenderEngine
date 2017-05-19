@@ -41,17 +41,17 @@ void Sprite::load(const char* relativePath) {
 void Sprite::m_uploadToGPU() {
     // Load it into a VBO
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexVBO);
-    glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(glm::vec3), &m_vertices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(glm::vec3), m_vertices.data(), GL_STATIC_DRAW);
 
     // Load it into a VBO
     glBindBuffer(GL_ARRAY_BUFFER, m_normalVBO);
-    glBufferData(GL_ARRAY_BUFFER, m_normals.size() * sizeof(glm::vec3), &m_normals[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, m_normals.size() * sizeof(glm::vec3), m_normals.data(), GL_STATIC_DRAW);
 
         // Load it into a VBO
     glBindBuffer(GL_ARRAY_BUFFER, m_uvVBO);
-    glBufferData(GL_ARRAY_BUFFER, m_uvs.size() * sizeof(glm::vec2), &m_uvs[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, m_uvs.size() * sizeof(glm::vec2), m_uvs.data(), GL_STATIC_DRAW);
 
     // Generate a buffer for the indices as well
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_elementVBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indexes.size() * sizeof(unsigned short), &m_indexes[0], GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indexes.size() * sizeof(unsigned short), m_indexes.data(), GL_STATIC_DRAW);
 }

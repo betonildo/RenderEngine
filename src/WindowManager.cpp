@@ -11,7 +11,7 @@ void WindowManager::setPosition(int x, int y) {
 
 bool WindowManager::Create(const char* title) {
     
-    SDL_Init(SDL_INIT_VIDEO);   // Initialize SDL2
+    SDL_Init(SDL_INIT_EVERYTHING);   // Initialize SDL2
 
     // defaults width and height
     m_width = 640;
@@ -139,9 +139,7 @@ void WindowManager::m_HandleEvents() {
 
 void WindowManager::m_callRenderers() {
     glClearColor(1.0, 1.0, 1.0, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT);    
-	glCullFace(GL_BACK);
-
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void WindowManager::m_cleanUp() {

@@ -31,6 +31,8 @@ public:
     void setVector4(const char* uniform, glm::vec4 v);
     void setMatrix4(const char* uniform, glm::mat4 m);
 
+    Texture& getTexture(const char* uniform);
+
     Shader m_shader;
     
 private:

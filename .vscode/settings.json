@@ -51,6 +51,7 @@
         "algorithm": "cpp",
         "map": "cpp",
         "queue": "cpp",
-        "xtree": "cpp"
+        "xtree": "cpp",
+        "*.ipp": "cpp"
     }
 }

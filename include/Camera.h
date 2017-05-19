@@ -19,13 +19,14 @@ public:
     const Rect& getViewportRect();
     void setNearPlane(float nearPlane);
     void setFarPlane(float farPlane);
-    
+    void setFOV(float fov);
+
 private:
     bool m_isDirty;
     glm::mat4 m_projection;
     glm::mat4 m_view;
     Rect m_rect;
-    float m_near, m_far;
+    float m_near, m_far, m_fov;
     ProjectionType m_projType;
 };
 

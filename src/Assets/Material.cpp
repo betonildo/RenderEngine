@@ -2,11 +2,6 @@
 
 void Material::load(const char* relativePath) {
     // read line by line with a TYPE KEY=VALUE
-    /*
-    glm::mat4 MVP={{}}
-    Texture MainTexture = "<path/to/image>"
-    glm::vec3 color = {1, 0.5, 0.9, 1}
-    */
     m_relativePath = relativePath;
 
     std::string matSource = FileUtils::readAllText(relativePath);
@@ -28,6 +23,7 @@ void Material::load(const char* relativePath) {
 }
 
 void Material::use() {
+
     m_shader.use();
 
     //TODO : maybe create an asset abstraction to get value and TYPE
@@ -56,7 +52,7 @@ void Material::use() {
 }
 
 void Material::setTexture(const char* uniform, Texture t) {
-    unsigned int uniformLocation = m_shader.getUniformLocation(uniform);    
+    unsigned int uniformLocation = m_shader.getUniformLocation(uniform);
     m_textures[uniformLocation] = t;
 }
 
@@ -78,6 +74,11 @@ void Material::setVector4(const char* uniform, glm::vec4 v) {
 void Material::setMatrix4(const char* uniform, glm::mat4 m) {
     unsigned int uniformLocation = m_shader.getUniformLocation(uniform);
     m_matrices4[uniformLocation] = m;
+}
+
+Texture& Material::getTexture(const char* uniform) {
+    unsigned int uniformLocation = m_shader.getUniformLocation(uniform);
+    return m_textures[uniformLocation];
 }
 
 
