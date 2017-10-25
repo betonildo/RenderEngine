@@ -11,9 +11,15 @@
                 "databaseFilename": "",
                 "path": [
                     "/usr/include",
-                    "/usr/local/include"
+                    "/usr/local/include",
+                    "${workspaceRoot}"
                 ]
-            }
+            },
+            "intelliSenseMode": "clang-x64",
+            "macFrameworkPath": [
+                "/System/Library/Frameworks",
+                "/Library/Frameworks"
+            ]
         },
         {
             "name": "Linux",
@@ -23,7 +29,6 @@
                 "include/",
                 "external/Ubuntu14_x86_64/include/",
                 "external/SOIL/"
-
             ],
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
@@ -32,9 +37,11 @@
                     "/usr/include",
                     "/usr/local/include",
                     "include/",
-                    "external/Ubuntu14_x86_64/include/"
+                    "external/Ubuntu14_x86_64/include/",
+                    "${workspaceRoot}"
                 ]
-            }
+            },
+            "intelliSenseMode": "clang-x64"
         },
         {
             "name": "Win32",
@@ -52,9 +59,12 @@
                     "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/*",
                     "include/*",
                     "external/glm/",
-                    "C:/Portables/mingw64/x86_64-w64-mingw32/include/*"
+                    "C:/Portables/mingw64/x86_64-w64-mingw32/include/*",
+                    "${workspaceRoot}"
                 ]
-            }
+            },
+            "intelliSenseMode": "msvc-x64"
         }
-    ]
+    ],
+    "version": 3
 }
