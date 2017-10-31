@@ -12,7 +12,7 @@ file(GLOB RenderEngine_SOURCES
 )
 
 # CREATE STATIC LIBRARY (TRY USING SHARED LIBRARY FOR TESTING)
-add_library(RenderEngine STATIC ${RenderEngine_SOURCES})
+add_library(RenderEngine ${RenderEngine_SOURCES})
 
 # ALL DEPENDENCIES
 include_directories(${PROJECT_SOURCE_DIR}/include)
@@ -22,8 +22,22 @@ include_directories(${assimp_SOURCE_DIR}/code)
 include_directories(${SOIL_SOURCE_DIR}/src)
 include_directories(${glm_SOURCE_DIR}/src)
 
+# SETUP EXPORT DLL FOR WINDOWS
+target_compile_definitions(RenderEngine PRIVATE ENGINE_EXPORTING=1)
+
 # LINK LIBRARIES
-target_link_libraries(RenderEngine SDL2 SOIL assimp GLEW glm)
+set(SDL2_LIBRARIES 
+    vcruntimed
+    ucrtd
+    SDL2-static
+    SDL2main
+    winmm
+    imm32
+    version
+    gdi32
+)
+
+target_link_libraries(RenderEngine ${SDL2_LIBRARIES} SOIL assimp GLEW glm )
 
 # GET SOURCE LOCATION OF LIBRARIES
 MESSAGE( STATUS "${PROJECT_SOURCE_DIR}" ${PROJECT_SOURCE_DIR})

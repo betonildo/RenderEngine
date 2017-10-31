@@ -15,8 +15,15 @@ endif()
 file (GLOB SOIL_SOURCES src/*.c)
 file (GLOB SOIL_HEADERS src/*.h)
 
-add_library (SOIL ${SOIL_SOURCES} ${SOIL_HEADERS})
-target_link_libraries (SOIL ${LIBRARIES})
+if (SOIL_STATIC)
+  add_library (SOIL STATIC ${SOIL_SOURCES} ${SOIL_HEADERS})
+  target_link_libraries (SOIL ${LIBRARIES})
+endif()
+
+if (SOIL_SHARED)
+  add_library (SOIL SHARED ${SOIL_SOURCES} ${SOIL_HEADERS})
+  target_link_libraries (SOIL ${LIBRARIES})
+endif()
 
 install (TARGETS SOIL
 	LIBRARY DESTINATION lib

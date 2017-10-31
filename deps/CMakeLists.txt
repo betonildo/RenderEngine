@@ -2,7 +2,27 @@ cmake_minimum_required(VERSION 3.0)
 
 project(All_Deps)
 
+# Dependencies static
+# SDL2
+SET(SDL_SHARED OFF CACHE BOOL "Disabling SDL2 shared" FORCE)
+SET(SDL_STATIC ON CACHE BOOL "Enabling SDL2 static" FORCE)
+
+# SOIL
+SET(SOIL_SHARED OFF CACHE BOOL "Disabling SOIL shared" FORCE)
+SET(SOIL_STATIC ON CACHE BOOL "Enabling SOIL static" FORCE)
+
+# GLEW
+SET(GLEW_SHARED OFF CACHE BOOL "Disabling GLEW shared" FORCE)
+SET(GLEW_STATIC ON CACHE BOOL "Enabling GLEW static" FORCE)
+
+
+# Needed definitions
+SET(ASSIMP_BUILD_X3D_IMPORTER OFF CACHE BOOL "Dont build X3D importer. It has problems on windows" FORCE)
+SET(BUILD_STATIC_LIB ON CACHE BOOL "Build static library" FORCE)
+SET(VC10_STDINT_FIX ON CACHE BOOL "Disabling VC10_STDINT_FIX" FORCE)
+SET(ENABLE_BOOST_WORKAROUND ON CACHE BOOL "Disabling Boost Dependency" FORCE)
 SET(ASSIMP_BUILD_TESTS OFF CACHE BOOL "Disabling Build Tests for Assimp (Folder excluded to reduce repository space)" FORCE)
+
 
 add_subdirectory(SDL2-2.0.7)
 add_subdirectory(SOIL)

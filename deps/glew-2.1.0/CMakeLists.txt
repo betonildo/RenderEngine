@@ -5,9 +5,9 @@ endif()
 cmake_minimum_required(VERSION 3.0)
 project(GLEW)
 
-add_definitions(
-	-DGLEW_STATIC
-)
+if (GLEW_STATIC)
+	add_definitions(-DGLEW_STATIC)
+endif()
 
 ### GLEW ###
 
@@ -21,10 +21,15 @@ set(GLEW_HEADERS
 
 include_directories(${PROJECT_SOURCE_DIR}/include/)
 
-add_library(GLEW STATIC
-	${GLEW_SOURCE}
-	${GLEW_INCLUDE}
-)
+if (GLEW_STATIC)
+	add_library(GLEW STATIC ${GLEW_SOURCE} ${GLEW_INCLUDE})
+endif()
+
+if (GLEW_SHARED)
+	add_library(GLEW SHARED ${GLEW_SOURCE} ${GLEW_INCLUDE})
+endif()
+
+
 
 target_link_libraries(GLEW
 	${OPENGL_LIBRARY}

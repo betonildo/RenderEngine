@@ -4,18 +4,20 @@
             "name": "Mac",
             "includePath": [
                 "/usr/include",
-                "/usr/local/include"
+                "/usr/local/include",
+                "${workspaceRoot}"
             ],
+            "defines": [],
+            "intelliSenseMode": "clang-x64",
             "browse": {
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": "",
                 "path": [
                     "/usr/include",
                     "/usr/local/include",
                     "${workspaceRoot}"
-                ]
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
             },
-            "intelliSenseMode": "clang-x64",
             "macFrameworkPath": [
                 "/System/Library/Frameworks",
                 "/Library/Frameworks"
@@ -26,44 +28,52 @@
             "includePath": [
                 "/usr/include",
                 "/usr/local/include",
-                "include/",
-                "external/Ubuntu14_x86_64/include/",
-                "external/SOIL/"
+                "${workspaceRoot}"
             ],
+            "defines": [],
+            "intelliSenseMode": "clang-x64",
             "browse": {
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": "",
                 "path": [
                     "/usr/include",
                     "/usr/local/include",
-                    "include/",
-                    "external/Ubuntu14_x86_64/include/",
                     "${workspaceRoot}"
-                ]
-            },
-            "intelliSenseMode": "clang-x64"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            }
         },
         {
             "name": "Win32",
             "includePath": [
-                "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/*",
-                "include/*",
-                "external/glm/",
-                "external/SOIL/",
-                "C:/Portables/mingw64/x86_64-w64-mingw32/include/*"
+                "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Tools/MSVC/14.11.25503/include/*",
+                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/um",
+                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/ucrt",
+                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/shared",
+                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/winrt",
+                "${workspaceRoot}",
+                "${workspaceRoot}/engine/include",
+                "${workspaceRoot}/deps/SDL2-2.0.7/include",
+                "${workspaceRoot}/deps/glew-2.1.0/include",
+                "${workspaceRoot}/deps/assimp-4.0.1/code",
+                "${workspaceRoot}/deps/SOIL/src"
             ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE"
+            ],
+            "intelliSenseMode": "msvc-x64",
             "browse": {
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": "",
                 "path": [
-                    "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/*",
-                    "include/*",
-                    "external/glm/",
-                    "C:/Portables/mingw64/x86_64-w64-mingw32/include/*",
+                    "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Tools/MSVC/14.11.25503/include/*",
+                    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/um",
+                    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/ucrt",
+                    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/shared",
+                    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/winrt",
                     "${workspaceRoot}"
-                ]
-            },
-            "intelliSenseMode": "msvc-x64"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            }
         }
     ],
     "version": 3
