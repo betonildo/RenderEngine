@@ -3,9 +3,11 @@
 #include "SDL_opengl.h"
 #include "Engine.h"
 #include <iostream>
+#include <assimp/Importer.hpp>
 
 void Engine::start_monolitic()
 {
+    Assimp::Importer importer;
     bool sdl2WasInit = SDL_Init(SDL_INIT_EVERYTHING);
 
     SDL_Init(SDL_INIT_VIDEO); // Initialize SDL2

@@ -12,13 +12,14 @@ file(GLOB RenderEngine_SOURCES
 )
 
 # CREATE STATIC LIBRARY (TRY USING SHARED LIBRARY FOR TESTING)
-add_library(RenderEngine ${RenderEngine_SOURCES})
+add_library(RenderEngine SHARED ${RenderEngine_SOURCES})
 
 # ALL DEPENDENCIES
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${SDL2_SOURCE_DIR}/include)
 include_directories(${GLEW_SOURCE_DIR}/include)
-include_directories(${assimp_SOURCE_DIR}/code)
+include_directories(${Assimp_SOURCE_DIR}/include)
+include_directories(${Assimp_BINARY_DIR}/include)
 include_directories(${SOIL_SOURCE_DIR}/src)
 include_directories(${glm_SOURCE_DIR}/src)
 
@@ -37,12 +38,18 @@ set(SDL2_LIBRARIES
     gdi32
 )
 
-target_link_libraries(RenderEngine ${SDL2_LIBRARIES} SOIL assimp GLEW glm )
+set(ASSIMP_LIBRARIES
+    assimp
+)
+
+target_link_libraries(RenderEngine ${SDL2_LIBRARIES} SOIL ${ASSIMP_LIBRARIES} GLEW glm )
 
 # GET SOURCE LOCATION OF LIBRARIES
-MESSAGE( STATUS "${PROJECT_SOURCE_DIR}" ${PROJECT_SOURCE_DIR})
-MESSAGE( STATUS "${SDL2_SOURCE_DIR}"    ${SDL2_SOURCE_DIR})
-MESSAGE( STATUS "${GLEW_SOURCE_DIR}"    ${GLEW_SOURCE_DIR})
-MESSAGE( STATUS "${assimp_SOURCE_DIR}"  ${assimp_SOURCE_DIR})
-MESSAGE( STATUS "${SOIL_SOURCE_DIR}"    ${SOIL_SOURCE_DIR})
-MESSAGE( STATUS "${glm_SOURCE_DIR}"    ${glm_SOURCE_DIR})
+MESSAGE( STATUS "PROJECT_SOURCE_DIR   "  ${PROJECT_SOURCE_DIR})
+MESSAGE( STATUS "SDL2_SOURCE_DIR      "  ${SDL2_SOURCE_DIR})
+MESSAGE( STATUS "GLEW_SOURCE_DIR      "  ${GLEW_SOURCE_DIR})
+MESSAGE( STATUS "Assimp_SOURCE_DIR    "  ${Assimp_SOURCE_DIR})
+MESSAGE( STATUS "Assimp_BINARY_DIR    "  ${Assimp_BINARY_DIR})
+MESSAGE( STATUS "SOIL_SOURCE_DIR      "  ${SOIL_SOURCE_DIR})
+MESSAGE( STATUS "glm_SOURCE_DIR       "  ${glm_SOURCE_DIR})
+MESSAGE( STATUS "ASSIMP_STATIC_LIB    "  ${ASSIMP_STATIC_LIB})

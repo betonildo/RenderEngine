@@ -2,6 +2,7 @@ if(MSVC AND NOT "${MSVC_VERSION}" LESS 1400)
 	add_definitions( "/MP" )
 endif()
 
+
 cmake_minimum_required(VERSION 3.0)
 project(GLEW)
 

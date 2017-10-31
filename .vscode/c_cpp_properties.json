@@ -54,7 +54,7 @@
                 "${workspaceRoot}/engine/include",
                 "${workspaceRoot}/deps/SDL2-2.0.7/include",
                 "${workspaceRoot}/deps/glew-2.1.0/include",
-                "${workspaceRoot}/deps/assimp-4.0.1/code",
+                "${workspaceRoot}/deps/assimp-4.0.1/include",
                 "${workspaceRoot}/deps/SOIL/src"
             ],
             "defines": [
