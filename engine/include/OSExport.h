@@ -13,22 +13,6 @@
     #endif
 
     #include <Windows.h>
-
-    typedef void(*pConMsg)(char*, ...);
-
-    pConMsg ConMsg;
-
-    void newThread(){
-        ConMsg = (pConMsg)GetProcAddress(GetModuleHandle("tier0.dll"), "Msg");
-        ConMsg("Hello world! I'm at: %.8X", ConMsg);
-    }
-
-    BOOL WINAPI DllMain(HINSTANCE instHandle, DWORD reason, LPVOID reserved) {
-        if(reason == DLL_PROCESS_ATTACH){
-            CreateThread(0, 0,(LPTHREAD_START_ROUTINE)newThread, 0, 0, 0);
-        }
-        return true;
-    }
 #else
     #define ENGINE_API
 #endif

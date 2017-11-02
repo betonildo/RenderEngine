@@ -3,7 +3,12 @@
 
 int main( int argc, char **argv ) {
 
-    Engine engine;
-    engine.start_monolitic();
+    Vector3 v = {1,1,1};
+
+    Application app;
+    app.start();
+
+
+
     return 0;
 }
