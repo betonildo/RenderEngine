@@ -15,17 +15,18 @@ public:
     void setScene(Scene* scene);
 
 private:
-    DisplayDevice* mDevice;
-    Scene* mScene;
-
     enum class OSType {
         Windows, Android
     };
-
+    
+    bool mSceneHasChanged;
+    DisplayDevice* mDevice;
+    Scene* mScene;
     OSType mOSType;
 
     void identifyOS();
     void initializeDevice();
+    void changeScene();
 };
 
 #endif /*APPLICATION_H*/

@@ -4,8 +4,11 @@
 
 #include "OSEXport.h"
 #include <vector>
+#include <memory>
 
 class Actor;
+class Camera;
+class Renderer;
 
 class ENGINE_API Scene {
 
@@ -14,12 +17,18 @@ public:
     ~Scene();
     virtual void start() = 0;
     virtual void update() = 0;
-    void add(Actor* actor);
-    
-private:
-    void render();
-    std::vector<Actor*> mActors;
+    void add(std::shared_ptr<Actor> actor);
 
+private:
+
+    bool mCachedRenderersValid;
+    bool mCachedCamerasValid;
+
+    std::vector< std::shared_ptr<Actor> > mActors;
+    std::vector< Renderer* > mCachedRenderers;
+    std::vector< Camera* > mCachedCameras;
+
+    void render();
 };
 
 #endif /*SCENE_H*/

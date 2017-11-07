@@ -5,7 +5,7 @@
 #include "scene/EmptyScene.h"
 
 Application::Application() {
-
+    mSceneHasChanged = true;
 }
 
 Application::~Application() {
@@ -14,12 +14,15 @@ Application::~Application() {
 }
 
 void Application::start() {
-    setScene(new EmptyScene());
     identifyOS();
     initializeDevice();
+
+    if (mScene == nullptr)
+        setScene(new EmptyScene());
     mDevice->start();
 
     while(mDevice->isAvailable()) {
+        if (mSceneHasChanged) changeScene();
         mScene->update();
         mDevice->swapBuffers();
         mDevice->pollEvents();
@@ -44,7 +47,12 @@ void Application::initializeDevice() {
     mDevice->setHeight(480);
 }
 
+void Application::changeScene() {
+    mScene->start();
+    mSceneHasChanged = false;
+}
+
 void Application::setScene(Scene* scene) {
     mScene = scene;
-    mScene->start();
+    mSceneHasChanged = true;
 }
