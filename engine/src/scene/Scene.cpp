@@ -9,19 +9,19 @@ Scene::Scene() {
 }
 
 Scene::~Scene() {
-
+    
 }
 
-void Scene::add(std::shared_ptr<Actor> actor) {
+void Scene::add(Actor* actor) {
     mActors.push_back(actor);
 
-    Renderer* renderer = actor->getComponentReference<Renderer>();
+    Renderer* renderer = actor->getComponent<Renderer>();
     if (renderer != nullptr && renderer->getName() == COMPONENT_NAME(Renderer)) {
         mCachedRenderers.push_back(renderer);
         mCachedRenderersValid = false;
     }
 
-    Camera* camera = actor->getComponentReference<Camera>();
+    Camera* camera = actor->getComponent<Camera>();
     if (camera != nullptr && camera->getName() == COMPONENT_NAME(Camera)) {
         mCachedCameras.push_back(camera);
         mCachedCamerasValid = false;

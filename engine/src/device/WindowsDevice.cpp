@@ -56,6 +56,18 @@ void WindowsDevice::pollEvents() {
     }    
 }
 
+int WindowsDevice::getWidth() {
+    return mWidth;
+}
+
+int WindowsDevice::getHeight() {
+    return mHeight;
+}
+
+float WindowsDevice::getAspectRation() {
+    return (float)mWidth/(float)mHeight;
+}
+
 void WindowsDevice::initSDL2() {
     
     bool sdl2WasInit = SDL_Init(SDL_INIT_EVERYTHING);

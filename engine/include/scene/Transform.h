@@ -22,6 +22,10 @@ public:
     const Matrix4& getModelMatrix() const;
     const std::shared_ptr<Transform> getParent() const;
 
+    Vector3 getFront() const;
+    Vector3 getUp() const;
+    Vector3 getRight() const;
+
 private:
     std::shared_ptr<Transform> mParent = nullptr;
     Vector3 mLocalPosition;

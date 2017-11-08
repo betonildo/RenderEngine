@@ -17,14 +17,14 @@ public:
     ~Scene();
     virtual void start() = 0;
     virtual void update() = 0;
-    void add(std::shared_ptr<Actor> actor);
+    void add(Actor* actor);
 
 private:
 
     bool mCachedRenderersValid;
     bool mCachedCamerasValid;
 
-    std::vector< std::shared_ptr<Actor> > mActors;
+    std::vector< Actor* > mActors;
     std::vector< Renderer* > mCachedRenderers;
     std::vector< Camera* > mCachedCameras;
 

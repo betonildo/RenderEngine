@@ -9,7 +9,8 @@ public:
     void start() {
         std::cout << "My Scene Start!" << std::endl;
 
-        auto actor = std::make_shared<Actor>();
+        auto actor = new Actor();
+        
 
         actor->addComponent<Camera>();
         actor->addComponent<Renderer>();

@@ -20,17 +20,17 @@ void Actor::addComponent(Component* component) {
 }
 
 void Actor::removeComponent(Component* component) {
-    unsigned int componentIndex = 0;
-    while (componentIndex < mComponents.size()) {
-        if (mComponents[componentIndex] == component) break;
-        componentIndex++;
+    unsigned int componentIndexToRemove = 0;
+    while (componentIndexToRemove < mComponents.size()) {
+        if (mComponents[componentIndexToRemove] == component) break;
+        componentIndexToRemove++;
     }
 
-    if (componentIndex < mComponents.size())
-        mComponents.erase(mComponents.begin() + componentIndex);
+    if (componentIndexToRemove < mComponents.size())
+        mComponents.erase(mComponents.begin() + componentIndexToRemove);
 }
 
-Component* Actor::getComponentReferenceByName(const std::string& componentName) const {
+Component* Actor::getComponentByName(const std::string& componentName) const {
     for (auto component : mComponents)
         if (component->getName() == componentName) return component;
     return mNullComponent;

@@ -20,6 +20,9 @@ public:
     void swapBuffers();
     bool isAvailable();
     void pollEvents();
+    int getWidth();
+    int getHeight();
+    float getAspectRation();
 
 private:
     char* mTitle;
