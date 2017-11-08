@@ -30,9 +30,12 @@ void Actor::removeComponent(Component* component) {
         mComponents.erase(mComponents.begin() + componentIndexToRemove);
 }
 
-Component* Actor::getComponentByName(const std::string& componentName) const {
-    for (auto component : mComponents)
-        if (component->getName() == componentName) return component;
+Component* Actor::getComponentByName(const std::type_info& type_info) const {
+    for (auto component : mComponents) {
+        std::cout << component->getName() << std::endl;
+        std::cout << type_info.name() << std::endl;
+        if (strcmp(component->getName(), type_info.name()) == 0) return component;
+    }
     return mNullComponent;
 }
 

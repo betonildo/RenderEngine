@@ -8,6 +8,7 @@
 #include "components/Component.h"
 #include "components/Renderer.h"
 #include "components/Camera.h"
+#include "components/Light.h"
 #include "LinearMath.h"
 
 #endif /*ENGINE_H*/

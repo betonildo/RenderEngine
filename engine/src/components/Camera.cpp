@@ -1,6 +1,5 @@
 #include "components/Camera.h"
-
-Vector3 UP(0, 1, 0);
+#include "scene/Actor.h"
 
 Camera::Camera() {
     mProjectionMatrixCachedValid = false;
@@ -57,10 +56,10 @@ const Matrix4& Camera::getViewMatrix() const {
     // TODO: TRY TO CACHE THIS CALCULATION
     const Vector3 position = mActor->transform.getLocalPosition();
     const Vector3 target = position + mActor->transform.getFront();
-    return Math::lookAt(
+    mViewMatrix = Math::lookAt(
         position,
         position + target,
-        UP
+        Vector3(0, 1, 0)
     );
-    //return mViewMatrix;
+    return mViewMatrix;
 }

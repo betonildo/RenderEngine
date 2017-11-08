@@ -5,6 +5,7 @@
 
 class DisplayDevice;
 class Scene;
+class GraphicLibrary;
 
 class ENGINE_API Application {
 
@@ -13,6 +14,7 @@ public:
     ~Application();
     void start();
     void setScene(Scene* scene);
+
 
 private:
     enum class OSType {

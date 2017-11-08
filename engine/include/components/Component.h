@@ -9,9 +9,11 @@
     #define COMPONENT_NAME(COMPONENT_TYPE) #COMPONENT_TYPE
 #endif
 
-#define COMPONENT_OBJECT(COMPONENT_TYPE)                                                   \
-    inline const char* getName() { return COMPONENT_NAME(COMPONENT_TYPE); }         \
+#ifndef COMPONENT_OBJECT
+    #define COMPONENT_OBJECT(COMPONENT_TYPE)                                             \
+        inline virtual const char* getName() { return COMPONENT_NAME(COMPONENT_TYPE); }  \
 
+#endif
 
 class Actor;
 
@@ -19,8 +21,10 @@ class ENGINE_API Component {
 
 public:
     Component();
+
+    COMPONENT_OBJECT(Component)
+
     virtual void update(float dt);
-    inline virtual const char* getName() = 0;
     void bindActor(std::shared_ptr<Actor> actor);
 
 private:

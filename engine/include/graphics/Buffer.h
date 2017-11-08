@@ -3,6 +3,8 @@
 
 #include "OSExport.h"
 
+class GraphicLibrary;
+
 class ENGINE_API Buffer {
 
 public:
@@ -17,6 +19,7 @@ public:
     void unbind();
 
 private:
+    GraphicLibrary* gl;
     BufferType mBufferType;
     void* mData;
     unsigned int mDataLength;

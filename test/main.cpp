@@ -1,7 +1,6 @@
 #include <iostream>
 #include <Engine.h>
 #include <memory>
-
 class MyScene : public Scene {
 
 public:
@@ -14,7 +13,7 @@ public:
 
         actor->addComponent<Camera>();
         actor->addComponent<Renderer>();
-
+        actor->addComponent<Light>();
         add(actor);
     }
 

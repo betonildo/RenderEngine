@@ -16,18 +16,11 @@ public:
     virtual unsigned int generateElementBuffer() = 0;
     virtual unsigned int generaterMeshBuffer() = 0;
 
-    template <class GraphicLibraryType>
-    static void setInstance() {
-        mGlInstance = new GraphicLibraryType();
-    }
+    virtual void bindShaderProgram(unsigned int shaderProgramLocation) = 0;
+    virtual void unbindShaderProgram(unsigned int shaderProgramLocation) = 0;
 
-    static GraphicLibrary* getInstance() {
-        return mGlInstance;
-    }
-
-private:
-    static GraphicLibrary* mGlInstance;
-
+    virtual void bindBuffer(unsigned int bufferLocation) = 0;
+    virtual void unbindBuffer(unsigned int bufferLocation) = 0;
 };
 
 #endif /*GRAPHICLIBRARY_H*/

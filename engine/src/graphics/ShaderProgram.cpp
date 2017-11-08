@@ -1,8 +1,9 @@
 #include "graphics/ShaderProgram.h"
+#include "graphics/GraphicLibrarySingleton.h"
 #include "graphics/GraphicLibrary.h"
 
 ShaderProgram::ShaderProgram() {
-    gl = GraphicLibrary::getInstance();
+    gl = GraphicLibrarySingleton::getInstance();
 }
 
 void ShaderProgram::setUniform(unsigned int uniformLocation, Vector3 v) {

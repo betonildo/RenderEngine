@@ -1,4 +1,5 @@
 #include "assets/Material.h"
+#include "graphics/ShaderProgram.h"
 
 Material::Material() {
 

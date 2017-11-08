@@ -25,10 +25,28 @@ void Transform::setLocalScale(Vector3 localScale) {
     mLocalScale = localScale;
 }
 
-void Transform::setParent(std::shared_ptr<Transform> parent) {
+void Transform::setParent(Transform* parent) {
     // TODO: MAYBE RECALCULATE TRANSFORM OF CHILD
     mValidCalcCachedMatrix = false;
     mParent = parent;
+    if (mParent != nullptr)
+        mParent->addChild(this);
+}
+
+void Transform::addChild(Transform* child) {
+    if (child != nullptr) mChildren.push_back(child);
+}
+
+void Transform::removeChild(Transform* child) {
+    unsigned int childToRemoveIndex = -1;
+    while (childToRemoveIndex + 1 < mChildren.size()) {
+        childToRemoveIndex++;
+        if (mChildren[childToRemoveIndex] == child) break;
+    }
+
+    if (childToRemoveIndex >= 0) {
+        mChildren.erase(mChildren.begin() + childToRemoveIndex);
+    }
 }
 
 const Vector3& Transform::getLocalPosition() const {
@@ -56,8 +74,16 @@ const Matrix4& Transform::getModelMatrix() const {
     return mModelMatrix;
 }
 
-const std::shared_ptr<Transform> Transform::getParent() const {
+const Transform* const Transform::getParent() const {
     return mParent;
+}
+
+Transform* Transform::getChildren() {
+    return mChildren[0];
+}
+
+unsigned int Transform::getChildrenCount() {
+    return (unsigned int)mChildren.size();
 }
 
 Vector3 Transform::getFront() const {

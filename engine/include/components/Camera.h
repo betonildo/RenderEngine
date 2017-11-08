@@ -29,7 +29,7 @@ private:
     float mFarPlane;
     mutable Matrix4 mProjectionMatrix;
     mutable bool mProjectionMatrixCachedValid;
-    Matrix4 mViewMatrix;
+    mutable Matrix4 mViewMatrix;
     ProjectionType mProjectionType;
 
 };

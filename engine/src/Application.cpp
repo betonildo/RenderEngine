@@ -3,6 +3,8 @@
 #include "device/WindowsDevice.h"
 #include "scene/Scene.h"
 #include "scene/EmptyScene.h"
+#include "graphics/GraphicLibrarySingleton.h"
+#include "graphics/RayTracer.h"
 
 Application::Application() {
     mSceneHasChanged = true;
@@ -16,6 +18,8 @@ Application::~Application() {
 void Application::start() {
     identifyOS();
     initializeDevice();
+    // TODO: REORGANIZE THIS TO A METHOD AND TO SELECT PROPERLY THE GRAPHICS LIBRARY
+    GraphicLibrarySingleton::setInstance<RayTracer>();
 
     if (mScene == nullptr)
         setScene(new EmptyScene());
@@ -24,6 +28,7 @@ void Application::start() {
     while(mDevice->isAvailable()) {
         if (mSceneHasChanged) changeScene();
         mScene->update();
+        mScene->render();
         mDevice->swapBuffers();
         mDevice->pollEvents();
     }
