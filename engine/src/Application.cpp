@@ -16,10 +16,11 @@ Application::~Application() {
 }
 
 void Application::start() {
-    identifyOS();
-    initializeDevice();
     // TODO: REORGANIZE THIS TO A METHOD AND TO SELECT PROPERLY THE GRAPHICS LIBRARY
     GraphicLibrarySingleton::setInstance<RayTracer>();
+    
+    identifyOS();
+    initializeDevice();
 
     if (mScene == nullptr)
         setScene(new EmptyScene());

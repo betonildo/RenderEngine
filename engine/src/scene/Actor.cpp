@@ -1,9 +1,6 @@
 #include "scene/Actor.h"
 #include <iostream>
 #include "components/Component.h"
-#include "components/NullComponent.h"
-
-NullComponent* mNullComponent = new NullComponent;
 
 Actor::Actor() {
 
@@ -34,9 +31,10 @@ Component* Actor::getComponentByName(const std::type_info& type_info) const {
     for (auto component : mComponents) {
         std::cout << component->getName() << std::endl;
         std::cout << type_info.name() << std::endl;
-        if (strcmp(component->getName(), type_info.name()) == 0) return component;
+        if (strcmp(component->getName(), type_info.name()) == 0)
+            return component;
     }
-    return mNullComponent;
+    return nullptr;
 }
 
 const std::vector<Component*>& Actor::getComponents() const {

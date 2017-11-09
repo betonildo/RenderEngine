@@ -29,6 +29,7 @@ endif(UNIX)
 # ALL DEPENDENCIES
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${SDL2_SOURCE_DIR}/include)
+include_directories(${SDL2_BINARY_DIR}/include)
 include_directories(${GLEW_SOURCE_DIR}/include)
 include_directories(${Assimp_SOURCE_DIR}/include)
 include_directories(${Assimp_BINARY_DIR}/include)

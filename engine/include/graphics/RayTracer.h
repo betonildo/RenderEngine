@@ -18,6 +18,8 @@ public:
     void unbindShaderProgram(unsigned int shaderProgramLocation);
     void bindBuffer(unsigned int bufferLocation);
     void unbindBuffer(unsigned int bufferLocation);
+    void drawTriangles();
+    void processCommandList();
 };
 
 

@@ -12,7 +12,7 @@ public:
         
 
         actor->addComponent<Camera>();
-        actor->addComponent<Renderer>();
+        actor->addComponent<MeshRenderer>();
         actor->addComponent<Light>();
         add(actor);
     }

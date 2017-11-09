@@ -12,12 +12,9 @@ void Buffer::attachData(void* data, unsigned int length) {
     mDataLength = length;
 }
 
-void Buffer::setType(BufferType bufferType) {
-    mBufferType = bufferType;
-}
-
 void Buffer::bind() {
     gl->bindBuffer(mBufferLocation);
+    // TODO: SETUP VERTEX FORMAT IF BUFFER IS VERTEX BUFFER
 }
 
 void Buffer::unbind() {

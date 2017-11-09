@@ -26,7 +26,11 @@ public:
 
     template <typename ComponentType>
     ComponentType* getComponent() const {
-        return reinterpret_cast<ComponentType*>(getComponentByName(typeid(ComponentType))); 
+        for (auto component : mComponents) {
+            ComponentType* componentCast = dynamic_cast<ComponentType*>(component);
+            if (componentCast != nullptr) return componentCast;
+        }
+        return nullptr;
     }
 
     void removeComponent(Component* component);

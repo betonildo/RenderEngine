@@ -22,12 +22,21 @@ public:
     void setUniform(const std::string& name, Vector2 v);
     void setUniform(const std::string& name, Matrix4 m);
 
-    void setShaderProgram(ShaderProgram shaderProgram);
+    void setShaderProgram(ShaderProgram* shaderProgram);
+
+    void bind();
+    void unbind();
 
 private:
     std::map<unsigned int, Vector3> mUniformsVector3;
     std::map<unsigned int, Vector2> mUniformsVector2;
     std::map<unsigned int, Matrix4> mUniformsMatrix4;
+
+    ShaderProgram* mShaderProgram;
+
+    bool mMatrix4CacheValid;
+    bool mVector3CacheValid;
+    bool mVector2CacheValid;
 };
 
 #endif /*MATERIAL_H*/

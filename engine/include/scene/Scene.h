@@ -10,6 +10,7 @@ class Actor;
 class Camera;
 class Renderer;
 class Light;
+class GraphicLibrary;
 
 class ENGINE_API Scene {
 
@@ -31,7 +32,7 @@ private:
     std::vector< Camera* > mCachedCameras;
     std::vector< Light* > mCachedLights;
 
-    
+    GraphicLibrary* gl;
 };
 
 #endif /*SCENE_H*/

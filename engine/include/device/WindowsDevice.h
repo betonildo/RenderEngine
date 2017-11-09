@@ -4,7 +4,10 @@
 #include "OSExport.h"
 #include "device/DisplayDevice.h"
 
+class GraphicLibrary;
 struct SDL_Window;
+struct SDL_Texture;
+struct SDL_Renderer;
 
 class WindowsDevice : public DisplayDevice {
 
@@ -25,16 +28,17 @@ public:
     float getAspectRation();
 
 private:
-    char* mTitle;
-    
+	GraphicLibrary* gl;
+    char* mTitle;    
     SDL_Window* mWindow;
+	SDL_Renderer* mRenderer;
+	SDL_Texture* mTargetTexture;
 
     int mWidth;
     int mHeight;
     bool mNoQuit = false;
 
     void initSDL2();
-    void initGlew();
 };
 
 #endif /*WINDOWSDEVICE_H*/

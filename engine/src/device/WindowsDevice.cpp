@@ -1,13 +1,13 @@
-#include "GL/glew.h"
 #include "SDL.h"
-#include "SDL_opengl.h"
 #include "device/WindowsDevice.h"
+#include "graphics/GraphicLibrarySingleton.h"
+#include "graphics/GraphicLibrary.h"
 
 #include <iostream>
 #include <string.h>
 
 WindowsDevice::WindowsDevice() {
-
+	gl = GraphicLibrarySingleton::getInstance();
 }
 
 WindowsDevice::~WindowsDevice() {
@@ -21,7 +21,7 @@ WindowsDevice::~WindowsDevice() {
 
 void WindowsDevice::start() {
     initSDL2();
-    initGlew();
+	gl->init();
 }
 
 void WindowsDevice::setTitle(const char* title) {
@@ -38,6 +38,26 @@ void WindowsDevice::setHeight(int height) {
 
 void WindowsDevice::swapBuffers() {
     SDL_GL_SwapWindow(mWindow);
+
+	//Now render the texture target to our screen
+	SDL_UpdateTexture(
+		mTargetTexture,
+		nullptr,
+		gl->getBackBuffer(),
+		mWidth
+	);
+
+	SDL_RenderClear(mRenderer);
+	SDL_RenderCopyEx(
+		mRenderer, 
+		mTargetTexture, 
+		NULL, 
+		NULL, 
+		0, 
+		NULL, 
+		SDL_FLIP_VERTICAL
+	);
+	SDL_RenderPresent(mRenderer);
 }
 
 bool WindowsDevice::isAvailable() {
@@ -81,7 +101,7 @@ void WindowsDevice::initSDL2() {
         SDL_WINDOWPOS_UNDEFINED, // initial y position
         mWidth,                     // width, in pixels
         mHeight,                     // height, in pixels
-        SDL_WINDOW_OPENGL  | SDL_WINDOW_RESIZABLE     // flags - see below
+        SDL_WINDOW_BORDERLESS     // flags - see below
     );
     
     // Check that the window was successfully created
@@ -92,16 +112,24 @@ void WindowsDevice::initSDL2() {
         return;
     }
     
-    // Create an OpenGL context associated with the window.
-    SDL_GLContext glcontext = SDL_GL_CreateContext(mWindow);
+	// Create a renderer to render to texture on window
+	mRenderer = SDL_CreateRenderer(
+		mWindow, 
+		-1, 
+		SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE
+	);
+
+	// Make a target texture to render too
+	mTargetTexture = SDL_CreateTexture(
+		mRenderer, 
+		SDL_PIXELFORMAT_RGBA8888,
+		SDL_TEXTUREACCESS_TARGET, 
+		mWidth, 
+		mHeight
+	);
+
+	//Now render to the texture
+	//SDL_SetRenderTarget(mRenderer, mTargetTexture);
 
     mNoQuit = true;
-}
-
-void WindowsDevice::initGlew() {
-    glewExperimental = GL_TRUE;
-    GLenum glewInitResponse = glewInit();
-    if (glewInitResponse != GLEW_OK) {
-        std::cout << "Glew Error: " << glewGetErrorString(glewInitResponse) << std::endl;
-    }
 }
