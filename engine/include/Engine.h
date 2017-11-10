@@ -2,6 +2,9 @@
 #define ENGINE_H
 
 #include "Application.h"
+#include "assets/Mesh.h"
+#include "assets/Shader.h"
+#include "assets/Material.h"
 #include "scene/Scene.h"
 #include "scene/Actor.h"
 #include "scene/Transform.h"

@@ -10,8 +10,8 @@ class GraphicLibrary;
 class ENGINE_API ShaderProgram {
 
 public:
-
-    ShaderProgram();
+	ShaderProgram() = delete;
+    explicit ShaderProgram(unsigned int shaderProgramLocation);
 
     void setUniform(unsigned int uniformLocation, Vector3 v);
     void setUniform(unsigned int uniformLocation, Vector2 v);

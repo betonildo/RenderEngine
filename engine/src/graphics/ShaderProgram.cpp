@@ -2,8 +2,9 @@
 #include "graphics/GraphicLibrarySingleton.h"
 #include "graphics/GraphicLibrary.h"
 
-ShaderProgram::ShaderProgram() {
+ShaderProgram::ShaderProgram(unsigned int shaderProgramLocation) {
     gl = GraphicLibrarySingleton::getInstance();
+	mShaderProgramLocation = shaderProgramLocation;
 }
 
 void ShaderProgram::setUniform(unsigned int uniformLocation, Vector3 v) {

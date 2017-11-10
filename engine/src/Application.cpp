@@ -22,6 +22,8 @@ void Application::start() {
     identifyOS();
     initializeDevice();
 
+	GraphicLibrarySingleton::getInstance()->init();
+
     if (mScene == nullptr)
         setScene(new EmptyScene());
     mDevice->start();

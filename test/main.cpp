@@ -8,13 +8,30 @@ public:
     void start() {
         std::cout << "My Scene Start!" << std::endl;
 
-        auto actor = new Actor();
-        
+		auto cameraMan = std::make_unique<Actor>();
+		auto sphereHolder = std::make_unique<Actor>();
+		auto lightHolder = std::make_unique<Actor>();
 
-        actor->addComponent<Camera>();
-        actor->addComponent<MeshRenderer>();
-        actor->addComponent<Light>();
-        add(actor);
+		MeshRenderer* renderer = sphereHolder->addComponent<MeshRenderer>();
+        Camera* camera = cameraMan->addComponent<Camera>();        
+		Light* light = lightHolder->addComponent<Light>();
+
+
+
+		Mesh* mesh = new Mesh();
+		mesh->vertices = {
+			-0.5f, -0.5f, 0.0f,
+			 0.5f, -0.5f, 0.0f,
+			 0.0f,  0.5f, 0.0f,
+		};
+
+		renderer->setMesh(mesh);
+
+
+        
+		add(cameraMen);
+		add(sphereHolder);
+		add(lightHolder);
     }
 
     void update() {

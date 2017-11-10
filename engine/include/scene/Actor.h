@@ -22,7 +22,11 @@ public:
     ~Actor();
 
     template <typename ComponentType>
-    void addComponent() { addComponent(new ComponentType()); }
+	ComponentType* addComponent() {
+		ComponentType* component = new ComponentType();
+		addComponent(component);
+		return component;
+	}
 
     template <typename ComponentType>
     ComponentType* getComponent() const {

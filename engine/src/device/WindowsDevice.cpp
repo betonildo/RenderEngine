@@ -21,7 +21,6 @@ WindowsDevice::~WindowsDevice() {
 
 void WindowsDevice::start() {
     initSDL2();
-	gl->init();
 }
 
 void WindowsDevice::setTitle(const char* title) {
@@ -37,7 +36,6 @@ void WindowsDevice::setHeight(int height) {
 }
 
 void WindowsDevice::swapBuffers() {
-    SDL_GL_SwapWindow(mWindow);
 
 	//Now render the texture target to our screen
 	SDL_UpdateTexture(
@@ -55,7 +53,7 @@ void WindowsDevice::swapBuffers() {
 		NULL, 
 		0, 
 		NULL, 
-		SDL_FLIP_VERTICAL
+		SDL_FLIP_NONE
 	);
 	SDL_RenderPresent(mRenderer);
 }
@@ -127,9 +125,6 @@ void WindowsDevice::initSDL2() {
 		mWidth, 
 		mHeight
 	);
-
-	//Now render to the texture
-	//SDL_SetRenderTarget(mRenderer, mTargetTexture);
 
     mNoQuit = true;
 }
