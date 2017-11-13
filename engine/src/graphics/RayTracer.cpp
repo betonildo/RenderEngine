@@ -1,6 +1,8 @@
 #include "graphics/RayTracer.h"
 #include "graphics/VertexFormat.h"
 #include "graphics/ElementFormat.h"
+#include "graphics/Buffer.h"
+#include "graphics/ShaderProgram.h"
 #include "LinearMath.h"
 #include <iostream>
 
@@ -114,7 +116,7 @@ void RayTracer::drawElements(ElementFormat elementFormat) {
 }
 
 void RayTracer::processCommandList() {
-	cout << "Process all commands" << endl;
+	// cout << "Process all commands" << endl;
 }
 
 void RayTracer::init() {
@@ -127,6 +129,31 @@ void RayTracer::setViewportRect(Rect rect) {
 }
 
 void* RayTracer::getBackBuffer() {
+	typedef unsigned char byte;
+	static byte* screenTest;
+	if (!screenTest) {
+		unsigned int width = 640;
+		unsigned int height = 480;
+		unsigned int pixelComponents = 4;
 
-	return 
+		unsigned int blobSize = width * height * pixelComponents;
+		screenTest = new byte[blobSize];
+
+		for (unsigned int i = 0; i < height * 4;i++) {
+			for (unsigned int j = 0; j < width; j+=4) {
+				screenTest[i * width + j + 0] = 255;
+				screenTest[i * width + j + 1] = 0;
+				screenTest[i * width + j + 2] = 0;
+				screenTest[i * width + j + 3] = 255;
+			}
+
+			if (i == height - 1) cout << i << endl;
+		}
+
+		// for (unsigned int i = 0; i < blobSize; i++) {
+		// 	screenTest[i] = 255;
+		// }
+	}
+
+	return screenTest;
 }

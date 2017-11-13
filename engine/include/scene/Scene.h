@@ -17,6 +17,7 @@ class ENGINE_API Scene {
 public:
     Scene();
     ~Scene();
+    void preStart();
     virtual void start() = 0;
     virtual void update() = 0;
     void add(Actor* actor);

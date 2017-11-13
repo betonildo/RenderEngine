@@ -56,6 +56,7 @@ void Application::initializeDevice() {
 }
 
 void Application::changeScene() {
+    mScene->preStart();
     mScene->start();
     mSceneHasChanged = false;
 }

@@ -23,7 +23,7 @@ endif(WIN32)
 
 #LINK STATICALLY ON LINUX
 if (UNIX)
-    add_library(RenderEngine STATIC ${RenderEngine_SOURCES})
+    add_library(RenderEngine SHARED ${RenderEngine_SOURCES})
 endif(UNIX)
 
 # ALL DEPENDENCIES
@@ -62,6 +62,7 @@ if (UNIX)
         GLEW
     )
     add_definitions("-std=c++14")
+    add_definitions("-ggdb")
 endif (UNIX)
 
 set(ASSIMP_LIBRARIES

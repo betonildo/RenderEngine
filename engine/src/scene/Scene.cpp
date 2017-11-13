@@ -12,11 +12,14 @@ Scene::Scene() {
     mCachedRenderersValid = false;
     mCachedCamerasValid = false;
     mCachedLightsValid = false;
-    gl = GraphicLibrarySingleton::getInstance();
 }
 
 Scene::~Scene() {
     
+}
+
+void Scene::preStart() {
+    gl = GraphicLibrarySingleton::getInstance();
 }
 
 void Scene::add(Actor* actor) {

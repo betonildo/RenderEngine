@@ -1,6 +1,7 @@
 #include <iostream>
 #include <Engine.h>
 #include <memory>
+
 class MyScene : public Scene {
 
 public:
@@ -8,9 +9,9 @@ public:
     void start() {
         std::cout << "My Scene Start!" << std::endl;
 
-		auto cameraMan = std::make_unique<Actor>();
-		auto sphereHolder = std::make_unique<Actor>();
-		auto lightHolder = std::make_unique<Actor>();
+		auto cameraMan = new Actor();
+		auto sphereHolder = new Actor();
+		auto lightHolder = new Actor();
 
 		MeshRenderer* renderer = sphereHolder->addComponent<MeshRenderer>();
         Camera* camera = cameraMan->addComponent<Camera>();        
@@ -19,17 +20,19 @@ public:
 
 
 		Mesh* mesh = new Mesh();
-		mesh->vertices = {
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.0f,  0.5f, 0.0f,
-		};
+		mesh->vertices.emplace_back(-0.5f, -0.5f, 0.0f);
+		mesh->vertices.emplace_back( 0.5f, -0.5f, 0.0f);
+		mesh->vertices.emplace_back( 0.0f,  0.5f, 0.0f);
+		mesh->indices.push_back(0);
+		mesh->indices.push_back(1);
+		mesh->indices.push_back(2);
+
 
 		renderer->setMesh(mesh);
 
 
         
-		add(cameraMen);
+		add(cameraMan);
 		add(sphereHolder);
 		add(lightHolder);
     }

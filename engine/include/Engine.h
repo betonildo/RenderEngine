@@ -10,6 +10,7 @@
 #include "scene/Transform.h"
 #include "components/Component.h"
 #include "components/Renderer.h"
+#include "components/MeshRenderer.h"
 #include "components/Camera.h"
 #include "components/Light.h"
 #include "LinearMath.h"

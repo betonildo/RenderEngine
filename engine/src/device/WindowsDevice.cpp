@@ -42,7 +42,7 @@ void WindowsDevice::swapBuffers() {
 		mTargetTexture,
 		nullptr,
 		gl->getBackBuffer(),
-		mWidth
+		mWidth * 4
 	);
 
 	SDL_RenderClear(mRenderer);
@@ -99,7 +99,7 @@ void WindowsDevice::initSDL2() {
         SDL_WINDOWPOS_UNDEFINED, // initial y position
         mWidth,                     // width, in pixels
         mHeight,                     // height, in pixels
-        SDL_WINDOW_BORDERLESS     // flags - see below
+        0     // flags - see below
     );
     
     // Check that the window was successfully created
@@ -120,8 +120,8 @@ void WindowsDevice::initSDL2() {
 	// Make a target texture to render too
 	mTargetTexture = SDL_CreateTexture(
 		mRenderer, 
-		SDL_PIXELFORMAT_RGBA8888,
-		SDL_TEXTUREACCESS_TARGET, 
+		SDL_PIXELFORMAT_RGBA8888,//SDL_GetWindowPixelFormat(mWindow),
+		SDL_TEXTUREACCESS_STREAMING, 
 		mWidth, 
 		mHeight
 	);

@@ -6,6 +6,7 @@ add_executable(Test main.cpp)
 set (CMAKE_CXX_STANDARD 14)
 if (UNIX)
     add_definitions("-std=c++14")
+    add_definitions("-ggdb")
 endif(UNIX)
 
 # RENDER ENGINE INCLUDE DIRECTORY
@@ -19,10 +20,10 @@ target_link_libraries(Test RenderEngine )
 MESSAGE( STATUS "RenderEngine_SOURCE_DIR:          " ${RenderEngine_SOURCE_DIR})
 
 # COPY ALL CONTENT ONLY ON WINDOWS
-if (WIN32)
-    # Copy RenderEngine deps
-    add_custom_command(TARGET Test POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${RenderEngine_BINARY_DIR}/exported"
-        $<TARGET_FILE_DIR:Test>)
-endif(WIN32)
+# if (WIN32)
+#     # Copy RenderEngine deps
+#     add_custom_command(TARGET Test POST_BUILD
+#         COMMAND ${CMAKE_COMMAND} -E copy_directory
+#         "${RenderEngine_BINARY_DIR}/exported"
+#         $<TARGET_FILE_DIR:Test>)
+# endif(WIN32)

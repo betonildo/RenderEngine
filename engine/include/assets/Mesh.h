@@ -3,15 +3,15 @@
 
 #include "OSExport.h"
 #include "assets/Asset.h"
+#include "LinearMath.h"
 #include <vector>
 
-class Vertex;
 class Buffer;
 
 class ENGINE_API Mesh : public Asset {
 
 public:
-    std::vector<Vertex> vertices;
+    std::vector<Vector3> vertices;
     std::vector<unsigned int> indices;
 
 	void setPositionBuffer(Buffer* buffer);
