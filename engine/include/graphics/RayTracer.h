@@ -29,8 +29,8 @@ public:
 	void unbindShaderProgram(unsigned int shaderProgramLocation);
 	void bindBuffer(unsigned int bufferLocation);
 	void unbindBuffer(unsigned int bufferLocation);
-	void enqueueCommand();
-	void dequeueCommand();
+	void pushBackCommand();
+	void clearCommandList();
 	void drawElements(ElementFormat elementFormat);
 	void processCommandList();
 	void init();
@@ -38,6 +38,8 @@ public:
 	void* getBackBuffer();
 
 private:
+	typedef unsigned char byte;
+
 	std::vector< ShaderProgram > mShaderPrograms;
 	std::vector< Buffer > mVertexBuffers;
 	std::vector< Buffer > mIndexBuffers;
@@ -47,7 +49,7 @@ private:
 	unsigned int mIndexBuffersCount;
 
 	Rect mRect;
-	unsigned char* mBackBuffer;
+	std::vector<byte> mBackBuffer;
 };
 
 

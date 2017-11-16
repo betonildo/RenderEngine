@@ -50,6 +50,7 @@ void Scene::add(Actor* actor) {
 }
 
 void Scene::render() {
+    gl->clearCommandList();
     for (auto camera : mCachedCameras)
         for (auto renderer : mCachedRenderers)
             renderer->render(camera, mCachedLights[0], mCachedLights.size());

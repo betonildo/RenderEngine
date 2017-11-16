@@ -2,7 +2,7 @@
 #define RECT_H
 
 struct Rect {
-	float x, y, width, height;
+	int x, y, width, height;
 };
 
 #endif /*RECT_H*/

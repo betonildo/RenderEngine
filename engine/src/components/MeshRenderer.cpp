@@ -37,7 +37,7 @@ void MeshRenderer::render(const Camera* camera, const Light* lights, unsigned in
     Matrix4 P = camera->getProjectionMatrix();
 
     for (auto material : mMaterials) {
-		gl->enqueueCommand();
+		gl->pushBackCommand();
         material->bind();
         material->setUniform("ModelMatrix", M);
         material->setUniform("ViewMatrix", V);

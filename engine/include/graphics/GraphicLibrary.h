@@ -36,8 +36,8 @@ public:
     virtual void bindBuffer(unsigned int bufferLocation) = 0;
     virtual void unbindBuffer(unsigned int bufferLocation) = 0;
 
-	virtual void enqueueCommand() = 0;
-	virtual void dequeueCommand() = 0;
+	virtual void pushBackCommand() = 0;
+    virtual void clearCommandList() = 0;
 	virtual void drawElements(ElementFormat elementFormat) = 0;
     virtual void processCommandList() = 0;
 

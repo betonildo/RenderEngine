@@ -103,12 +103,12 @@ void RayTracer::unbindBuffer(unsigned int bufferLocation) {
 	cout << "Unbinding bindBuffer " << bufferLocation << endl;
 }
 
-void RayTracer::enqueueCommand() {
-	cout << "Enqueue command" << endl;
+void RayTracer::pushBackCommand() {
+	cout << "pushBackCommand" << endl;
 }
 
-void RayTracer::dequeueCommand() {
-	cout << "Dequeue command" << endl;
+void RayTracer::clearCommandList() {
+	// cout << "clearCommandList" << endl;
 }
 
 void RayTracer::drawElements(ElementFormat elementFormat) {
@@ -126,34 +126,22 @@ void RayTracer::init() {
 void RayTracer::setViewportRect(Rect rect) {
 	cout << "Setup Viewport {" << rect.x << ", " << rect.y << ", " << rect.width << ", " << rect.height << "}" << endl;
 	mRect = rect;
+	mBackBuffer.resize(rect.width * rect.height * 4);
 }
 
 void* RayTracer::getBackBuffer() {
-	typedef unsigned char byte;
-	static byte* screenTest;
-	if (!screenTest) {
-		unsigned int width = 640;
-		unsigned int height = 480;
-		unsigned int pixelComponents = 4;
+	
+	unsigned int blobSize = mBackBuffer.size();
+	byte* blobData = mBackBuffer.data();
 
-		unsigned int blobSize = width * height * pixelComponents;
-		screenTest = new byte[blobSize];
-
-		for (unsigned int i = 0; i < height * 4;i++) {
-			for (unsigned int j = 0; j < width; j+=4) {
-				screenTest[i * width + j + 0] = 255;
-				screenTest[i * width + j + 1] = 0;
-				screenTest[i * width + j + 2] = 0;
-				screenTest[i * width + j + 3] = 255;
-			}
-
-			if (i == height - 1) cout << i << endl;
+	for (unsigned int i = 0; i < mRect.height * 4;i++) {
+		for (unsigned int j = 0; j < mRect.width; j+=4) {
+			blobData[i * mRect.width + j + 0] = 255;
+			blobData[i * mRect.width + j + 1] = 0;
+			blobData[i * mRect.width + j + 2] = 0;
+			blobData[i * mRect.width + j + 3] = 255;
 		}
-
-		// for (unsigned int i = 0; i < blobSize; i++) {
-		// 	screenTest[i] = 255;
-		// }
 	}
 
-	return screenTest;
+	return blobData;
 }

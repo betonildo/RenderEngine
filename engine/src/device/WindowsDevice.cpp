@@ -2,7 +2,7 @@
 #include "device/WindowsDevice.h"
 #include "graphics/GraphicLibrarySingleton.h"
 #include "graphics/GraphicLibrary.h"
-
+#include "graphics/Rect.h"
 #include <iostream>
 #include <string.h>
 
@@ -109,6 +109,9 @@ void WindowsDevice::initSDL2() {
         std::cout << "Could not create window: " << SDL_GetError() << std::endl;
         return;
     }
+
+    Rect viewport = {0, 0, mWidth, mHeight};
+    gl->setViewportRect(viewport);
     
 	// Create a renderer to render to texture on window
 	mRenderer = SDL_CreateRenderer(
