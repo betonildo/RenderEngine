@@ -3,7 +3,6 @@
 
 #include "OSExport.h"
 #include "LinearMath.h"
-#include <string>
 
 class GraphicLibrary;
 
@@ -17,8 +16,8 @@ public:
     void setUniform(unsigned int uniformLocation, Vector2 v);
     void setUniform(unsigned int uniformLocation, Matrix4 m);
 
-    unsigned int getUniformLocation(const std::string& uniformName);
-    unsigned int getAttributeLocation(const std::string& attributeName);
+    unsigned int getUniformLocation(const char* uniformName);
+    unsigned int getAttributeLocation(const char* attributeName);
 
     void bind();
     void unbind();

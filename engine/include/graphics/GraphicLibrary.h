@@ -1,17 +1,16 @@
 #ifndef GRAPHICLIBRARY_H
 #define GRAPHICLIBRARY_H
 
+#include "LinearMath.h"
+
+class Material;
 class Buffer;
 class ShaderProgram;
 class Shader;
 class VertexFormat;
 class ElementFormat;
 class Rect;
-class Vector3;
-class Vector2;
-class Matrix4;
 class Light;
-class Material;
 
 typedef unsigned int uint;
 
@@ -37,8 +36,7 @@ public:
 	virtual void pushMaterial(const Material* material) = 0;
 	virtual void pushLights(const Light* lights, uint lightCount) = 0;
 	virtual void pushMatrix4(MatrixType type, const Matrix4& m) = 0;
-	virtual void pushAttributeValue(AttributeType type, const Vector3* v, uint count) = 0;
-	virtual void pushAttributeValue(AttributeType type, const Vector2* v, uint count) = 0;
+	virtual void pushAttributeValue(AttributeType type, const void* v, uint count) = 0;
 	
 	virtual void setVector3(uint uniformLocation, const Vector3& v) = 0;
 	virtual void setVector2(uint uniformLocation, const Vector2& v) = 0;
@@ -47,7 +45,6 @@ public:
 	virtual uint getUniformLocation(const char* uniformName) = 0;
     virtual uint getAttributeLocation(const char* attributeName) = 0;
     virtual void enableAttribute(uint attributeLocation) = 0;
-    virtual void setVertexFormat(VertexFormat vertexFormat) = 0;
     virtual void disableAttribute(uint attributeLocation) = 0;
 
     virtual uint createShaderProgram(Shader* shaderSource) = 0;
@@ -60,12 +57,11 @@ public:
     virtual void unbindShaderProgram(uint shaderProgramLocation) = 0;
 
 	virtual void bindVertexBuffer(uint bufferLocation) = 0;
-	virtual void bindVertexBufferData(void* data, uint length) = 0;
+	virtual void bindVertexBufferData(VertexFormat vertexFormat, void* data, uint length) = 0;
 	virtual void unbindVertexBuffer(uint bufferLocation) = 0;
 
     virtual void bindIndexBuffer(uint bufferLocation) = 0;
-	virtual void bindIndexBufferData(void* data, uint length) = 0;
-	virtual void setElementFormat(ElementFormat elementFormat) = 0;
+	virtual void bindIndexBufferData(ElementFormat elementFormat, void* data, uint length) = 0;
     virtual void unbindIndexBuffer(uint bufferLocation) = 0;
 
 	virtual void pushBackCommand() = 0;

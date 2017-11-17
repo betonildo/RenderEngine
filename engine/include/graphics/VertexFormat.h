@@ -6,11 +6,10 @@
 struct VertexFormat {
 	enum class AttributeType {
 		Uint8,
-		Uint10,
 		Uint16,
 		Int16,
 		Int32,
-		Half,
+		Uint32,
 		Float,
 		Count
 	};
@@ -22,5 +21,19 @@ struct VertexFormat {
 	unsigned stride;
 	unsigned offsetFirst;
 	GraphicLibrary::AttributeType type;
+
+	inline static const unsigned char AttributeByteSizes(AttributeType type) {
+
+		unsigned int AttributesByteSizes[] = {
+			sizeof(unsigned char), 	// Uint8
+			sizeof(unsigned short), // Uint16
+			sizeof(short), 			// Int16
+			sizeof(int), 			// Int32
+			sizeof(unsigned int), 	//Uint32
+			sizeof(float)  			// Float
+		};
+
+		return AttributesByteSizes[(unsigned int)type];
+	}
 };
 #endif /*VERTEXFORMAT_H*/

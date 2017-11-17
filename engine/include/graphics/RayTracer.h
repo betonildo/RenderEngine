@@ -26,7 +26,6 @@ public:
 	unsigned int getUniformLocation(const char* uniformName);
 	unsigned int getAttributeLocation(const char* attributeName);
 	void enableAttribute(unsigned int attributeLocation);
-	void setVertexFormat(VertexFormat vertexFormat);
 	void disableAttribute(unsigned int attributeLocation);
 	unsigned int createShaderProgram(Shader* shaderSource);
 	unsigned int generateVertexBuffer();
@@ -37,12 +36,11 @@ public:
 	void unbindShaderProgram(unsigned int shaderProgramLocation);
 	
 	void bindVertexBuffer(uint bufferLocation);
-	void bindVertexBufferData(void* data, uint length);
+	void bindVertexBufferData(VertexFormat vertexFormat, void* data, uint length);
 	void unbindVertexBuffer(uint bufferLocation);
 
 	void bindIndexBuffer(uint bufferLocation);
-	void bindIndexBufferData(void* data, uint length);
-	void setElementFormat(ElementFormat elementFormat);
+	void bindIndexBufferData(ElementFormat elementFormat, void* data, uint length);
 	void unbindIndexBuffer(uint bufferLocation);
 
 	void pushBackCommand();
@@ -87,8 +85,6 @@ private:
 		uint indicesCount;
 	};
 
-	AttributeConfig mCachedAttributes[(uint)AttributeType::Count];
-
 	struct Command {
 		LightsConfig lights;
 		const Material* material;
@@ -103,8 +99,8 @@ private:
 	std::vector<Command> mCommandList;
 
 	Command mCurrentCommand;
-	IndexBuffer mCurrentIndexBuffer;
-	VertexBuffer mCUrrentVertexBuffer;
+	IndexBuffer* mCurrentIndexBuffer;
+	VertexBuffer* mCurrentVertexBuffer;
 
 	typedef unsigned char byte;
 
@@ -119,7 +115,7 @@ private:
 	Rect mRect;
 	std::vector<byte> mBackBuffer;
 
-	Matrix4 mMatrixCache[(uint)MatrixType::Count];
+	//Matrix4 mMatrixCache[(uint)MatrixType::Count];
 };
 
 

@@ -17,15 +17,28 @@ public:
         Camera* camera = cameraMan->addComponent<Camera>();        
 		Light* light = lightHolder->addComponent<Light>();
 
+		std::vector<Vector3> positions;
+		positions.emplace_back(-0.5f, -0.5f, 0.0f);
+		positions.emplace_back(0.5f, -0.5f, 0.0f);
+		positions.emplace_back(0.0f,  0.5f, 0.0f);
+					
+		std::vector<Vector3> normals;
+		normals.emplace_back(0.0f, 0.0f, 1.0f);
+		normals.emplace_back(0.0f, 0.0f, 1.0f);
+		normals.emplace_back(0.0f, 0.0f, 1.0f);
 
+		std::vector<Vector2> uvs;
+		uvs.emplace_back(0.0f, 0.0f);
+		uvs.emplace_back(0.5f, 1.0f);
+		uvs.emplace_back(1.0f, 0.0f);
+
+		std::vector<unsigned int> indices({0, 1, 2});
 
 		Mesh* mesh = new Mesh();
-		mesh->vertices.emplace_back(-0.5f, -0.5f, 0.0f);
-		mesh->vertices.emplace_back( 0.5f, -0.5f, 0.0f);
-		mesh->vertices.emplace_back( 0.0f,  0.5f, 0.0f);
-		mesh->indices.push_back(0);
-		mesh->indices.push_back(1);
-		mesh->indices.push_back(2);
+		mesh->setPositions(positions);
+		mesh->setNormals(normals);
+		mesh->setUV(uvs);
+		mesh->setIndices(indices);
 
 
 		renderer->setMesh(mesh);

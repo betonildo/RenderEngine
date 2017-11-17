@@ -2,7 +2,6 @@
 #include "graphics/VertexFormat.h"
 #include "graphics/ElementFormat.h"
 #include "graphics/ShaderProgram.h"
-#include "LinearMath.h"
 #include <iostream>
 
 using namespace std;
@@ -14,7 +13,7 @@ RayTracer::RayTracer() {
 }
 
 void RayTracer::pushMatrix4(MatrixType type, const Matrix4& m) {
-	mMatrixCache[(uint)type] = m;
+	
 	switch (type)
 	{
 	case GraphicLibrary::MatrixType::World:
@@ -38,17 +37,6 @@ void RayTracer::pushMaterial(const Material* material) {
 void RayTracer::pushLights(const Light* lights, uint lightCount) {
 	mCurrentCommand.lights.lights = lights;
 	mCurrentCommand.lights.lightCount = lightCount;
-}
-
-void RayTracer::pushAttributeValue(AttributeType type, const Vector3* v, uint count) {
-
-	switch (type)
-	{
-
-
-	default:
-		break;
-	}
 }
 
 void RayTracer::pushAttributeValue(AttributeType type, const void* v, uint count) {
@@ -103,10 +91,6 @@ void RayTracer::enableAttribute(unsigned int attributeLocation) {
 	pushAttributeValue(buffer->format.type, buffer->data, buffer->length);
 }
 
-void RayTracer::setVertexFormat(VertexFormat vertexFormat) {
-	cout << "Setting vertex format " << endl;
-}
-
 void RayTracer::disableAttribute(unsigned int attributeLocation) {
 	cout << "Disabling attribute " << attributeLocation << endl;
 }
@@ -151,36 +135,40 @@ void RayTracer::unbindShaderProgram(unsigned int shaderProgramLocation) {
 }
 
 void RayTracer::bindVertexBuffer(uint bufferLocation) {
-
+	mCurrentVertexBuffer = &mVertexBuffers[bufferLocation];
 }
 
-void RayTracer::bindVertexBufferData(void* data, uint length) {
-
+void RayTracer::bindVertexBufferData(VertexFormat vertexFormat, void* data, uint length) {
+	unsigned int elementSize = VertexFormat::AttributeByteSizes(vertexFormat.attributeType);
+	mCurrentVertexBuffer->data = calloc(length, elementSize);
+	memcpy(mCurrentVertexBuffer->data, data, elementSize * length);
+	mCurrentVertexBuffer->length = length;
+	mCurrentVertexBuffer->format = vertexFormat;
 }
 
 void RayTracer::unbindVertexBuffer(uint bufferLocation) {
-
+	mCurrentVertexBuffer = nullptr;
 }
 
 void RayTracer::bindIndexBuffer(uint bufferLocation) {
-
+	mCurrentIndexBuffer = &mIndexBuffers[bufferLocation];
 }
 
-void RayTracer::bindIndexBufferData(void* data, uint length) {
-
-}
-
-void RayTracer::setElementFormat(ElementFormat elementFormat) {
-
+void RayTracer::bindIndexBufferData(ElementFormat elementFormat, void* data, uint length) {
+	unsigned int elementSize = ElementFormat::IndexTypeSizes(elementFormat.type);
+	mCurrentIndexBuffer->data = calloc(length, elementSize);
+	memcpy(mCurrentIndexBuffer->data, data, elementSize * length);
+	mCurrentIndexBuffer->length = length;
+	mCurrentIndexBuffer->format = elementFormat;
 }
 
 void RayTracer::unbindIndexBuffer(uint bufferLocation) {
-
+	mCurrentIndexBuffer = nullptr;
 }
 
 void RayTracer::pushBackCommand() {
 	cout << "pushBackCommand" << endl;
-	mCurrentCommand = {};
+	bzero(&mCurrentCommand, sizeof(Command));
 }
 
 void RayTracer::clearCommandList() {

@@ -9,8 +9,19 @@ struct ElementFormat {
 	};
 
 	enum class IndexType {
-		UnsignedByte, UnsignedShort, UnsignedInt
+		UnsignedByte, UnsignedShort, UnsignedInt, Count
 	};
+
+	inline static const unsigned char IndexTypeSizes(IndexType type) {
+
+		unsigned int IndexTypeSize[] = {
+			sizeof(unsigned char),
+			sizeof(unsigned short),
+			sizeof(unsigned int)
+		};
+
+		return IndexTypeSize[(unsigned int)type];
+	}
 
 	Mode mode;
 	unsigned int count;

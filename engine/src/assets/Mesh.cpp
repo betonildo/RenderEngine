@@ -1,7 +1,7 @@
+#include "assets/Mesh.h"
 #include "graphics/Vertex.h"
 #include "graphics/VertexFormat.h"
 #include "graphics/ElementFormat.h"
-#include "assets/Mesh.h"
 #include "graphics/GraphicLibrarySingleton.h"
 #include "graphics/GraphicLibrary.h"
 
@@ -24,8 +24,7 @@ void Mesh::setPositions(std::vector<Vector3>& positions) {
 	vertexFormat.type = GraphicLibrary::AttributeType::Position;
 
 	gl->bindVertexBuffer(mPositionBuffer);
-	gl->bindVertexBufferData(positions.data(), positions.size());
-	gl->setVertexFormat(vertexFormat);
+	gl->bindVertexBufferData(vertexFormat, positions.data(), positions.size());
 	gl->unbindVertexBuffer(mPositionBuffer);
 }
 
@@ -40,8 +39,7 @@ void Mesh::setNormals(std::vector<Vector3>& normals) {
 	vertexFormat.type = GraphicLibrary::AttributeType::Normal;
 
 	gl->bindVertexBuffer(mNormalBuffer);
-	gl->bindVertexBufferData(normals.data(), normals.size());
-	gl->setVertexFormat(vertexFormat);
+	gl->bindVertexBufferData(vertexFormat, normals.data(), normals.size());
 	gl->unbindVertexBuffer(mNormalBuffer);
 }
 
@@ -56,8 +54,7 @@ void Mesh::setUV(std::vector<Vector2>& uvs) {
 	vertexFormat.type = GraphicLibrary::AttributeType::UV0;
 
 	gl->bindVertexBuffer(mUVBuffer);
-	gl->bindVertexBufferData(uvs.data(), uvs.size());
-	gl->setVertexFormat(vertexFormat);
+	gl->bindVertexBufferData(vertexFormat, uvs.data(), uvs.size());
 	gl->unbindVertexBuffer(mUVBuffer);
 }
 
@@ -69,8 +66,7 @@ void Mesh::setIndices(std::vector<unsigned int>& indices) {
 	elementFormat.type = ElementFormat::IndexType::UnsignedInt;
 
 	gl->bindIndexBuffer(mIndexBuffer);
-	gl->bindIndexBufferData(indices.data(), indices.size());
-	gl->setElementFormat(elementFormat);
+	gl->bindIndexBufferData(elementFormat, indices.data(), indices.size());
 	gl->unbindIndexBuffer(mIndexBuffer);
 }
 
@@ -80,8 +76,8 @@ void Mesh::drawTriangles() {
 	gl->enableAttribute(mUVBuffer);
 	gl->bindIndexBuffer(mIndexBuffer);
 	gl->drawElements();
-	gl->disableAttribute(mPositionBuffer);
-	gl->disableAttribute(mNormalBuffer);
-	gl->disableAttribute(mUVBuffer);
 	gl->unbindIndexBuffer(mIndexBuffer);
+	gl->disableAttribute(mUVBuffer);
+	gl->disableAttribute(mNormalBuffer);
+	gl->disableAttribute(mPositionBuffer);
 }

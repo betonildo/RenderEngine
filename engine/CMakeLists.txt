@@ -83,23 +83,23 @@ MESSAGE( STATUS "glm_SOURCE_DIR       "  ${glm_SOURCE_DIR})
 MESSAGE( STATUS "ASSIMP_STATIC_LIB    "  ${ASSIMP_STATIC_LIB})
 
 # COPY ALL CONTENT ONLY ON WINDOWS
-if (WIN32)
+# if (WIN32)
+    # Copy RenderEngine include
+    add_custom_command(TARGET RenderEngine POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${RenderEngine_SOURCE_DIR}/include/"
+    "${RenderEngine_BINARY_DIR}/exported/include")
+
+    # Copy RenderEngine dll
+    add_custom_command(TARGET RenderEngine POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${RenderEngine_BINARY_DIR}/\$\(Configuration\)/"
+    "${RenderEngine_BINARY_DIR}/exported")
+    
     # Copy ASSIMP dll
     add_custom_command(TARGET RenderEngine POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${Assimp_BINARY_DIR}/code/\$\(Configuration\)/"
-        "${RenderEngine_BINARY_DIR}/exported")
-
-    # Copy RenderEngine include
-    add_custom_command(TARGET RenderEngine POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${RenderEngine_SOURCE_DIR}/include/"
-        "${RenderEngine_BINARY_DIR}/exported/include")
-
-    # Copy RenderEngine dll
-    add_custom_command(TARGET RenderEngine POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${RenderEngine_BINARY_DIR}/\$\(Configuration\)/"
         "${RenderEngine_BINARY_DIR}/exported")
 
     # Copy glm sources
@@ -107,4 +107,4 @@ if (WIN32)
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${glm_SOURCE_DIR}/glm/"
         "${RenderEngine_BINARY_DIR}/exported/include/glm")
-endif(WIN32)
+# endif(WIN32)
