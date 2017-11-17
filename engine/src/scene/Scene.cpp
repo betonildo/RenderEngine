@@ -29,9 +29,9 @@ void Scene::add(Actor* actor) {
     Camera* camera = actor->getComponent<Camera>();
     Light* light = actor->getComponent<Light>();
 
-    bool isRenderer = renderer != nullptr;// & strcmp(renderer->getName(), COMPONENT_NAME(Renderer)) == 0;
-    bool isCamera = camera != nullptr;// & strcmp(camera->getName(), COMPONENT_NAME(Camera)) == 0;
-    bool isLight = light != nullptr;// & strcmp(light->getName(), COMPONENT_NAME(Light)) == 0;
+    bool isRenderer = renderer != nullptr;
+    bool isCamera = camera != nullptr;
+    bool isLight = light != nullptr;
 
     if (isRenderer) {
         mCachedRenderers.push_back(renderer);

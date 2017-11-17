@@ -1,44 +1,76 @@
 #ifndef GRAPHICLIBRARY_H
 #define GRAPHICLIBRARY_H
 
-#include <string>
 class Buffer;
 class ShaderProgram;
 class Shader;
 class VertexFormat;
 class ElementFormat;
 class Rect;
+class Vector3;
+class Vector2;
+class Matrix4;
+class Light;
+class Material;
+
+typedef unsigned int uint;
 
 class GraphicLibrary {
 
 public:
 
-    virtual void setUniform3f(unsigned int uniformLocation, float* data) = 0;
-    virtual void setUniform2f(unsigned int uniformLocation, float* data) = 0;
-    virtual void setUniformMatrix4(unsigned int uniformLocation, float* data) = 0;
-    virtual unsigned int getUniformLocation(const std::string& uniformName) = 0;
-    virtual unsigned int getAttributeLocation(const std::string& attributeName) = 0;
-    virtual void enableAttribute(unsigned int attributeLocation) = 0;
+	enum class MatrixType {
+		World, WorldInverse, WorldTranspose, WorldInverseTranspose,
+		View, ViewInverse, ViewTranspose, ViewInverseTranspose,
+		Projection, ProjectionInverse, ProjectionTranspose, ProjectionInverseTranspose,
+		WorldView, WorldViewInverse, WorldViewTranspose, WorldViewInverseTranspose,
+		WorldViewProjection, WorldViewProjectionInverse, WorldViewProjectionTranspose, WorldViewProjectionInverseTranspose,
+		Count
+	};
+
+	enum class AttributeType {
+		Position, Normal, UV0, UV1, UV2,
+
+		Count
+	};
+	
+	virtual void pushMaterial(const Material* material) = 0;
+	virtual void pushLights(const Light* lights, uint lightCount) = 0;
+	virtual void pushMatrix4(MatrixType type, const Matrix4& m) = 0;
+	virtual void pushAttributeValue(AttributeType type, const Vector3* v, uint count) = 0;
+	virtual void pushAttributeValue(AttributeType type, const Vector2* v, uint count) = 0;
+	
+	virtual void setVector3(uint uniformLocation, const Vector3& v) = 0;
+	virtual void setVector2(uint uniformLocation, const Vector2& v) = 0;
+	virtual void setMatrix4(uint uniformLocation, const Matrix4& m) = 0;
+
+	virtual uint getUniformLocation(const char* uniformName) = 0;
+    virtual uint getAttributeLocation(const char* attributeName) = 0;
+    virtual void enableAttribute(uint attributeLocation) = 0;
     virtual void setVertexFormat(VertexFormat vertexFormat) = 0;
-    virtual void disableAttribute(unsigned int attributeLocation) = 0;
+    virtual void disableAttribute(uint attributeLocation) = 0;
 
-    virtual unsigned int createShaderProgram(Shader* shaderSource) = 0;
-    virtual unsigned int generateVertexBuffer() = 0;
-    virtual unsigned int generateElementBuffer() = 0;
+    virtual uint createShaderProgram(Shader* shaderSource) = 0;
+    virtual uint generateVertexBuffer() = 0;
+    virtual uint generateIndexBuffer() = 0;
+	
+	virtual ShaderProgram* getShaderProgram(uint shaderProgramLocation) = 0;
 
-    virtual Buffer* getVertexBuffer(unsigned int bufferLocation) = 0;
-	virtual Buffer* getElementBuffer(unsigned int bufferLocation) = 0;
-    virtual ShaderProgram* getShaderProgram(unsigned int shaderProgramLocation) = 0;
+    virtual void bindShaderProgram(uint shaderProgramLocation) = 0;
+    virtual void unbindShaderProgram(uint shaderProgramLocation) = 0;
 
-    virtual void bindShaderProgram(unsigned int shaderProgramLocation) = 0;
-    virtual void unbindShaderProgram(unsigned int shaderProgramLocation) = 0;
+	virtual void bindVertexBuffer(uint bufferLocation) = 0;
+	virtual void bindVertexBufferData(void* data, uint length) = 0;
+	virtual void unbindVertexBuffer(uint bufferLocation) = 0;
 
-    virtual void bindBuffer(unsigned int bufferLocation) = 0;
-    virtual void unbindBuffer(unsigned int bufferLocation) = 0;
+    virtual void bindIndexBuffer(uint bufferLocation) = 0;
+	virtual void bindIndexBufferData(void* data, uint length) = 0;
+	virtual void setElementFormat(ElementFormat elementFormat) = 0;
+    virtual void unbindIndexBuffer(uint bufferLocation) = 0;
 
 	virtual void pushBackCommand() = 0;
     virtual void clearCommandList() = 0;
-	virtual void drawElements(ElementFormat elementFormat) = 0;
+	virtual void drawElements() = 0;
     virtual void processCommandList() = 0;
 
     virtual void init() = 0;	

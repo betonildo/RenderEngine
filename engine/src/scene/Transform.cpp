@@ -61,17 +61,17 @@ const Vector3& Transform::getLocalScale() const {
     return mLocalScale;
 }
 
-const Matrix4& Transform::getModelMatrix() const {
+const Matrix4& Transform::getWorldMatrix() const {
     if (!mValidCalcCachedMatrix) {
         // TODO: TAKE ACCOUNT OF PARENTAL FOR LOCAL CALCULATIONS
         // TODO: CALCULATE MODEL MATRIX USING POSITION, ROTATION AND SCALE
         Matrix4 T = Math::translate(Matrix4(1), mLocalPosition);
         Matrix4 S = Math::scale(mLocalScale);
         Matrix4 R = Math::mat4_cast(mLocalRotation);
-        mModelMatrix = T * R * S;
+        mWorldMatrix = T * R * S;
         mValidCalcCachedMatrix = true;
     }
-    return mModelMatrix;
+    return mWorldMatrix;
 }
 
 const Transform* const Transform::getParent() const {
@@ -87,13 +87,13 @@ unsigned int Transform::getChildrenCount() {
 }
 
 Vector3 Transform::getFront() const {
-    return Vector3(mModelMatrix[2]);
+    return Vector3(mWorldMatrix[2]);
 }
 
 Vector3 Transform::getUp() const {
-    return Vector3(mModelMatrix[1]);
+    return Vector3(mWorldMatrix[1]);
 }
 
 Vector3 Transform::getRight() const {
-    return Vector3(mModelMatrix[0]);
+    return Vector3(mWorldMatrix[0]);
 }

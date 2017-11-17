@@ -22,7 +22,7 @@ public:
     const Vector3& getLocalPosition() const;
     const Quaternion& getLocalRotation() const;
     const Vector3& getLocalScale() const;
-    const Matrix4& getModelMatrix() const;
+    const Matrix4& getWorldMatrix() const;
     const Transform* const getParent() const;
     Transform* getChildren();
     unsigned int getChildrenCount();
@@ -38,7 +38,7 @@ private:
     Vector3 mLocalPosition;
     Quaternion mLocalRotation;
     Vector3 mLocalScale;
-    mutable Matrix4 mModelMatrix;
+    mutable Matrix4 mWorldMatrix;
     mutable bool mValidCalcCachedMatrix;
 };
 

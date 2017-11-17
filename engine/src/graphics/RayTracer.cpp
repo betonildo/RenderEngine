@@ -1,7 +1,6 @@
 #include "graphics/RayTracer.h"
 #include "graphics/VertexFormat.h"
 #include "graphics/ElementFormat.h"
-#include "graphics/Buffer.h"
 #include "graphics/ShaderProgram.h"
 #include "LinearMath.h"
 #include <iostream>
@@ -14,30 +13,94 @@ RayTracer::RayTracer() {
 	mIndexBuffersCount = 0;
 }
 
-void RayTracer::setUniform3f(unsigned int uniformLocation, float* data) {
-	cout << "Setting uniform 3f" << uniformLocation << "[" << data[0] << " " << data[1] << " " << data[2] << "]" << endl;
+void RayTracer::pushMatrix4(MatrixType type, const Matrix4& m) {
+	mMatrixCache[(uint)type] = m;
+	switch (type)
+	{
+	case GraphicLibrary::MatrixType::World:
+		mCurrentCommand.World = m;
+		break;
+	case GraphicLibrary::MatrixType::View:
+		mCurrentCommand.View = m;
+		break;
+	case GraphicLibrary::MatrixType::Projection:
+		mCurrentCommand.Projection = m;
+		break;
+	default:
+		break;
+	}
 }
 
-void RayTracer::setUniform2f(unsigned int uniformLocation, float* data) {
-	cout << "Setting uniform 2f" << uniformLocation << "[" << data[0] << " " << data[1] << "]" << endl;
+void RayTracer::pushMaterial(const Material* material) {
+	mCurrentCommand.material = material;
 }
 
-void RayTracer::setUniformMatrix4(unsigned int uniformLocation, float* data) {
-	cout << "Setting uniform matrix4 f" << uniformLocation << "[" << data[0] << " " << data[1] << " " << data[2] << " ... " << data[15] << "]" << endl;
+void RayTracer::pushLights(const Light* lights, uint lightCount) {
+	mCurrentCommand.lights.lights = lights;
+	mCurrentCommand.lights.lightCount = lightCount;
 }
 
-unsigned int RayTracer::getUniformLocation(const std::string& uniformName) {
+void RayTracer::pushAttributeValue(AttributeType type, const Vector3* v, uint count) {
+
+	switch (type)
+	{
+
+
+	default:
+		break;
+	}
+}
+
+void RayTracer::pushAttributeValue(AttributeType type, const void* v, uint count) {
+	switch (type)
+	{
+	case GraphicLibrary::AttributeType::Position:
+		mCurrentCommand.positions.values.vectors3 = (const Vector3*)v;
+		mCurrentCommand.positions.count = count;
+		break;
+	case GraphicLibrary::AttributeType::Normal:
+		mCurrentCommand.normals.values.vectors3 = (const Vector3*)v;
+		mCurrentCommand.normals.count = count;
+		break;
+	case GraphicLibrary::AttributeType::UV0:
+		mCurrentCommand.uvs.values.vectors2 = (const Vector2*)v;
+		mCurrentCommand.uvs.count = count;
+		break;
+	case GraphicLibrary::AttributeType::UV1:
+		break;
+	case GraphicLibrary::AttributeType::UV2:
+		break;
+	default:
+		break;
+	}
+}
+
+void RayTracer::setVector3(uint uniformLocation, const Vector3& v) {
+
+}
+
+void RayTracer::setVector2(uint uniformLocation, const Vector2& v) {
+
+}
+
+void RayTracer::setMatrix4(uint uniformLocation, const Matrix4& m) {
+
+}
+
+unsigned int RayTracer::getUniformLocation(const char* uniformName) {
 	cout << "Getting uniform location '" << uniformName << "'" << endl;
 	return 0;
 }
 
-unsigned int RayTracer::getAttributeLocation(const std::string& attributeName) {
+unsigned int RayTracer::getAttributeLocation(const char* attributeName) {
 	cout << "Getting attribute location '" << attributeName << "'" << endl;
 	return 0;
 }
 
 void RayTracer::enableAttribute(unsigned int attributeLocation) {
 	cout << "Enabling attribute " << attributeLocation << endl;
+	VertexBuffer* buffer = &mVertexBuffers[attributeLocation];
+	pushAttributeValue(buffer->format.type, buffer->data, buffer->length);
 }
 
 void RayTracer::setVertexFormat(VertexFormat vertexFormat) {
@@ -59,27 +122,19 @@ unsigned int RayTracer::createShaderProgram(Shader* shaderSource) {
 unsigned int RayTracer::generateVertexBuffer() {
 	cout << "Generating array buffer" << endl;
 	unsigned int bufferLocation = mVertexBuffersCount;
-	mVertexBuffers.emplace_back(bufferLocation);
+	mVertexBuffers.emplace_back();
+	mVertexBuffers[bufferLocation] = {};
 	mVertexBuffersCount++;
 	return bufferLocation;
 }
 
-unsigned int RayTracer::generateElementBuffer() {
+unsigned int RayTracer::generateIndexBuffer() {
 	cout << "Generating element buffer" << endl;
 	unsigned int bufferLocation = mIndexBuffersCount;
-	mIndexBuffers.emplace_back(bufferLocation);
+	mIndexBuffers.emplace_back();
+	mIndexBuffers[bufferLocation] = {};
 	mIndexBuffersCount++;
 	return bufferLocation;
-}
-
-Buffer* RayTracer::getVertexBuffer(unsigned int bufferLocation) {
-	cout << "Getting vertex buffer pointer" << endl;
-	return &mVertexBuffers[bufferLocation];
-}
-
-Buffer* RayTracer::getElementBuffer(unsigned int bufferLocation) {
-	cout << "Getting element buffer pointer" << endl;
-	return &mIndexBuffers[bufferLocation];
 }
 
 ShaderProgram* RayTracer::getShaderProgram(unsigned int shaderProgramLocation) {
@@ -95,28 +150,63 @@ void RayTracer::unbindShaderProgram(unsigned int shaderProgramLocation) {
 	cout << "Unbinding ShaderProgram " << shaderProgramLocation << endl;
 }
 
-void RayTracer::bindBuffer(unsigned int bufferLocation) {
-	cout << "Binding bindBuffer " << bufferLocation << endl;
+void RayTracer::bindVertexBuffer(uint bufferLocation) {
+
 }
 
-void RayTracer::unbindBuffer(unsigned int bufferLocation) {
-	cout << "Unbinding bindBuffer " << bufferLocation << endl;
+void RayTracer::bindVertexBufferData(void* data, uint length) {
+
+}
+
+void RayTracer::unbindVertexBuffer(uint bufferLocation) {
+
+}
+
+void RayTracer::bindIndexBuffer(uint bufferLocation) {
+
+}
+
+void RayTracer::bindIndexBufferData(void* data, uint length) {
+
+}
+
+void RayTracer::setElementFormat(ElementFormat elementFormat) {
+
+}
+
+void RayTracer::unbindIndexBuffer(uint bufferLocation) {
+
 }
 
 void RayTracer::pushBackCommand() {
 	cout << "pushBackCommand" << endl;
+	mCurrentCommand = {};
 }
 
 void RayTracer::clearCommandList() {
 	// cout << "clearCommandList" << endl;
+	mCommandList.clear();
 }
 
-void RayTracer::drawElements(ElementFormat elementFormat) {
+void RayTracer::drawElements() {
 	cout << "Draw elements with element format" << endl;
+	mCommandList.push_back(mCurrentCommand);
 }
 
 void RayTracer::processCommandList() {
 	// cout << "Process all commands" << endl;
+
+	unsigned int blobSize = mBackBuffer.size();
+	byte* blobData = mBackBuffer.data();
+
+	for (unsigned int i = 0; i < mRect.height * 4; i++) {
+		for (unsigned int j = 0; j < mRect.width; j += 4) {
+			blobData[i * mRect.width + j + 0] = 255;
+			blobData[i * mRect.width + j + 1] = 0;
+			blobData[i * mRect.width + j + 2] = 0;
+			blobData[i * mRect.width + j + 3] = 255;
+		}
+	}
 }
 
 void RayTracer::init() {
@@ -130,18 +220,5 @@ void RayTracer::setViewportRect(Rect rect) {
 }
 
 void* RayTracer::getBackBuffer() {
-	
-	unsigned int blobSize = mBackBuffer.size();
-	byte* blobData = mBackBuffer.data();
-
-	for (unsigned int i = 0; i < mRect.height * 4;i++) {
-		for (unsigned int j = 0; j < mRect.width; j+=4) {
-			blobData[i * mRect.width + j + 0] = 255;
-			blobData[i * mRect.width + j + 1] = 0;
-			blobData[i * mRect.width + j + 2] = 0;
-			blobData[i * mRect.width + j + 3] = 255;
-		}
-	}
-
-	return blobData;
+	return mBackBuffer.data();
 }

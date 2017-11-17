@@ -1,6 +1,8 @@
 #ifndef VERTEXFORMAT_H
 #define VERTEXFORMAT_H
 
+#include "graphics/GraphicLibrary.h"
+
 struct VertexFormat {
 	enum class AttributeType {
 		Uint8,
@@ -19,6 +21,6 @@ struct VertexFormat {
 	bool normalized;
 	unsigned stride;
 	unsigned offsetFirst;
-
+	GraphicLibrary::AttributeType type;
 };
 #endif /*VERTEXFORMAT_H*/
