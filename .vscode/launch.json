@@ -1,76 +1,27 @@
 {
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "C++ Launch",
+            "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/build/test/Test",
+            "program": "${workspaceFolder}/build/test/Test",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceRoot}",
+            "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": true,
-            "logging": {
-                "moduleLoad": false,
-                "trace": true
-                },
-            "visualizerFile": "${workspaceRoot}/my.natvis",
-            "showDisplayString": "true",
-            "linux": {
-                "MIMode": "gdb",
-                "setupCommands": [
-                    {
-                        "description": "Enable pretty-printing for gdb",
-                        "text": "-enable-pretty-printing",
-                        "ignoreFailures": true
-                    }
-                ]
-            },
-            "osx": {
-                "MIMode": "lldb"
-            },
-            "windows": {
-                "MIDebuggerPath" : "C:/Portables/mingw64/bin/gdb.exe",
-                "MIMode": "gdb",
-                "setupCommands": [
-                    {
-                        "description": "Enable pretty-printing for gdb",
-                        "text": "-enable-pretty-printing",
-                        "ignoreFailures": true
-                    }
-                ]
-            }
-        },
-        {
-            "name": "C++ Attach",
-            "type": "cppdbg",
-            "request": "attach",
-            "program": "${workspaceRoot}/build/RenderEngine_Test",
-            "processId": "${command.pickProcess}",
-            "linux": {
-                "MIMode": "gdb",
-                "setupCommands": [
-                    {
-                        "description": "Enable pretty-printing for gdb",
-                        "text": "-enable-pretty-printing",
-                        "ignoreFailures": true
-                    }
-                ]
-            },
-            "osx": {
-                "MIMode": "lldb"
-            },
-            "windows": {
-                "MIMode": "gdb",
-                "setupCommands": [
-                    {
-                        "description": "Enable pretty-printing for gdb",
-                        "text": "-enable-pretty-printing",
-                        "ignoreFailures": true
-                    }
-                ]
-            }
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
         }
     ]
 }

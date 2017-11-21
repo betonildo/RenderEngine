@@ -5,6 +5,8 @@
 #include <memory>
 #include <string>
 
+class Transform;
+
 #ifndef COMPONENT_NAME
     #define COMPONENT_NAME(COMPONENT_TYPE) #COMPONENT_TYPE
 #endif
@@ -26,6 +28,7 @@ public:
 
     virtual void update(float dt);
     void bindActor(std::shared_ptr<Actor> actor);
+    Transform& getTransform() const;
 
 private:
     bool mActorBound = false;

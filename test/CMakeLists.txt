@@ -10,7 +10,7 @@ if (UNIX)
 endif(UNIX)
 
 # RENDER ENGINE INCLUDE DIRECTORY
-include_directories(${RenderEngine_BINARY_DIR}/export/include)
+include_directories(${RenderEngine_BINARY_DIR}/exported/include)
 
 # LINK ONLY TO RENDER ENGINE (ALL LIBRARIES LINKED TO RENDER ENGINE ARE STATICALLY LINKED)
 target_link_libraries(Test RenderEngine )
@@ -20,10 +20,9 @@ target_link_libraries(Test RenderEngine )
 MESSAGE( STATUS "RenderEngine_SOURCE_DIR:          " ${RenderEngine_SOURCE_DIR})
 
 # COPY ALL CONTENT ONLY ON WINDOWS
-if (WIN32)
-    # Copy RenderEngine deps
+#if (WIN32)
     add_custom_command(TARGET Test POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${RenderEngine_BINARY_DIR}/exported"
+    COMMAND ${CMAKE_COMMAND} -E copy
+        $<TARGET_FILE:RenderEngine>
         $<TARGET_FILE_DIR:Test>)
-endif(WIN32)
+#endif(WIN32)

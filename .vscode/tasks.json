@@ -2,15 +2,15 @@
     "version": "0.1.0",
     "tasks": [
         {
-            "taskName": "build",
-            "command": "",
+            "taskName": "build",            
             "isShellCommand": true,
             "echoCommand": true,
             "windows": {
                 "args": ["build"]
             },
             "linux": {
-                "args": ["./build.sh"]
+                "command": "./build.sh",
+                "args": []
             },
             "osx": {
                 "args": []

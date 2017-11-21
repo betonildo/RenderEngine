@@ -19,6 +19,7 @@ public:
     void setNearPlane(float nearPlane);
     void setFarPlane(float farPlane);
     void setFieldOfView(float fov);
+    float getFieldOfView() const;
     void setProjectionType(ProjectionType projType);
     const Matrix4& getProjectionMatrix() const;
     const Matrix4& getViewMatrix() const;

@@ -7,6 +7,7 @@
 #include "graphics/GraphicLibrary.h"
 #include "graphics/GraphicLibrarySingleton.h"
 #include <typeinfo>
+#include <iostream>
 
 Scene::Scene() {
     mCachedRenderersValid = false;
@@ -50,9 +51,13 @@ void Scene::add(Actor* actor) {
 }
 
 void Scene::render() {
-    gl->clearCommandList();
-    for (auto camera : mCachedCameras)
+    gl->clearObjectList();
+    gl->pushLights(mCachedLights[0], mCachedLights.size());
+
+    for (auto camera : mCachedCameras) {
+        gl->pushCamera(camera);
         for (auto renderer : mCachedRenderers)
-            renderer->render(camera, mCachedLights[0], mCachedLights.size());
-    gl->processCommandList();
+            renderer->render();
+    }
+    gl->processObjectList();
 }

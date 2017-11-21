@@ -8,6 +8,7 @@ SET(SDL_SHARED OFF CACHE BOOL "Disabling SDL2 shared" FORCE)
 SET(SDL_STATIC ON CACHE BOOL "Enabling SDL2 static" FORCE)
 if (UNIX)
     add_definitions("-Wl,Bstatic -static -ldbus-1 -ldl -lm  -Wl,--no-undefined -pthread -lSDL2 -fPIC")
+    add_definitions(-DX11_LIB=false)
 endif(UNIX)
 # SOIL
 SET(SOIL_SHARED OFF CACHE BOOL "Disabling SOIL shared" FORCE)

@@ -21,6 +21,10 @@ void Camera::setFieldOfView(float fov) {
     mProjectionMatrixCachedValid = false;
 }
 
+float Camera::getFieldOfView() const {
+    return mFieldOfView;
+}
+
 void Camera::setProjectionType(ProjectionType projType) {
     mProjectionType = projType;
     mProjectionMatrixCachedValid = false;
@@ -55,7 +59,8 @@ const Matrix4& Camera::getProjectionMatrix() const {
 const Matrix4& Camera::getViewMatrix() const {
     // TODO: TRY TO CACHE THIS CALCULATION
     const Vector3 position = mActor->transform.getLocalPosition();
-    const Vector3 target = position + mActor->transform.getFront();
+    const Vector3 front = mActor->transform.getFront();
+    const Vector3 target = position + front;
     mViewMatrix = Math::lookAt(
         position,
         position + target,

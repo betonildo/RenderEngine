@@ -52,6 +52,9 @@
         "map": "cpp",
         "queue": "cpp",
         "xtree": "cpp",
-        "*.ipp": "cpp"
-    }
+        "*.ipp": "cpp",
+        "array": "cpp",
+        "string_view": "cpp"
+    },
+    "C_Cpp.intelliSenseEngine": "Default"
 }

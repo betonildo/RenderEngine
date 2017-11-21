@@ -3,6 +3,7 @@
 #include "graphics/GraphicLibrarySingleton.h"
 #include "graphics/GraphicLibrary.h"
 #include "graphics/Rect.h"
+#include "device/Input.h"
 #include <iostream>
 #include <string.h>
 
@@ -56,6 +57,7 @@ void WindowsDevice::swapBuffers() {
 		SDL_FLIP_NONE
 	);
 	SDL_RenderPresent(mRenderer);
+    SDL_Delay(20);
 }
 
 bool WindowsDevice::isAvailable() {
@@ -69,6 +71,35 @@ void WindowsDevice::pollEvents() {
         switch(event.type) {
             case SDL_QUIT:
                 mNoQuit = false;
+                break;
+            case SDL_KEYDOWN:
+                switch(event.key.keysym.sym) {
+                    case SDLK_UP:
+                        Input::dispatchKeydownEvent(Input::Key::ArrowUp);
+                        break;
+                    case SDLK_DOWN:
+                        Input::dispatchKeydownEvent(Input::Key::ArrowDown);
+                        break;
+                    case SDLK_LEFT:
+                        Input::dispatchKeydownEvent(Input::Key::ArrowLeft);
+                        break;
+                    case SDLK_RIGHT:
+                        Input::dispatchKeydownEvent(Input::Key::ArrowRight);
+                        break;
+                    case SDLK_w:
+                        Input::dispatchKeydownEvent(Input::Key::W);
+                        break;
+                    case SDLK_a:
+                        Input::dispatchKeydownEvent(Input::Key::A);
+                        break;
+                    case SDLK_s:
+                        Input::dispatchKeydownEvent(Input::Key::S);
+                        break;
+                    case SDLK_d:
+                        Input::dispatchKeydownEvent(Input::Key::D);
+                        break;
+
+                }
                 break;
         }
     }    
@@ -123,7 +154,7 @@ void WindowsDevice::initSDL2() {
 	// Make a target texture to render too
 	mTargetTexture = SDL_CreateTexture(
 		mRenderer, 
-		SDL_PIXELFORMAT_RGBA8888,//SDL_GetWindowPixelFormat(mWindow),
+		SDL_PIXELFORMAT_RGBA32,//SDL_GetWindowPixelFormat(mWindow),
 		SDL_TEXTUREACCESS_STREAMING, 
 		mWidth, 
 		mHeight

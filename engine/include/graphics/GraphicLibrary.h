@@ -1,7 +1,9 @@
 #ifndef GRAPHICLIBRARY_H
 #define GRAPHICLIBRARY_H
 
+#include <vector>
 #include "LinearMath.h"
+#include "typedefs.h"
 
 class Material;
 class Buffer;
@@ -11,8 +13,7 @@ class VertexFormat;
 class ElementFormat;
 class Rect;
 class Light;
-
-typedef unsigned int uint;
+class Camera;
 
 class GraphicLibrary {
 
@@ -35,6 +36,7 @@ public:
 	
 	virtual void pushMaterial(const Material* material) = 0;
 	virtual void pushLights(const Light* lights, uint lightCount) = 0;
+	virtual void pushCamera(const Camera* camera) = 0;
 	virtual void pushMatrix4(MatrixType type, const Matrix4& m) = 0;
 	virtual void pushAttributeValue(AttributeType type, const void* v, uint count) = 0;
 	
@@ -50,6 +52,13 @@ public:
     virtual uint createShaderProgram(Shader* shaderSource) = 0;
     virtual uint generateVertexBuffer() = 0;
     virtual uint generateIndexBuffer() = 0;
+
+	virtual uint generateTextureBuffer() = 0;
+	virtual void bindTexture(uint textureLocation) = 0;
+    virtual void bindTextureData(Color4* data, uint width, uint height) = 0;
+    virtual void unbindTexture(uint textureLocation) = 0;
+	virtual void activeTexture(uint textureIndex) = 0;
+	virtual void deactiveTexture(uint textureIndex) = 0;
 	
 	virtual ShaderProgram* getShaderProgram(uint shaderProgramLocation) = 0;
 
@@ -57,17 +66,18 @@ public:
     virtual void unbindShaderProgram(uint shaderProgramLocation) = 0;
 
 	virtual void bindVertexBuffer(uint bufferLocation) = 0;
-	virtual void bindVertexBufferData(VertexFormat vertexFormat, void* data, uint length) = 0;
+	virtual void bindVertexBufferData(VertexFormat vertexFormat, std::vector<Vector3> data) = 0;
+	virtual void bindVertexBufferData(VertexFormat vertexFormat, std::vector<Vector2> data) = 0;
 	virtual void unbindVertexBuffer(uint bufferLocation) = 0;
 
     virtual void bindIndexBuffer(uint bufferLocation) = 0;
-	virtual void bindIndexBufferData(ElementFormat elementFormat, void* data, uint length) = 0;
+	virtual void bindIndexBufferData(ElementFormat elementFormat, std::vector<unsigned int> data) = 0;
     virtual void unbindIndexBuffer(uint bufferLocation) = 0;
 
-	virtual void pushBackCommand() = 0;
-    virtual void clearCommandList() = 0;
+	virtual void pushBackObject() = 0;
+    virtual void clearObjectList() = 0;
 	virtual void drawElements() = 0;
-    virtual void processCommandList() = 0;
+    virtual void processObjectList() = 0;
 
     virtual void init() = 0;	
     virtual void setViewportRect(Rect rect) = 0;

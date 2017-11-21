@@ -24,7 +24,7 @@ void Mesh::setPositions(std::vector<Vector3>& positions) {
 	vertexFormat.type = GraphicLibrary::AttributeType::Position;
 
 	gl->bindVertexBuffer(mPositionBuffer);
-	gl->bindVertexBufferData(vertexFormat, positions.data(), positions.size());
+	gl->bindVertexBufferData(vertexFormat, positions);
 	gl->unbindVertexBuffer(mPositionBuffer);
 }
 
@@ -39,7 +39,7 @@ void Mesh::setNormals(std::vector<Vector3>& normals) {
 	vertexFormat.type = GraphicLibrary::AttributeType::Normal;
 
 	gl->bindVertexBuffer(mNormalBuffer);
-	gl->bindVertexBufferData(vertexFormat, normals.data(), normals.size());
+	gl->bindVertexBufferData(vertexFormat, normals);
 	gl->unbindVertexBuffer(mNormalBuffer);
 }
 
@@ -54,7 +54,7 @@ void Mesh::setUV(std::vector<Vector2>& uvs) {
 	vertexFormat.type = GraphicLibrary::AttributeType::UV0;
 
 	gl->bindVertexBuffer(mUVBuffer);
-	gl->bindVertexBufferData(vertexFormat, uvs.data(), uvs.size());
+	gl->bindVertexBufferData(vertexFormat, uvs);
 	gl->unbindVertexBuffer(mUVBuffer);
 }
 
@@ -66,7 +66,7 @@ void Mesh::setIndices(std::vector<unsigned int>& indices) {
 	elementFormat.type = ElementFormat::IndexType::UnsignedInt;
 
 	gl->bindIndexBuffer(mIndexBuffer);
-	gl->bindIndexBufferData(elementFormat, indices.data(), indices.size());
+	gl->bindIndexBufferData(elementFormat, indices);
 	gl->unbindIndexBuffer(mIndexBuffer);
 }
 

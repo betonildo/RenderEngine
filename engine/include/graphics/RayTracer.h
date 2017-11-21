@@ -1,13 +1,16 @@
 #ifndef RAYTRACER_H
 #define RAYTRACER_H
 
+#include "graphics/RayTracerAttributes.h"
 #include "graphics/GraphicLibrary.h"
 #include "graphics/VertexFormat.h"
 #include "graphics/ElementFormat.h"
 #include "graphics/Rect.h"
-#include "LinearMath.h"
+#include "graphics/Object.h"
+
 #include <vector>
 #include <queue>
+
 
 class RayTracer : public GraphicLibrary {
 
@@ -16,6 +19,7 @@ public:
 
 	void pushMaterial(const Material* material);
 	void pushLights(const Light* lights, uint lightCount);
+	void pushCamera(const Camera* camera);
 	void pushMatrix4(MatrixType type, const Matrix4& m);
 	void pushAttributeValue(AttributeType type, const void* v, uint count);
 
@@ -31,91 +35,70 @@ public:
 	unsigned int generateVertexBuffer();
 	unsigned int generateIndexBuffer();
 
+	uint generateTextureBuffer();
+	void bindTexture(uint textureLocation);
+    void bindTextureData(Color4* data, uint width, uint height);
+    void unbindTexture(uint textureLocation);
+	void activeTexture(uint textureIndex);
+	void deactiveTexture(uint textureIndex);
+
 	ShaderProgram* getShaderProgram(unsigned int shaderProgramLocation);
 	void bindShaderProgram(unsigned int shaderProgramLocation);
 	void unbindShaderProgram(unsigned int shaderProgramLocation);
 	
 	void bindVertexBuffer(uint bufferLocation);
-	void bindVertexBufferData(VertexFormat vertexFormat, void* data, uint length);
+	void bindVertexBufferData(VertexFormat vertexFormat, std::vector<Vector3> data);
+	void bindVertexBufferData(VertexFormat vertexFormat, std::vector<Vector2> data);
 	void unbindVertexBuffer(uint bufferLocation);
 
 	void bindIndexBuffer(uint bufferLocation);
-	void bindIndexBufferData(ElementFormat elementFormat, void* data, uint length);
+	void bindIndexBufferData(ElementFormat elementFormat, std::vector<unsigned int> data);
 	void unbindIndexBuffer(uint bufferLocation);
 
-	void pushBackCommand();
-	void clearCommandList();
+	void pushBackObject();
+	void clearObjectList();
 	void drawElements();
-	void processCommandList();
+	void processObjectList();
 	void init();
 	void setViewportRect(Rect rect);
 	void* getBackBuffer();
 
 private:
 
-	struct IndexBuffer {
-		void* data;
-		uint length;
-		ElementFormat format;
-	};
+	LightsConfig mLights;
+	const Camera* mCamera;
 
-	struct VertexBuffer {
-		void* data;
-		uint length;
-		VertexFormat format;
-	};
+	std::vector<Object> mObjectsList;
 
-	union AttributeUnion {
-		const Vector3* vectors3;
-		const Vector2* vectors2;
-	};
-
-	struct AttributeConfig {
-		AttributeUnion values;
-		uint count;
-	};
-
-	struct LightsConfig {
-		const Light* lights;
-		uint lightCount;
-	};
-
-	struct IndicesConfig {
-		const uint* indices;
-		uint indicesCount;
-	};
-
-	struct Command {
-		LightsConfig lights;
-		const Material* material;
-		AttributeConfig positions;
-		AttributeConfig normals;
-		AttributeConfig uvs;
-		IndicesConfig indices;
-		ElementFormat format;
-		Matrix4 World, View, Projection;
-	};
-
-	std::vector<Command> mCommandList;
-
-	Command mCurrentCommand;
+	Object mCurrentObject;
+	TextureBuffer* mCurrentTextureBuffer;
 	IndexBuffer* mCurrentIndexBuffer;
 	VertexBuffer* mCurrentVertexBuffer;
-
-	typedef unsigned char byte;
 
 	std::vector< ShaderProgram > mShaderPrograms;
 	std::vector< IndexBuffer > mIndexBuffers;
 	std::vector< VertexBuffer > mVertexBuffers;
+	std::vector< TextureBuffer > mTextureBuffers;
 
-	unsigned int mShaderProgramsCount;
-	unsigned int mVertexBuffersCount;
-	unsigned int mIndexBuffersCount;
+	uint mShaderProgramsCount;
+	uint mVertexBuffersCount;
+	uint mIndexBuffersCount;
+	uint mTextureBuffersCount;
+
+	Matrix4 mMatrixCache[(uint)MatrixType::Count];
 
 	Rect mRect;
-	std::vector<byte> mBackBuffer;
+	
+	std::vector<PixelColor> mBackBuffer;
 
-	//Matrix4 mMatrixCache[(uint)MatrixType::Count];
+	PixelColor castRay(const Ray& ray, uint bounces);
+	bool rayCastHit(const Ray& ray, Object::Hit& hit);
+	Color4 calculatePointColor(const Ray& ray, const Object::Hit& hit);
+	float Diffuse(const Vector3& N, const Vector3& L);
+	float Specular(const Vector3& N, const Vector3& L, const Vector3& E, const float shininess);
+	Color Phong(const Light* light, float diffuse, float specular, Color diffuseColor, Color specularColor);
+
+	Color4 sampleTextureLinear(const TextureBuffer* textureBuffer, const Vector2& st);
 };
 
 

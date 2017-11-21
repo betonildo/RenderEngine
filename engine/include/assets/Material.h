@@ -4,6 +4,7 @@
 #include "OSExport.h"
 #include "LinearMath.h"
 #include "assets/Asset.h"
+#include "assets/Texture.h"
 #include <map>
 #include <string>
 
@@ -14,6 +15,14 @@ class ENGINE_API Material : public Asset {
 public:
 
     Material();
+
+    Texture mainTexture;
+    float shininess;
+    Color specular;
+    Color diffuse;
+    float alpha;
+    
+
     const std::map<unsigned int, Vector3>& getUniformsVector3() const;
     const std::map<unsigned int, Vector2>& getUniformsVector2() const;
     const std::map<unsigned int, Matrix4>& getUniformsMatrix4() const;

@@ -17,7 +17,7 @@ public:
 
     void setMesh(Mesh* mesh);
     void addMaterial(Material* material);
-    virtual void render(const Camera* camera, const Light* lights, unsigned int lightCount);
+    virtual void render();
 
 private:
     Mesh* mMesh;

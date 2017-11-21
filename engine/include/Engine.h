@@ -13,6 +13,7 @@
 #include "components/MeshRenderer.h"
 #include "components/Camera.h"
 #include "components/Light.h"
+#include "device/Input.h"
 #include "LinearMath.h"
 
 #endif /*ENGINE_H*/

@@ -92,15 +92,15 @@ MESSAGE( STATUS "ASSIMP_STATIC_LIB    "  ${ASSIMP_STATIC_LIB})
 
     # Copy RenderEngine dll
     add_custom_command(TARGET RenderEngine POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${RenderEngine_BINARY_DIR}/\$\(Configuration\)/"
-    "${RenderEngine_BINARY_DIR}/exported")
+    COMMAND ${CMAKE_COMMAND} -E copy
+        $<TARGET_FILE:RenderEngine>
+        "${RenderEngine_BINARY_DIR}/exported/${targetfile}")
     
     # Copy ASSIMP dll
-    add_custom_command(TARGET RenderEngine POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${Assimp_BINARY_DIR}/code/\$\(Configuration\)/"
-        "${RenderEngine_BINARY_DIR}/exported")
+    #add_custom_command(TARGET RenderEngine POST_BUILD
+    #    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    #    "${Assimp_BINARY_DIR}/code/\$\(Configuration\)/"
+    #    "${RenderEngine_BINARY_DIR}/exported")
 
     # Copy glm sources
     add_custom_command(TARGET RenderEngine POST_BUILD
