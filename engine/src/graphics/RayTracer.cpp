@@ -239,9 +239,11 @@ void RayTracer::processObjectList() {
 	Ray ray;
 	float fov = mCamera->getFieldOfView();
 	
-	const Matrix4& CameraToWorld = mCamera->getTransform().getWorldMatrix();
 	const Matrix4& CameraToView = mCamera->getViewMatrix();
-	ray.origin = CameraToWorld * Vector4(0, 0, 0, 1);
+	const Vector3 cam_pos = CameraToView[0];
+	const Vector3 cam_up  = CameraToView[1];
+	const Vector3 cam_dir = CameraToView[2];
+
 	float scale = tan(Math::radians(fov * 0.5f));
     float imageAspectRatio = mRect.width / (float)mRect.height;
 
@@ -253,10 +255,26 @@ void RayTracer::processObjectList() {
 			float x = (2.0f * (i + 0.5f) / (float)mRect.width - 1) * imageAspectRatio * scale; 
             float y = (1.0f - 2.0f * (j + 0.5f) / (float)mRect.height) * scale; 
 
-			ray.direction = CameraToView * Math::normalize(Vector4(x, y, -1.0f, 1.0f));
+			// ray.direction = CameraToView * Math::normalize(Vector4(x, y, -1.0f, 1.0f));
+			ray = ComputeCameraRay(cam_pos, cam_dir, cam_up, i, j);
 			mBackBuffer[i + mRect.width * j] = castRay(ray, 2);
 		}
 	}
+}
+
+Ray RayTracer::ComputeCameraRay(const Vector3& cam_pos, const Vector3& cam_dir, const Vector3& cam_up, int i, int j) {
+	Vector3 cam_right = Math::cross(cam_up, cam_dir);
+	const float width = mRect.width; // pixels across 
+	const float height = mRect.height; // pixels high 
+	float normalized_i = (i / width) - 0.5f;
+	float normalized_j = (j / height) - 0.5f; 
+	Vector3 image_point = normalized_i * cam_right + normalized_j * cam_up + cam_pos + cam_dir; 
+	Vector3 ray_direction = image_point - cam_pos; 
+	
+	Ray ray;
+	ray.origin = cam_pos;
+	ray.direction = ray_direction;
+	return ray;
 }
 
 PixelColor RayTracer::castRay(const Ray& ray, uint bounces) {

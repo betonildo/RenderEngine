@@ -48,61 +48,56 @@ public:
 		material->specular = {0.8f, 0.0f, 0.8f};
 		material->diffuse = {0.4f, 0.4f, 0.0f};
 		material->shininess = 1.0f;
+		material->mainTexture = Resources::loadTexture("/home/gilberto/Projects/RenderEngine/test/checkerboard.png");
+
+
 		renderer->setMesh(box);
 		renderer->addMaterial(material);
 
+		Vector3* rotation = new Vector3(0, 0, 0);
         
 		Input::addKeydownListener([=](Input::Key key) {
-			Quaternion applyRotation = cameraMan->transform.getLocalRotation();
-			Vector3 applyPosition = sphereHolder->transform.getLocalPosition();
+			
+			Vector3 position = cameraMan->transform.getLocalPosition();
 			switch(key) {
 				case Input::Key::W:
-					applyPosition.z += 1.0f;
+					position.z += 1.0f;
 					break;
 
 				case Input::Key::S:
-					applyPosition.z -= 1.0f;
+					position.z -= 1.0f;
 					break;
 
 				case Input::Key::D:
-					applyPosition.x += 1.0f;
+					position.x += 1.0f;
 					break;
 
 				case Input::Key::A:
-					applyPosition.x -= 1.0f;
+					position.x -= 1.0f;
 					break;
 
 				case Input::Key::ArrowUp:
-					applyRotation.x = 1;
-					applyRotation.y = 0;
-					applyRotation.z = 0;
-					applyRotation.w += Math::radians(10.0f);
+					rotation->x = Math::radians(10.0f);
 					break;
 
 				case Input::Key::ArrowDown:
-					applyRotation.x = 1;
-					applyRotation.y = 0;
-					applyRotation.z = 0;
-					applyRotation.w -= Math::radians(10.0f);
+					rotation->x -= Math::radians(10.0f);
 					break;
 
 				case Input::Key::ArrowLeft:
-					applyRotation.x = 0;
-					applyRotation.y = 1;
-					applyRotation.z = 0;
-					applyRotation.w += Math::radians(10.0f);
+					rotation->z += Math::radians(10.0f);
 					break;
 
 				case Input::Key::ArrowRight:
-					applyRotation.x = 0;
-					applyRotation.y = 1;
-					applyRotation.z = 0;
-					applyRotation.w -= Math::radians(10.0f);
+					rotation->z -= Math::radians(10.0f);
 					break;
 			}
 
-			cameraMan->transform.setLocalRotation(applyRotation);
-			sphereHolder->transform.setLocalPosition(applyPosition);
+			Vector3 r = *rotation;
+
+			cameraMan->transform.setLocalRotation(fromEuler(r));
+			cameraMan->transform.setLocalPosition(position);
+
 		});
 
 		add(cameraMan);
@@ -118,6 +113,13 @@ public:
 
     }
 
+	Quaternion fromEuler(const Vector3& EulerAngle) {
+		Quaternion QuatAroundX = Quaternion(1.0, 0.0, 0.0, EulerAngle.x);
+		Quaternion QuatAroundY = Quaternion(0.0, 1.0, 0.0, EulerAngle.y);
+		Quaternion QuatAroundZ = Quaternion(0.0, 0.0, 1.0, EulerAngle.z);
+		Quaternion finalOrientation = QuatAroundX * QuatAroundY * QuatAroundZ;
+		return finalOrientation;
+	}
 };
 
 

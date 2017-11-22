@@ -12,6 +12,7 @@ class ENGINE_API Texture : public Asset {
 
 public:
     Texture();
+    Texture(const Texture& other);
     ~Texture();
 
     void setData(byte* data, TextureFormat format);

@@ -1,4 +1,7 @@
 #include "Application.h"
+#include "assets/Resources.h"
+#include "loaders/TextureLoader.h"
+#include "loaders/SoilTextureLoader.h"
 #include "device/DisplayDevice.h"
 #include "device/WindowsDevice.h"
 #include "scene/Scene.h"
@@ -20,7 +23,7 @@ Application::~Application() {
 void Application::start() {
     // TODO: REORGANIZE THIS TO A METHOD AND TO SELECT PROPERLY THE GRAPHICS LIBRARY
     GraphicLibrarySingleton::setInstance<RayTracer>();
-    
+    Resources::setTextureLoaderInstance<SoilTextureLoader>();
     identifyOS();
     initializeDevice();
 

@@ -7,6 +7,10 @@ Texture::Texture() {
     mTextureLocation = gl->generateTextureBuffer();
 }
 
+Texture::Texture(const Texture& other) {
+    mTextureLocation = other.mTextureLocation;
+}
+
 Texture::~Texture() {
     // TODO: unload texture buffer
 }

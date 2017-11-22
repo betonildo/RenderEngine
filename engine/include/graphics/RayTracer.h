@@ -90,6 +90,7 @@ private:
 	
 	std::vector<PixelColor> mBackBuffer;
 
+	Ray ComputeCameraRay(const Vector3& cam_pos, const Vector3& cam_dir, const Vector3& cam_up, int i, int j);
 	PixelColor castRay(const Ray& ray, uint bounces);
 	bool rayCastHit(const Ray& ray, RaycastHit& hit);
 	Color4 calculatePointColor(const Ray& ray, const RaycastHit& hit);
