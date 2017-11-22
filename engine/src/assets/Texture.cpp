@@ -21,6 +21,14 @@ void Texture::setData(byte* data, TextureFormat format) {
     gl->unbindTexture(mTextureLocation);
 }
 
+void Texture::bind() {
+    gl->bindTexture(mTextureLocation);
+}
+
+void Texture::unbind() {
+    gl->unbindTexture(mTextureLocation);
+}
+
 void Texture::active(uint textureIndex) {
     gl->activeTexture(textureIndex);
 }

@@ -20,14 +20,16 @@ struct ENGINE_API Object
 
     // TODO: Setup uv0, uv1, ... with textures0, 1, ... units like an index activation of the array
 
-    const Material *material;
-    TextureBuffer* texture;
+    Material* material;
+    TextureBuffer* texture[4];
     VertexBuffer* positions;
     VertexBuffer* normals;
     VertexBuffer* uvs;
     IndexBuffer* indices;
     ElementFormat format;
     Matrix4 World;
+
+    Object();
 
     bool intersect(const Ray& ray, RaycastHit& hit);
     bool intersectTriangle(const Triangle& triangle, const Ray& ray, RaycastHit& hit);

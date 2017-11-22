@@ -16,6 +16,8 @@ public:
     ~Texture();
 
     void setData(byte* data, TextureFormat format);
+    void bind();
+    void unbind();
     void active(uint textureIndex);
     void deactive(uint textureIndex);
 

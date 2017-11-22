@@ -2,6 +2,18 @@
 #include "graphics/RaycastHit.h"
 #include "graphics/RayTracerAttributes.h"
 
+Object::Object() {
+    material = nullptr;
+    texture[0] = nullptr;
+    texture[1] = nullptr;
+    texture[2] = nullptr;
+    texture[3] = nullptr;
+    positions = nullptr;
+    normals = nullptr;
+    uvs = nullptr;
+    indices = nullptr;
+}
+
 bool Object::intersect(const Ray& ray, RaycastHit& hit) {
 
     for (uint i = 0; i < indices->data.size(); i+=3) {

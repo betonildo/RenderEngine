@@ -36,7 +36,9 @@ void RayTracer::pushMatrix4(MatrixType type, const Matrix4& m) {
 }
 
 void RayTracer::pushMaterial(const Material* material) {
-	mCurrentObject.material = material;
+	mCurrentObject.material = (Material*)material;
+	mCurrentObject.material->mainTexture.bind();
+	mCurrentObject.material->mainTexture.active(0);
 }
 
 void RayTracer::pushLights(const Light* lights, uint lightCount) {
@@ -157,7 +159,7 @@ void RayTracer::unbindTexture(uint textureLocation) {
 }
 
 void RayTracer::activeTexture(uint textureIndex) {
-	mCurrentObject.texture = &mTextureBuffers[textureIndex];
+	mCurrentObject.texture[0] = mCurrentTextureBuffer;
 }
 
 void RayTracer::deactiveTexture(uint textureIndex) {
@@ -240,9 +242,10 @@ void RayTracer::processObjectList() {
 	float fov = mCamera->getFieldOfView();
 	
 	//const Matrix4& CameraToView = mCamera->getViewMatrix();
-	const Vector3 cam_pos = mCamera->getTransform().getLocalPosition();//CameraToView[2];
-	const Vector3 cam_up  = mCamera->getTransform().getUp();//CameraToView[1];
-	const Vector3 cam_dir = mCamera->getTransform().getFront();//CameraToView[0];
+	const Vector3 cam_pos 	= mCamera->getTransform().getLocalPosition();//CameraToView[2];
+	const Vector3 cam_up  	= mCamera->getTransform().getUp();//CameraToView[1];
+	const Vector3 cam_dir 	= mCamera->getTransform().getFront();//CameraToView[0];
+	const Vector3 cam_right = mCamera->getTransform().getRight();
 
 	float scale = tan(Math::radians(fov * 0.5f));
     float imageAspectRatio = mRect.width / (float)mRect.height;
@@ -256,14 +259,13 @@ void RayTracer::processObjectList() {
             float y = (1.0f - 2.0f * (j + 0.5f) / (float)mRect.height) * scale; 
 
 			// ray.direction = CameraToView * Math::normalize(Vector4(x, y, -1.0f, 1.0f));
-			ray = ComputeCameraRay(cam_pos, cam_dir, cam_up, i, j);
+			ray = ComputeCameraRay(cam_pos, cam_dir, cam_up, cam_right, i, j);
 			mBackBuffer[i + mRect.width * j] = castRay(ray, 2);
 		}
 	}
 }
 
-Ray RayTracer::ComputeCameraRay(const Vector3& cam_pos, const Vector3& cam_dir, const Vector3& cam_up, int i, int j) {
-	Vector3 cam_right = Math::cross(cam_up, cam_dir);
+Ray RayTracer::ComputeCameraRay(const Vector3& cam_pos, const Vector3& cam_dir, const Vector3& cam_up, const Vector3& cam_right, int i, int j) {
 	const float width = mRect.width; // pixels across 
 	const float height = mRect.height; // pixels high 
 	float normalized_i = (i / width) - 0.5f;
@@ -296,6 +298,19 @@ PixelColor RayTracer::castRay(const Ray& ray, uint bounces) {
 	return {128, 128, 255, 255};
 }
 
+bool RayTracer::rayCastHit(const Ray& ray,  RaycastHit& hit) {
+
+	float nearest = Infinity;
+	for (Object& object : mObjectsList)
+		if (object.intersect(ray, hit))
+			if (hit.closest < nearest) {
+				hit.object = &object;
+				nearest = hit.closest;
+			}
+
+	return hit.object != nullptr;
+}
+
 Color4 RayTracer::calculatePointColor(const Ray& ray, const RaycastHit& hit) {
 
 	Vector3 hitPoint = ray.origin + ray.direction * hit.closest;
@@ -308,8 +323,8 @@ Color4 RayTracer::calculatePointColor(const Ray& ray, const RaycastHit& hit) {
 	Color4 specularColor(0, 0, 0, 1);
 	Color4 sample(1, 1, 1, 1);
 
-	if (hit.object->texture != nullptr) {
-		sample = sampleTextureLinear(hit.object->texture, st);
+	if (hit.object->texture[0] != nullptr) {
+		sample = sampleTextureLinear(hit.object->texture[0], st);
 	}
 
 	Vector3 shadowPointOrig = (Math::dot(ray.direction, N) < 0) ? hitPoint + N * bias: hitPoint - N * bias;
@@ -341,19 +356,6 @@ Color4 RayTracer::calculatePointColor(const Ray& ray, const RaycastHit& hit) {
 	}
 
 	return specularColor;
-}
-
-bool RayTracer::rayCastHit(const Ray& ray,  RaycastHit& hit) {
-
-	float nearest = Infinity;
-	for (Object& object : mObjectsList)
-		if (object.intersect(ray, hit))
-			if (hit.closest < nearest) {
-				hit.object = &object;
-				nearest = hit.closest;
-			}
-
-	return hit.object != nullptr;
 }
 
 float RayTracer::Diffuse(const Vector3& N, const Vector3& L) {

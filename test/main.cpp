@@ -32,7 +32,7 @@ public:
 
 		sphereHolder->transform.setLocalPosition(Vector3(0, 0, -5));
 		sphereHolder->transform.setLocalScale(Vector3(0.5, 0.5, 0.5));
-		sphereHolder->transform.setLocalRotation(Quaternion(0, 1, 0, Math::radians(90.0f)));
+		//sphereHolder->transform.setLocalRotation(Quaternion(0, 1, 0, Math::radians(90.0f)));
 
 		Quaternion applyRotation(0, 0, 0, 0);
 		cameraMan->transform.setLocalPosition(Vector3(0, 0, 10));
@@ -55,27 +55,29 @@ public:
 		renderer->addMaterial(material);
 
 		Vector3* rotation = new Vector3(0, 0, 0);
+		Vector3* position = new Vector3(cameraMan->transform.getLocalPosition());
         
 		Input::addKeydownListener([=](Input::Key key) {
 			
 			const Matrix4& worldMatrix = cameraMan->transform.getWorldMatrix();
 
-			Vector3 position = cameraMan->transform.getLocalPosition();
+			Vector3 front = cameraMan->transform.getFront();
+			Vector3 right = cameraMan->transform.getRight();
 			switch(key) {
 				case Input::Key::W:
-					position.z += 1.0f;
+					(*position) += Math::normalize(front) * 0.2f;
 					break;
 
 				case Input::Key::S:
-					position.z -= 1.0f;
+					(*position) -= Math::normalize(front) * 0.2f;
 					break;
 
 				case Input::Key::D:
-					position.x += 1.0f;
+					(*position) += Math::normalize(right) * 0.1f;
 					break;
 
 				case Input::Key::A:
-					position.x -= 1.0f;
+					(*position) -= Math::normalize(right) * 0.1f;
 					break;
 
 				case Input::Key::ArrowUp:
@@ -96,22 +98,13 @@ public:
 			}
 
 			Vector3 r = *rotation;
-
-			//std::cout << "Rotation: " << Math::to_string(r) << std::endl;
-			//std::cout << "Position: " << Math::to_string(position) << std::endl;
 			
-			std::cout << "Up   vec: " << Math::to_string(cameraMan->transform.getUp()) << std::endl;
-			std::cout << "Rightvec: " << Math::to_string(cameraMan->transform.getRight()) << std::endl;
-			std::cout << "Frontvec: " << Math::to_string(cameraMan->transform.getFront()) << std::endl;
-			
-			// std::cout << "World Matrix: " << std::endl;
-			// std::cout << Math::to_string(worldMatrix[0]) << std::endl;
-			// std::cout << Math::to_string(worldMatrix[1]) << std::endl;
-			// std::cout << Math::to_string(worldMatrix[2]) << std::endl;
-			// std::cout << Math::to_string(worldMatrix[3]) << std::endl;
+			cameraMan->transform.setLocalPosition((*position));
+			// std::cout << "Up   vec: " << Math::to_string(cameraMan->transform.getUp()) << std::endl;
+			// std::cout << "Rightvec: " << Math::to_string(cameraMan->transform.getRight()) << std::endl;
+			// std::cout << "Frontvec: " << Math::to_string(cameraMan->transform.getFront()) << std::endl;
+			std::cout << "Position: " << Math::to_string(cameraMan->transform.getLocalPosition()) << std::endl;
 			cameraMan->transform.setLocalRotation(fromEuler(r));
-			cameraMan->transform.setLocalPosition(position);
-
 		});
 
 		add(cameraMan);

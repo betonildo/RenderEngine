@@ -102,5 +102,5 @@ Vector3 Transform::getUp() const {
 }
 
 Vector3 Transform::getRight() const {
-    return Vector3(mWorldMatrix[0][0], mWorldMatrix[1][0], mWorldMatrix[2][0]);
+    return -Vector3(mWorldMatrix[0][0], mWorldMatrix[1][0], mWorldMatrix[2][0]);
 }
