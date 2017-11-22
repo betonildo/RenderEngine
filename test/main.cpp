@@ -48,7 +48,7 @@ public:
 		material->specular = {0.8f, 0.0f, 0.8f};
 		material->diffuse = {0.4f, 0.4f, 0.0f};
 		material->shininess = 1.0f;
-		material->mainTexture = Resources::loadTexture("/home/gilberto/Projects/RenderEngine/test/checkerboard.png");
+		material->mainTexture = Resources::loadTexture("checkerboard.png");
 
 
 		renderer->setMesh(box);
@@ -58,6 +58,8 @@ public:
         
 		Input::addKeydownListener([=](Input::Key key) {
 			
+			const Matrix4& worldMatrix = cameraMan->transform.getWorldMatrix();
+
 			Vector3 position = cameraMan->transform.getLocalPosition();
 			switch(key) {
 				case Input::Key::W:
@@ -77,7 +79,7 @@ public:
 					break;
 
 				case Input::Key::ArrowUp:
-					rotation->x = Math::radians(10.0f);
+					rotation->x += Math::radians(10.0f);
 					break;
 
 				case Input::Key::ArrowDown:
@@ -85,16 +87,28 @@ public:
 					break;
 
 				case Input::Key::ArrowLeft:
-					rotation->z += Math::radians(10.0f);
+					rotation->y += Math::radians(10.0f);
 					break;
 
 				case Input::Key::ArrowRight:
-					rotation->z -= Math::radians(10.0f);
+					rotation->y -= Math::radians(10.0f);
 					break;
 			}
 
 			Vector3 r = *rotation;
 
+			//std::cout << "Rotation: " << Math::to_string(r) << std::endl;
+			//std::cout << "Position: " << Math::to_string(position) << std::endl;
+			
+			std::cout << "Up   vec: " << Math::to_string(cameraMan->transform.getUp()) << std::endl;
+			std::cout << "Rightvec: " << Math::to_string(cameraMan->transform.getRight()) << std::endl;
+			std::cout << "Frontvec: " << Math::to_string(cameraMan->transform.getFront()) << std::endl;
+			
+			// std::cout << "World Matrix: " << std::endl;
+			// std::cout << Math::to_string(worldMatrix[0]) << std::endl;
+			// std::cout << Math::to_string(worldMatrix[1]) << std::endl;
+			// std::cout << Math::to_string(worldMatrix[2]) << std::endl;
+			// std::cout << Math::to_string(worldMatrix[3]) << std::endl;
 			cameraMan->transform.setLocalRotation(fromEuler(r));
 			cameraMan->transform.setLocalPosition(position);
 
@@ -114,23 +128,20 @@ public:
     }
 
 	Quaternion fromEuler(const Vector3& EulerAngle) {
-		Quaternion QuatAroundX = Quaternion(1.0, 0.0, 0.0, EulerAngle.x);
-		Quaternion QuatAroundY = Quaternion(0.0, 1.0, 0.0, EulerAngle.y);
-		Quaternion QuatAroundZ = Quaternion(0.0, 0.0, 1.0, EulerAngle.z);
-		Quaternion finalOrientation = QuatAroundX * QuatAroundY * QuatAroundZ;
-		return finalOrientation;
+		// Quaternion QuatAroundX = Quaternion(1.0, 0.0, 0.0, EulerAngle.x);
+		// Quaternion QuatAroundY = Quaternion(0.0, 1.0, 0.0, EulerAngle.y);
+		// Quaternion QuatAroundZ = Quaternion(0.0, 0.0, 1.0, EulerAngle.z);
+		// Quaternion finalOrientation = QuatAroundX * QuatAroundY * QuatAroundZ;
+		// return finalOrientation;
+
+		return Quaternion(EulerAngle);
 	}
 };
 
 
 int main( int argc, char **argv ) {
-
-    Vector3 v = {1,1,1};
-
     Application app;
     app.setScene(new MyScene());
     app.start();
-
-
     return 0;
 }

@@ -239,10 +239,10 @@ void RayTracer::processObjectList() {
 	Ray ray;
 	float fov = mCamera->getFieldOfView();
 	
-	const Matrix4& CameraToView = mCamera->getViewMatrix();
-	const Vector3 cam_pos = CameraToView[0];
-	const Vector3 cam_up  = CameraToView[1];
-	const Vector3 cam_dir = CameraToView[2];
+	//const Matrix4& CameraToView = mCamera->getViewMatrix();
+	const Vector3 cam_pos = mCamera->getTransform().getLocalPosition();//CameraToView[2];
+	const Vector3 cam_up  = mCamera->getTransform().getUp();//CameraToView[1];
+	const Vector3 cam_dir = mCamera->getTransform().getFront();//CameraToView[0];
 
 	float scale = tan(Math::radians(fov * 0.5f));
     float imageAspectRatio = mRect.width / (float)mRect.height;
