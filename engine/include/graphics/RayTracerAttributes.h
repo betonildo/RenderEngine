@@ -6,10 +6,27 @@
 #include "graphics/ElementFormat.h"
 #include <array>
 #include <vector>
+#include <climits>
+#include <cfloat>
+
 #include "graphics/TextureFormat.h"
 #include "typedefs.h"
 
-constexpr float Infinity = std::numeric_limits<float>::max();
+static constexpr float Infinity = std::numeric_limits<float>::max();
+
+struct PixelColor{
+    union{
+        struct {
+            byte r, g, b, a;
+        };
+
+        byte data[4];
+    };
+
+    inline byte& operator[](byte i) {
+        return data[i];
+    }
+};
 
 struct IndexBuffer
 {
@@ -26,13 +43,23 @@ struct VertexBuffer
 
 struct TextureBuffer
 {
-    Color4* data;
-    uint width;
-    uint height;
+    byte* data;
+    TextureFormat format;
 
-    inline const Color4& operator()(uint i, uint j) {
-        return data[i + width * j];
+    inline void sample(Color4& colorout, uint i, uint j) const {
+        byte* rgba = &data[i + format.width * j];
+        colorout.r = rgba[0] / 255;
+        colorout.g = rgba[1] / 255;
+        colorout.b = rgba[2] / 255;
+        colorout.a = rgba[3] / 255;
     }
+
+    // inline void sample(Color& colorout, uint i, uint j) const {
+    //     byte* rgb = &data[i + format.width * j];
+    //     colorout.r = rgb[0] / 255;
+    //     colorout.g = rgb[1] / 255;
+    //     colorout.b = rgb[2] / 255;
+    // }
 };
 
 struct Triangle {

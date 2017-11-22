@@ -19,8 +19,4 @@ typedef glm::mat4 Matrix4;
 typedef glm::mat3 Matrix3;
 typedef glm::quat Quaternion;
 
-inline float deg2rad(const float &deg) { 
-    return deg * M_PI / 180; 
-} 
-
 #endif /*LINEARMATH_H*/

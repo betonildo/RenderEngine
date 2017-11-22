@@ -8,5 +8,5 @@ Mesh* Resources::loadMesh(const char* path) {
 }
 
 Texture* Resources::loadTexture(const char* path) {
-    
+    return nullptr;
 }

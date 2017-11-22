@@ -9,9 +9,10 @@ class Material;
 class Buffer;
 class ShaderProgram;
 class Shader;
-class VertexFormat;
-class ElementFormat;
-class Rect;
+struct TextureFormat;
+struct VertexFormat;
+struct ElementFormat;
+struct Rect;
 class Light;
 class Camera;
 
@@ -55,7 +56,7 @@ public:
 
 	virtual uint generateTextureBuffer() = 0;
 	virtual void bindTexture(uint textureLocation) = 0;
-    virtual void bindTextureData(Color4* data, uint width, uint height) = 0;
+    virtual void bindTextureData(byte* data, TextureFormat format) = 0;
     virtual void unbindTexture(uint textureLocation) = 0;
 	virtual void activeTexture(uint textureIndex) = 0;
 	virtual void deactiveTexture(uint textureIndex) = 0;

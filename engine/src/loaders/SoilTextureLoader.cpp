@@ -2,9 +2,6 @@
 #include "LinearMath.h"
 #include "SOIL.h"
 
-void SoilTextureLoader::load(const char* path, Color4** pixels, uint& width, uint& height) {
-
-    int channels;
-    byte *ht_map = SOIL_load_image(path, &width, &height, &channels, SOIL_LOAD_RGBA);
-    pixels[0] = (Color4*)(ht_map);
+byte* SoilTextureLoader::load(const char* path, TextureFormat& format) {
+    return SOIL_load_image(path, &format.width, &format.height, &format.channels, SOIL_LOAD_RGBA);
 }

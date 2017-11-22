@@ -21,6 +21,7 @@ public:
     Color specular;
     Color diffuse;
     float alpha;
+    float reflection;
     
 
     const std::map<unsigned int, Vector3>& getUniformsVector3() const;

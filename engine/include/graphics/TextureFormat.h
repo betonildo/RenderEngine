@@ -1,9 +1,13 @@
 #ifndef TEXTUREFORMAT_H
 #define TEXTUREFORMAT_H
 
-enum class  TextureFormat {
-    RGBA8888,
-    RGBA32
+#include "typedefs.h"
+
+struct TextureFormat {
+
+    uint width, height;
+    byte channels;
+
 };
 
 #endif /*TEXTUREFORMAT_H*/

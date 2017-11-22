@@ -7,9 +7,8 @@
 #include "graphics/ElementFormat.h"
 #include "graphics/Rect.h"
 #include "graphics/Object.h"
-
+#include "graphics/RaycastHit.h"
 #include <vector>
-#include <queue>
 
 
 class RayTracer : public GraphicLibrary {
@@ -37,7 +36,7 @@ public:
 
 	uint generateTextureBuffer();
 	void bindTexture(uint textureLocation);
-    void bindTextureData(Color4* data, uint width, uint height);
+    void bindTextureData(byte* data, TextureFormat format);
     void unbindTexture(uint textureLocation);
 	void activeTexture(uint textureIndex);
 	void deactiveTexture(uint textureIndex);
@@ -92,8 +91,8 @@ private:
 	std::vector<PixelColor> mBackBuffer;
 
 	PixelColor castRay(const Ray& ray, uint bounces);
-	bool rayCastHit(const Ray& ray, Object::Hit& hit);
-	Color4 calculatePointColor(const Ray& ray, const Object::Hit& hit);
+	bool rayCastHit(const Ray& ray, RaycastHit& hit);
+	Color4 calculatePointColor(const Ray& ray, const RaycastHit& hit);
 	float Diffuse(const Vector3& N, const Vector3& L);
 	float Specular(const Vector3& N, const Vector3& L, const Vector3& E, const float shininess);
 	Color Phong(const Light* light, float diffuse, float specular, Color diffuseColor, Color specularColor);

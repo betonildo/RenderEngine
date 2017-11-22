@@ -11,9 +11,9 @@ Texture::~Texture() {
     // TODO: unload texture buffer
 }
 
-void Texture::setData(Color4* data, uint width, uint height) {
+void Texture::setData(byte* data, TextureFormat format) {
     gl->bindTexture(mTextureLocation);
-    gl->bindTextureData(data, width, height);
+    gl->bindTextureData(data, format);
     gl->unbindTexture(mTextureLocation);
 }
 

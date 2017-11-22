@@ -2,20 +2,19 @@
 #define TEXTURE_H
 
 #include "OSExport.h"
+#include "assets/Asset.h"
 #include "typedefs.h"
+#include "graphics/TextureFormat.h"
 
-enum class TextureFormat;
-class Color4;
-class Vector2;
 class GraphicLibrary;
 
-class ENGINE_API Texture {
+class ENGINE_API Texture : public Asset {
 
 public:
     Texture();
     ~Texture();
 
-    void setData(Color4* data, uint width, uint height);
+    void setData(byte* data, TextureFormat format);
     void active(uint textureIndex);
     void deactive(uint textureIndex);
 

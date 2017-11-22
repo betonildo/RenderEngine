@@ -4,12 +4,12 @@
 #include "OSExport.h"
 #include "typedefs.h"
 
-class Color4;
+class TextureFormat;
 
 class ENGINE_API TextureLoader {
 
 public:
-    virtual void load(const char* path, Color4** pixels, uint& width, uint& height) = 0;
+    virtual byte* load(const char* path, TextureFormat& format) = 0;
 };
 
 #endif /*TEXTURELOADER_H*/

@@ -6,7 +6,8 @@
             "isShellCommand": true,
             "echoCommand": true,
             "windows": {
-                "args": ["build"]
+                "command": "build",
+                "args": []
             },
             "linux": {
                 "command": "./build.sh",

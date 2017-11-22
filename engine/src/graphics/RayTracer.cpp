@@ -1,14 +1,14 @@
 #include "graphics/RayTracer.h"
+#include "graphics/TextureFormat.h"
 #include "graphics/VertexFormat.h"
 #include "graphics/ElementFormat.h"
 #include "graphics/ShaderProgram.h"
+#include "graphics/RaycastHit.h"
 #include "components/Camera.h"
 #include "components/Light.h"
 #include "scene/Transform.h"
 #include "assets/Material.h"
-#include <iostream>
-
-using namespace std;
+#include <string.h>
 
 RayTracer::RayTracer() {
 	mShaderProgramsCount = 0;
@@ -145,11 +145,11 @@ void RayTracer::bindTexture(uint textureLocation) {
 	mCurrentTextureBuffer = &mTextureBuffers[textureLocation];
 }
 
-void RayTracer::bindTextureData(Color4* data, uint width, uint height) {
-	mCurrentTextureBuffer->data = new Color4[width * height];
-	memcpy(mCurrentTextureBuffer->data, data, width * height);	
-	mCurrentTextureBuffer->width = width;
-	mCurrentTextureBuffer->height = height;
+void RayTracer::bindTextureData(byte* data, TextureFormat format) {
+	uint byte_size = format.width * format.height * format.channels;
+	mCurrentTextureBuffer->data = new byte[byte_size];
+	memcpy(mCurrentTextureBuffer->data, data, byte_size);
+	mCurrentTextureBuffer->format = format;
 }
 
 void RayTracer::unbindTexture(uint textureLocation) {
@@ -211,7 +211,7 @@ void RayTracer::unbindIndexBuffer(uint bufferLocation) {
 }
 
 void RayTracer::pushBackObject() {
-	bzero(&mCurrentObject, sizeof(Object));
+	memset(&mCurrentObject, 0, sizeof(Object));
 }
 
 void RayTracer::clearObjectList() {
@@ -239,12 +239,10 @@ void RayTracer::processObjectList() {
 	Ray ray;
 	float fov = mCamera->getFieldOfView();
 	
-	auto CameraToWorld = mCamera->getTransform().getWorldMatrix();
-	auto CameraToView = mCamera->getViewMatrix();
-	auto CameraProjection = mCamera->getProjectionMatrix();
-	auto MVP = CameraToWorld * CameraToView * CameraProjection;
+	const Matrix4& CameraToWorld = mCamera->getTransform().getWorldMatrix();
+	const Matrix4& CameraToView = mCamera->getViewMatrix();
 	ray.origin = CameraToWorld * Vector4(0, 0, 0, 1);
-	float scale = tan(deg2rad(fov * 0.5));
+	float scale = tan(Math::radians(fov * 0.5f));
     float imageAspectRatio = mRect.width / (float)mRect.height;
 
 	Vector3 front = mCamera->getTransform().getFront();
@@ -252,10 +250,10 @@ void RayTracer::processObjectList() {
 	for (unsigned int j = 0; j < mRect.height; j++) {
 		for (unsigned int i = 0; i < mRect.width; i++) {
 
-			float x = (2 * (i + 0.5) / (float)mRect.width - 1) * imageAspectRatio * scale; 
-            float y = (1 - 2 * (j + 0.5) / (float)mRect.height) * scale; 
+			float x = (2.0f * (i + 0.5f) / (float)mRect.width - 1) * imageAspectRatio * scale; 
+            float y = (1.0f - 2.0f * (j + 0.5f) / (float)mRect.height) * scale; 
 
-			ray.direction = CameraToView * Math::normalize(Vector4(x, y, 1, 1) * Vector4(front, 1));
+			ray.direction = CameraToView * Math::normalize(Vector4(x, y, -1.0f, 1.0f));
 			mBackBuffer[i + mRect.width * j] = castRay(ray, 2);
 		}
 	}
@@ -263,26 +261,26 @@ void RayTracer::processObjectList() {
 
 PixelColor RayTracer::castRay(const Ray& ray, uint bounces) {
 
-	Object::Hit hit;
+	RaycastHit hit;
 	hit.object = nullptr;
-	hit.near = Infinity;
+	hit.closest = Infinity;
 	if (rayCastHit(ray, hit)) {
 
 		Color4 diffuseColor = calculatePointColor(ray, hit);
 		PixelColor pixel;
-		pixel[0] = diffuseColor.r * 255; 
-		pixel[1] = diffuseColor.g * 255;
-		pixel[2] = diffuseColor.b * 255;
-		pixel[3] = diffuseColor.a * 255;
+		pixel.r = (byte)diffuseColor.r * 255; 
+		pixel.g = (byte)diffuseColor.g * 255;
+		pixel.b = (byte)diffuseColor.b * 255;
+		pixel.a = (byte)diffuseColor.a * 255;
 		return pixel;
 	}
 
 	return {128, 128, 255, 255};
 }
 
-Color4 RayTracer::calculatePointColor(const Ray& ray, const Object::Hit& hit) {
+Color4 RayTracer::calculatePointColor(const Ray& ray, const RaycastHit& hit) {
 
-	Vector3 hitPoint = ray.origin + ray.direction * hit.near;
+	Vector3 hitPoint = ray.origin + ray.direction * hit.closest;
 	Vector3 N; // normal 
 	Vector2 st; // st coordinates
 	hit.object->getSurfaceProperties(hit.index, hit.uv, N, st);
@@ -305,47 +303,48 @@ Color4 RayTracer::calculatePointColor(const Ray& ray, const Object::Hit& hit) {
 		// square of the distance between hitPoint and the light
 		float lightDistance2 = Math::dot(lightDir, lightDir);
 		lightDir = Math::normalize(lightDir);
-		float LdotN = Math::max(0.0f, Math::dot(lightDir, N));
+		float LdotN = max(0.0f, Math::dot(lightDir, N));
 		float tNearShadow = Infinity;
 
 		// Verify if in the light or in the shadow
 		Ray ray;
 		ray.origin = shadowPointOrig;
 		ray.direction = lightDir;
-		Object::Hit newHit;
+		RaycastHit newHit;
 
 		bool inShadow = rayCastHit(ray, newHit) && tNearShadow * tNearShadow < lightDistance2;
 		lightAmt += (1 - inShadow) * light->intensity * LdotN;
 		Vector3 reflectionDirection = Math::reflect(-lightDir, N);
 		float R_dot_Dir = fabs(Math::dot(reflectionDirection, ray.direction));
-		float R_dot_Dir_Clamp = Math::max(0.f, R_dot_Dir);
+		float R_dot_Dir_Clamp = max(0.0f, R_dot_Dir);
 		float specularTerm = powf(R_dot_Dir_Clamp, hit.object->material->shininess);
-		specularColor += sample * specularTerm * hit.object->material->specular * light->intensity;
+		// sample += specularTerm * hit.object->material->specular * light->intensity;
+		specularColor += sample;
 	}
 
 	return specularColor;
 }
 
-bool RayTracer::rayCastHit(const Ray& ray,  Object::Hit& hit) {
+bool RayTracer::rayCastHit(const Ray& ray,  RaycastHit& hit) {
 
 	float nearest = Infinity;
 	for (Object& object : mObjectsList)
 		if (object.intersect(ray, hit))
-			if (hit.near < nearest) {
+			if (hit.closest < nearest) {
 				hit.object = &object;
-				nearest = hit.near;
+				nearest = hit.closest;
 			}
 
 	return hit.object != nullptr;
 }
 
 float RayTracer::Diffuse(const Vector3& N, const Vector3& L) {
-	return Math::max(0.0f, Math::dot(N, L));
+	return max(0.0f, Math::dot(N, L));
 }
 
 float RayTracer::Specular(const Vector3& N, const Vector3& L, const Vector3& E, const float shininess) {
 	Vector3 H = Math::normalize(E + L);
-	return Math::pow(Math::max(0.0f, Math::dot(N, H)), shininess);
+	return Math::pow(max(0.0f, Math::dot(N, H)), shininess);
 }
 
 Color RayTracer::Phong(const Light* light, float diffuse, float specular, Color diffuseColor, Color specularColor) {
@@ -372,8 +371,10 @@ Color4 RayTracer::sampleTextureLinear(const TextureBuffer* textureBuffer, const 
 	uint imax = ceil(st.x);
 	uint jmax = ceil(st.y);
 
-	auto colormin = textureBuffer(imin, jmin);
-	auto colormax = textureBuffer(imax, jmax);
+	Color4 colormin(0, 0, 0, 0);
+	Color4 colormax(0, 0, 0, 0);
+	textureBuffer->sample(colormin, imin, jmin);
+	textureBuffer->sample(colormax, imax, jmax);
 
 	return Math::mix(colormin, colormax, 0.5f);
 }
