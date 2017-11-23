@@ -29,7 +29,7 @@ public:
 		light->range = Infinity;
 
 		//auto box = Mesh::createQuad();
-		Mesh tmpChair = Resources::loadMesh("cokemachine.fbx");
+		Mesh tmpChair = Resources::loadMesh("armchair.3ds");
 		Mesh* chair = new Mesh(tmpChair);
 
 		sphereHolder->transform.setLocalPosition(Vector3(0, 0, -5));
