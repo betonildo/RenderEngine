@@ -28,7 +28,9 @@ public:
 		light->intensity = 0.9f;
 		light->range = Infinity;
 
-		auto box = Mesh::createQuad();
+		//auto box = Mesh::createQuad();
+		Mesh tmpChair = Resources::loadMesh("cokemachine.fbx");
+		Mesh* chair = new Mesh(tmpChair);
 
 		sphereHolder->transform.setLocalPosition(Vector3(0, 0, -5));
 		sphereHolder->transform.setLocalScale(Vector3(0.5, 0.5, 0.5));
@@ -51,7 +53,7 @@ public:
 		material->mainTexture = Resources::loadTexture("checkerboard.png");
 
 
-		renderer->setMesh(box);
+		renderer->setMesh(chair);
 		renderer->addMaterial(material);
 
 		Vector3* rotation = new Vector3(0, 0, 0);

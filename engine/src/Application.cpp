@@ -23,7 +23,8 @@ Application::~Application() {
 void Application::start() {
     // TODO: REORGANIZE THIS TO A METHOD AND TO SELECT PROPERLY THE GRAPHICS LIBRARY
     GraphicLibrarySingleton::setInstance<RayTracer>();
-    Resources::setTextureLoaderInstance<SoilTextureLoader>();
+    Resources::init();
+
     identifyOS();
     initializeDevice();
 

@@ -47,19 +47,12 @@ struct TextureBuffer
     TextureFormat format;
 
     inline void sample(Color4& colorout, uint i, uint j) const {
-        byte* rgba = &data[i + format.width * j];
-        colorout.r = rgba[0] / 255;
-        colorout.g = rgba[1] / 255;
-        colorout.b = rgba[2] / 255;
-        colorout.a = rgba[3] / 255;
+        byte* rgba = &data[i * format.channels * format.width + j];
+        colorout.r = rgba[0] / 256.0f;
+        colorout.g = rgba[1] / 256.0f;
+        colorout.b = rgba[2] / 256.0f;
+        colorout.a = rgba[3] / 256.0f;
     }
-
-    // inline void sample(Color& colorout, uint i, uint j) const {
-    //     byte* rgb = &data[i + format.width * j];
-    //     colorout.r = rgb[0] / 255;
-    //     colorout.g = rgb[1] / 255;
-    //     colorout.b = rgb[2] / 255;
-    // }
 };
 
 struct Triangle {

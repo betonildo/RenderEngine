@@ -285,7 +285,6 @@ PixelColor RayTracer::castRay(const Ray& ray, uint bounces) {
 	hit.object = nullptr;
 	hit.closest = Infinity;
 	if (rayCastHit(ray, hit)) {
-
 		Color4 diffuseColor = calculatePointColor(ray, hit);
 		PixelColor pixel;
 		pixel.r = (byte)diffuseColor.r * 255; 
@@ -384,6 +383,11 @@ Color RayTracer::Phong(const Light* light, float diffuse, float specular, Color 
 }
 
 Color4 RayTracer::sampleTextureLinear(const TextureBuffer* textureBuffer, const Vector2& st) {
+	TextureFormat format = textureBuffer->format;
+	std::vector<byte> data;
+	uint size = format.width * format.height * format.channels;
+	data.assign(textureBuffer->data, textureBuffer->data + size);
+	
 	//TODO: implement another type of interpolation formats
 	uint imin = floor(st.x);
 	uint jmin = floor(st.y);
@@ -395,6 +399,7 @@ Color4 RayTracer::sampleTextureLinear(const TextureBuffer* textureBuffer, const 
 	Color4 colormax(0, 0, 0, 0);
 	textureBuffer->sample(colormin, imin, jmin);
 	textureBuffer->sample(colormax, imax, jmax);
+
 
 	return Math::mix(colormin, colormax, 0.5f);
 }

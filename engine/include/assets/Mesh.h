@@ -12,6 +12,7 @@ class ENGINE_API Mesh : public Asset {
 
 public:
 	Mesh();
+	Mesh(const Mesh& other);
 	void setPositions(std::vector<Vector3>& positions);
 	void setNormals(std::vector<Vector3>& normals);
 	void setUV(std::vector<Vector2>& uvs);
