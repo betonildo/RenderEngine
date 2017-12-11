@@ -7,6 +7,7 @@ class ENGINE_API AssimpMeshLoader : public MeshLoader {
 
 public:
     virtual Mesh load(const char* path);
+    
 };
 
 

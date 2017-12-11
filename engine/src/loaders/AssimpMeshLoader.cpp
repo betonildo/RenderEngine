@@ -69,6 +69,15 @@
 // 	return 1;
 // }
 
+void loadAssimpMeshVertices(const struct aiMesh* aimesh, std::vector<Vector3>& vertices) {
+			
+	for (uint t = 0; t < aimesh->mNumVertices; ++t) {
+		aiVector3D tmp = aimesh->mVertices[t];
+		// POPULATE VERTICES
+		vertices.emplace_back(tmp.x, tmp.y, tmp.z);
+	}
+}
+
 Mesh AssimpMeshLoader::load(const char* path) {
 
     const struct aiScene* scene_local = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
@@ -83,12 +92,7 @@ Mesh AssimpMeshLoader::load(const char* path) {
 
 	for (uint n = 0; n < nd->mNumMeshes; ++n) {
 		const struct aiMesh* mesh = scene_local->mMeshes[nd->mMeshes[n]];
-		for (uint t = 0; t < mesh->mNumVertices; ++t) {
-
-			aiVector3D tmp = mesh->mVertices[t];
-			// POPULATE VERTICES
-            vertices.emplace_back(tmp.x, tmp.y, tmp.z);
-		}
+		loadAssimpMeshVertices(mesh, vertices);
 
 		for (uint t = 0; t < mesh->mNumFaces; ++t) {
 			const struct aiFace* face = &mesh->mFaces[t];

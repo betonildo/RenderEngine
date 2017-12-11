@@ -9,6 +9,8 @@
 #include "scene/Transform.h"
 #include "assets/Material.h"
 #include <string.h>
+#include <thread>
+#include <iostream>
 
 RayTracer::RayTracer() {
 	mShaderProgramsCount = 0;
@@ -252,17 +254,123 @@ void RayTracer::processObjectList() {
 
 	Vector3 front = mCamera->getTransform().getFront();
 
+	std::vector<std::thread> threads;
+	uint numberOfThreads = std::thread::hardware_concurrency();
+	uint heightSlice = ceil((float)mRect.height/numberOfThreads);
+	std::cout << "Height Slice: " << heightSlice << std::endl;
+	// for (uint tid = 0; tid < numberOfThreads; tid++) {		
+
+	// 	uint tid_tmp = tid;
+	// 	uint start_j = heightSlice * tid_tmp;
+	// 	uint end___j = heightSlice * (tid_tmp+1);
+		
+	// 	threads.emplace_back([&]() {
+	// 		for (unsigned int j = start_j; j < end___j; j++) {
+	// 			for (unsigned int i = 0; i < mRect.width; i++) {
+
+	// 				// float x = (2.0f * (i + 0.5f) / (float)mRect.width - 1) * imageAspectRatio * scale; 
+	// 				// float y = (1.0f - 2.0f * (j + 0.5f) / (float)mRect.height) * scale; 
+
+	// 				// ray.direction = CameraToView * Math::normalize(Vector4(x, y, -1.0f, 1.0f));
+	// 				ray = ComputeCameraRay(cam_pos, cam_dir, cam_up, cam_right, i, j);
+	// 				mBackBuffer[i + mRect.width * j] = castRay(ray, 2);
+	// 			}
+	// 		}
+	// 	});
+	// }
+
+	// for (auto& t : threads)
+	// 	t.join();
+
+	// threads.emplace_back([&]() {
+	// 	uint tid_tmp = 0;
+	// 	uint start_j = heightSlice * tid_tmp;
+	// 	uint end___j = heightSlice * (tid_tmp+1);
+	// 	std::cout << "ThreadID: " << tid_tmp << " start: " << start_j << " end: " << end___j << std::endl;
+	// 	for (unsigned int j = start_j; j < end___j; j++) {
+	// 		for (unsigned int i = 0; i < mRect.width; i++) {
+
+	// 			// float x = (2.0f * (i + 0.5f) / (float)mRect.width - 1) * imageAspectRatio * scale; 
+	// 			// float y = (1.0f - 2.0f * (j + 0.5f) / (float)mRect.height) * scale; 
+
+	// 			// ray.direction = CameraToView * Math::normalize(Vector4(x, y, -1.0f, 1.0f));
+	// 			ray = ComputeCameraRay(cam_pos, cam_dir, cam_up, cam_right, i, j);
+	// 			mBackBuffer[i + mRect.width * j] = castRay(ray, 2);
+	// 		}
+	// 	}
+	// });
+
+
+	// threads.emplace_back([&]() {
+	// 	uint tid_tmp = 1;
+	// 	uint start_j = heightSlice * tid_tmp;
+	// 	uint end___j = heightSlice * (tid_tmp+1);
+	// 	std::cout << "ThreadID: " << tid_tmp << " start: " << start_j << " end: " << end___j << std::endl;
+	// 	for (unsigned int j = start_j; j < end___j; j++) {
+	// 		for (unsigned int i = 0; i < mRect.width; i++) {
+
+	// 			// float x = (2.0f * (i + 0.5f) / (float)mRect.width - 1) * imageAspectRatio * scale; 
+	// 			// float y = (1.0f - 2.0f * (j + 0.5f) / (float)mRect.height) * scale; 
+
+	// 			// ray.direction = CameraToView * Math::normalize(Vector4(x, y, -1.0f, 1.0f));
+	// 			ray = ComputeCameraRay(cam_pos, cam_dir, cam_up, cam_right, i, j);
+	// 			mBackBuffer[i + mRect.width * j] = castRay(ray, 2);
+	// 		}
+	// 	}
+	// });
+
+	// threads.emplace_back([&]() {
+	// 	uint tid_tmp = 2;
+	// 	uint start_j = heightSlice * tid_tmp;
+	// 	uint end___j = heightSlice * (tid_tmp+1);
+	// 	std::cout << "ThreadID: " << tid_tmp << " start: " << start_j << " end: " << end___j << std::endl;
+	// 	for (unsigned int j = start_j; j < end___j; j++) {
+	// 		for (unsigned int i = 0; i < mRect.width; i++) {
+
+	// 			// float x = (2.0f * (i + 0.5f) / (float)mRect.width - 1) * imageAspectRatio * scale; 
+	// 			// float y = (1.0f - 2.0f * (j + 0.5f) / (float)mRect.height) * scale; 
+
+	// 			// ray.direction = CameraToView * Math::normalize(Vector4(x, y, -1.0f, 1.0f));
+	// 			ray = ComputeCameraRay(cam_pos, cam_dir, cam_up, cam_right, i, j);
+	// 			mBackBuffer[i + mRect.width * j] = castRay(ray, 2);
+	// 		}
+	// 	}
+	// });
+
+	// threads.emplace_back([&]() {
+	// 	uint tid_tmp = 3;
+	// 	uint start_j = heightSlice * tid_tmp;
+	// 	uint end___j = heightSlice * (tid_tmp+1);
+	// 	std::cout << "ThreadID: " << tid_tmp << " start: " << start_j << " end: " << end___j << std::endl;
+	// 	for (unsigned int j = start_j; j < end___j; j++) {
+	// 		for (unsigned int i = 0; i < mRect.width; i++) {
+
+	// 			// float x = (2.0f * (i + 0.5f) / (float)mRect.width - 1) * imageAspectRatio * scale; 
+	// 			// float y = (1.0f - 2.0f * (j + 0.5f) / (float)mRect.height) * scale; 
+
+	// 			// ray.direction = CameraToView * Math::normalize(Vector4(x, y, -1.0f, 1.0f));
+	// 			ray = ComputeCameraRay(cam_pos, cam_dir, cam_up, cam_right, i, j);
+	// 			mBackBuffer[i + mRect.width * j] = castRay(ray, 2);
+	// 		}
+	// 	}
+	// });
+	
 	for (unsigned int j = 0; j < mRect.height; j++) {
 		for (unsigned int i = 0; i < mRect.width; i++) {
 
-			float x = (2.0f * (i + 0.5f) / (float)mRect.width - 1) * imageAspectRatio * scale; 
-            float y = (1.0f - 2.0f * (j + 0.5f) / (float)mRect.height) * scale; 
+			// float x = (2.0f * (i + 0.5f) / (float)mRect.width - 1) * imageAspectRatio * scale; 
+			// float y = (1.0f - 2.0f * (j + 0.5f) / (float)mRect.height) * scale; 
 
 			// ray.direction = CameraToView * Math::normalize(Vector4(x, y, -1.0f, 1.0f));
 			ray = ComputeCameraRay(cam_pos, cam_dir, cam_up, cam_right, i, j);
 			mBackBuffer[i + mRect.width * j] = castRay(ray, 2);
 		}
 	}
+
+
+	// for (auto& t : threads)
+	// 	t.join();
+
 }
 
 Ray RayTracer::ComputeCameraRay(const Vector3& cam_pos, const Vector3& cam_dir, const Vector3& cam_up, const Vector3& cam_right, int i, int j) {

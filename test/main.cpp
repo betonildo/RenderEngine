@@ -28,9 +28,9 @@ public:
 		light->intensity = 0.9f;
 		light->range = Infinity;
 
-		//auto box = Mesh::createQuad();
-		Mesh tmpChair = Resources::loadMesh("armchair.3ds");
-		Mesh* chair = new Mesh(tmpChair);
+		//auto box = Mesh::createSphere();
+		//Mesh tmpChair = Resources::loadMesh("cokemachine.fbx");
+		Mesh* chair = Mesh::createQuad();
 
 		sphereHolder->transform.setLocalPosition(Vector3(0, 0, -5));
 		sphereHolder->transform.setLocalScale(Vector3(0.5, 0.5, 0.5));
