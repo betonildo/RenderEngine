@@ -2,6 +2,7 @@
 #define ENGINE_H
 
 #include "Application.h"
+#include "utils/MeshUtils.h"
 #include "assets/Resources.h"
 #include "assets/Mesh.h"
 #include "assets/Shader.h"

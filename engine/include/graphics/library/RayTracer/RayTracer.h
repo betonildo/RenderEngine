@@ -1,13 +1,13 @@
 #ifndef RAYTRACER_H
 #define RAYTRACER_H
 
-#include "graphics/RayTracerAttributes.h"
+#include "graphics/library/RayTracer/RayTracerAttributes.h"
 #include "graphics/GraphicLibrary.h"
 #include "graphics/VertexFormat.h"
 #include "graphics/ElementFormat.h"
 #include "graphics/Rect.h"
-#include "graphics/Object.h"
-#include "graphics/RaycastHit.h"
+#include "graphics/library/RayTracer/Object.h"
+#include "graphics/library/RayTracer/RaycastHit.h"
 #include <vector>
 
 

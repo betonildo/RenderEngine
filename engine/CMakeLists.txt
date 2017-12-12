@@ -9,6 +9,8 @@ file(GLOB RenderEngine_SOURCES
     ${PROJECT_SOURCE_DIR}/src/*.cpp
     ${PROJECT_SOURCE_DIR}/src/device/*.cpp
     ${PROJECT_SOURCE_DIR}/src/graphics/*.cpp
+    ${PROJECT_SOURCE_DIR}/src/graphics/library/RayTracer/*.cpp
+    ${PROJECT_SOURCE_DIR}/src/graphics/library/OpenGL/*.cpp
     ${PROJECT_SOURCE_DIR}/src/scene/*.cpp
     ${PROJECT_SOURCE_DIR}/src/loaders/*.cpp
     ${PROJECT_SOURCE_DIR}/src/assets/*.cpp

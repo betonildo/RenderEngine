@@ -8,15 +8,15 @@ ShaderProgram::ShaderProgram(unsigned int shaderProgramLocation) {
 }
 
 void ShaderProgram::setUniform(unsigned int uniformLocation, Vector3 v) {
-    
+    gl->setVector3(uniformLocation, v);
 }
 
 void ShaderProgram::setUniform(unsigned int uniformLocation, Vector2 v) {
-
+    gl->setVector2(uniformLocation, v);
 }
 
 void ShaderProgram::setUniform(unsigned int uniformLocation, Matrix4 m) {
-
+    gl->setMatrix4(uniformLocation, m);
 }
 
 unsigned int ShaderProgram::getUniformLocation(const char* uniformName) {

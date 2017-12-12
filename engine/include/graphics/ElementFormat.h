@@ -1,6 +1,12 @@
 #ifndef ELEMENTFORMAT_H
 #define ELEMENTFORMAT_H
 
+unsigned int IndexTypeSize[] = {
+	sizeof(unsigned char),
+	sizeof(unsigned short),
+	sizeof(unsigned int)
+};
+
 struct ElementFormat {
 
 	enum class Mode {
@@ -13,12 +19,6 @@ struct ElementFormat {
 	};
 
 	inline static const unsigned char IndexTypeSizes(IndexType type) {
-
-		unsigned int IndexTypeSize[] = {
-			sizeof(unsigned char),
-			sizeof(unsigned short),
-			sizeof(unsigned int)
-		};
 
 		return IndexTypeSize[(unsigned int)type];
 	}

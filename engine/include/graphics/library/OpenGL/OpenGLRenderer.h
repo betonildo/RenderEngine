@@ -4,6 +4,9 @@
 #include "graphics/GraphicLibrary.h"
 #include "graphics/VertexFormat.h"
 #include "graphics/ElementFormat.h"
+#include "graphics/PixelColor.h"
+#include "graphics/library/OpenGL/VertexBuffer.h"
+#include "graphics/library/OpenGL/IndexBuffer.h"
 #include "graphics/Rect.h"
 #include "LinearMath.h"
 #include <vector>
@@ -16,6 +19,7 @@ public:
 
 	void pushMaterial(const Material* material);
 	void pushLights(const Light* lights, uint lightCount);
+	void pushCamera(const Camera* camera);
 	void pushMatrix4(MatrixType type, const Matrix4& m);
 	void pushAttributeValue(AttributeType type, const void* v, uint count);
 
@@ -31,36 +35,54 @@ public:
 	unsigned int generateVertexBuffer();
 	unsigned int generateIndexBuffer();
 
+	uint generateTextureBuffer();
+	void bindTexture(uint textureLocation);
+    void bindTextureData(byte* data, TextureFormat format);
+    void unbindTexture(uint textureLocation);
+	void activeTexture(uint textureIndex);
+	void deactiveTexture(uint textureIndex);
+
 	ShaderProgram* getShaderProgram(unsigned int shaderProgramLocation);
 	void bindShaderProgram(unsigned int shaderProgramLocation);
 	void unbindShaderProgram(unsigned int shaderProgramLocation);
 	
 	void bindVertexBuffer(uint bufferLocation);
-	void bindVertexBufferData(VertexFormat vertexFormat, void* data, uint length);
+	void bindVertexBufferData(VertexFormat vertexFormat, std::vector<Vector3> data);
+	void bindVertexBufferData(VertexFormat vertexFormat, std::vector<Vector2> data);
 	void unbindVertexBuffer(uint bufferLocation);
 
 	void bindIndexBuffer(uint bufferLocation);
-	void bindIndexBufferData(ElementFormat elementFormat, void* data, uint length);
+	void bindIndexBufferData(ElementFormat elementFormat, std::vector<unsigned int> data);
 	void unbindIndexBuffer(uint bufferLocation);
 
-	void pushBackCommand();
-	void clearCommandList();
+	void pushBackObject();
+	void clearObjectList();
 	void drawElements();
-	void processCommandList();
+	void processObjectList();
 	void init();
 	void setViewportRect(Rect rect);
 	void* getBackBuffer();
 
 private:
-	struct IndexBuffer {
-		void* data;
-		uint length;
-		ElementFormat format;
+
+	static const uint kMaxLights = 10;
+
+	const Light* mCurrentLights;
+	uint mCurrentLightsCount;
+	
+	const Camera* mCurrentCamera;
+
+	struct Object {
+		Material* material;
 	};
 
-	struct VertexBuffer {
-		void* data;
-		uint length;
-		VertexFormat format;
-	};
+	Object mCurrentBoundObject;
+
+	std::vector<Object> mCurrentObjectsList;
+
+	std::vector<PixelColor> mBackBufferData;
+
+	Rect mViewport;
+
+	Matrix4 mMatrixCache[(uint)MatrixType::Count];
 };

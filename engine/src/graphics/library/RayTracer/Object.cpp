@@ -1,6 +1,6 @@
-#include "graphics/Object.h"
-#include "graphics/RaycastHit.h"
-#include "graphics/RayTracerAttributes.h"
+#include "graphics/library/RayTracer/Object.h"
+#include "graphics/library/RayTracer/RaycastHit.h"
+#include "graphics/library/RayTracer/RayTracerAttributes.h"
 
 Object::Object() {
     material = nullptr;

@@ -11,22 +11,9 @@
 
 #include "graphics/TextureFormat.h"
 #include "typedefs.h"
+#include "graphics/PixelColor.h"
 
 static constexpr float Infinity = std::numeric_limits<float>::max();
-
-struct PixelColor{
-    union{
-        struct {
-            byte r, g, b, a;
-        };
-
-        byte data[4];
-    };
-
-    inline byte& operator[](byte i) {
-        return data[i];
-    }
-};
 
 struct IndexBuffer
 {

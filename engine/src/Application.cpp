@@ -7,7 +7,7 @@
 #include "scene/Scene.h"
 #include "scene/EmptyScene.h"
 #include "graphics/GraphicLibrarySingleton.h"
-#include "graphics/RayTracer.h"
+#include "graphics/library/OpenGL/OpenGLRenderer.h"
 #include <thread>
 #include <iostream>
 
@@ -22,7 +22,7 @@ Application::~Application() {
 
 void Application::start() {
     // TODO: REORGANIZE THIS TO A METHOD AND TO SELECT PROPERLY THE GRAPHICS LIBRARY
-    GraphicLibrarySingleton::setInstance<RayTracer>();
+    GraphicLibrarySingleton::setInstance<OpenGLRenderer>();
     Resources::init();
 
     identifyOS();
