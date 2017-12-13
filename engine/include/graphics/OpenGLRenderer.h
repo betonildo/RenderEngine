@@ -52,15 +52,5 @@ public:
 	void* getBackBuffer();
 
 private:
-	struct IndexBuffer {
-		void* data;
-		uint length;
-		ElementFormat format;
-	};
-
-	struct VertexBuffer {
-		void* data;
-		uint length;
-		VertexFormat format;
-	};
+	
 };

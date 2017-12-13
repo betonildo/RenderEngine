@@ -1,9 +1,12 @@
 #include "scene/Transform.h"
-
-Vector3 FORWARD(0, 0, -1);
+#include <iostream>
 
 Transform::Transform() {
     mValidCalcCachedMatrix = false;
+    mWorldMatrix = Matrix4(1);
+    mLocalPosition = Vector3(0, 0, 0);
+    mLocalScale = Vector3(1, 1, 1);
+    mLocalRotation = Quaternion(0, 0, 0, 0);
 }
 
 Transform::~Transform() {
@@ -65,10 +68,14 @@ const Matrix4& Transform::getWorldMatrix() const {
     if (!mValidCalcCachedMatrix) {
         // TODO: TAKE ACCOUNT OF PARENTAL FOR LOCAL CALCULATIONS
         // TODO: CALCULATE MODEL MATRIX USING POSITION, ROTATION AND SCALE
-        Matrix4 T = Math::translate(Matrix4(1), mLocalPosition);
-        Matrix4 S = Math::scale(mLocalScale);
-        Matrix4 R = Math::mat4_cast(mLocalRotation);
-        mWorldMatrix = T * R * S;
+        mWorldMatrix = Matrix4(1);
+        mWorldMatrix = Math::translate(mWorldMatrix, mLocalPosition);
+        Vector3 euler = Math::eulerAngles(mLocalRotation);
+        mWorldMatrix = Math::rotate(mWorldMatrix, euler.x, Vector3(1, 0, 0));
+        mWorldMatrix = Math::rotate(mWorldMatrix, euler.y, Vector3(0, 1, 0));
+        mWorldMatrix = Math::rotate(mWorldMatrix, euler.z, Vector3(0, 0, 1));
+        //mWorldMatrix = Math::rotate(mWorldMatrix, mLocalRotation.w, direction);    
+        mWorldMatrix = Math::scale(mWorldMatrix, mLocalScale);
         mValidCalcCachedMatrix = true;
     }
     return mWorldMatrix;
@@ -87,13 +94,13 @@ unsigned int Transform::getChildrenCount() {
 }
 
 Vector3 Transform::getFront() const {
-    return Vector3(mWorldMatrix[2]);
+    return Vector3(mWorldMatrix[0][2], mWorldMatrix[1][2], mWorldMatrix[2][2]);
 }
 
 Vector3 Transform::getUp() const {
-    return Vector3(mWorldMatrix[1]);
+    return  Vector3(mWorldMatrix[0][1], mWorldMatrix[1][1], mWorldMatrix[2][1]);
 }
 
 Vector3 Transform::getRight() const {
-    return Vector3(mWorldMatrix[0]);
+    return -Vector3(mWorldMatrix[0][0], mWorldMatrix[1][0], mWorldMatrix[2][0]);
 }

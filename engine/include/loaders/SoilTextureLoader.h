@@ -6,6 +6,7 @@
 class ENGINE_API SoilTextureLoader : public TextureLoader {
 
 public:
+    SoilTextureLoader();
     byte* load(const char* path, TextureFormat& format);
 };
 

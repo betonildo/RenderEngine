@@ -5,12 +5,19 @@
 
 class Mesh;
 class Texture;
+class TextureLoader;
+class MeshLoader;
 
 class ENGINE_API Resources {
 
 public:
-    static Mesh* loadMesh(const char* path);
-    static Texture* loadTexture(const char* path);
+    static void init();
+    static Mesh loadMesh(const char* path);
+    static Texture loadTexture(const char* path);
+
+private:
+    static TextureLoader* mTextureLoader;
+    static MeshLoader* mMeshLoader;
 };
 
 #endif /*RESOURCES_H*/

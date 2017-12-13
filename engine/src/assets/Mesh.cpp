@@ -13,6 +13,14 @@ Mesh::Mesh() {
 	mIndexBuffer = gl->generateIndexBuffer();
 }
 
+Mesh::Mesh(const Mesh& other) {
+	gl = other.gl;
+	mPositionBuffer = other.mPositionBuffer;
+	mNormalBuffer = other.mNormalBuffer;
+	mUVBuffer = other.mUVBuffer;
+	mIndexBuffer = other.mIndexBuffer;
+}
+
 void Mesh::setPositions(std::vector<Vector3>& positions) {
 	VertexFormat vertexFormat;
 	vertexFormat.attributeLocation = 0;

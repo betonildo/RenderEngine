@@ -9,6 +9,8 @@
 #include "scene/Transform.h"
 #include "assets/Material.h"
 #include <string.h>
+#include <thread>
+#include <iostream>
 
 RayTracer::RayTracer() {
 	mShaderProgramsCount = 0;
@@ -36,7 +38,9 @@ void RayTracer::pushMatrix4(MatrixType type, const Matrix4& m) {
 }
 
 void RayTracer::pushMaterial(const Material* material) {
-	mCurrentObject.material = material;
+	mCurrentObject.material = (Material*)material;
+	mCurrentObject.material->mainTexture.bind();
+	mCurrentObject.material->mainTexture.active(0);
 }
 
 void RayTracer::pushLights(const Light* lights, uint lightCount) {
@@ -157,7 +161,7 @@ void RayTracer::unbindTexture(uint textureLocation) {
 }
 
 void RayTracer::activeTexture(uint textureIndex) {
-	mCurrentObject.texture = &mTextureBuffers[textureIndex];
+	mCurrentObject.texture[0] = mCurrentTextureBuffer;
 }
 
 void RayTracer::deactiveTexture(uint textureIndex) {
@@ -239,24 +243,148 @@ void RayTracer::processObjectList() {
 	Ray ray;
 	float fov = mCamera->getFieldOfView();
 	
-	const Matrix4& CameraToWorld = mCamera->getTransform().getWorldMatrix();
-	const Matrix4& CameraToView = mCamera->getViewMatrix();
-	ray.origin = CameraToWorld * Vector4(0, 0, 0, 1);
+	//const Matrix4& CameraToView = mCamera->getViewMatrix();
+	const Vector3 cam_pos 	= mCamera->getTransform().getLocalPosition();//CameraToView[2];
+	const Vector3 cam_up  	= mCamera->getTransform().getUp();//CameraToView[1];
+	const Vector3 cam_dir 	= mCamera->getTransform().getFront();//CameraToView[0];
+	const Vector3 cam_right = mCamera->getTransform().getRight();
+
 	float scale = tan(Math::radians(fov * 0.5f));
     float imageAspectRatio = mRect.width / (float)mRect.height;
 
 	Vector3 front = mCamera->getTransform().getFront();
 
+	std::vector<std::thread> threads;
+	uint numberOfThreads = std::thread::hardware_concurrency();
+	uint heightSlice = ceil((float)mRect.height/numberOfThreads);
+	std::cout << "Height Slice: " << heightSlice << std::endl;
+	// for (uint tid = 0; tid < numberOfThreads; tid++) {		
+
+	// 	uint tid_tmp = tid;
+	// 	uint start_j = heightSlice * tid_tmp;
+	// 	uint end___j = heightSlice * (tid_tmp+1);
+		
+	// 	threads.emplace_back([&]() {
+	// 		for (unsigned int j = start_j; j < end___j; j++) {
+	// 			for (unsigned int i = 0; i < mRect.width; i++) {
+
+	// 				// float x = (2.0f * (i + 0.5f) / (float)mRect.width - 1) * imageAspectRatio * scale; 
+	// 				// float y = (1.0f - 2.0f * (j + 0.5f) / (float)mRect.height) * scale; 
+
+	// 				// ray.direction = CameraToView * Math::normalize(Vector4(x, y, -1.0f, 1.0f));
+	// 				ray = ComputeCameraRay(cam_pos, cam_dir, cam_up, cam_right, i, j);
+	// 				mBackBuffer[i + mRect.width * j] = castRay(ray, 2);
+	// 			}
+	// 		}
+	// 	});
+	// }
+
+	// for (auto& t : threads)
+	// 	t.join();
+
+	// threads.emplace_back([&]() {
+	// 	uint tid_tmp = 0;
+	// 	uint start_j = heightSlice * tid_tmp;
+	// 	uint end___j = heightSlice * (tid_tmp+1);
+	// 	std::cout << "ThreadID: " << tid_tmp << " start: " << start_j << " end: " << end___j << std::endl;
+	// 	for (unsigned int j = start_j; j < end___j; j++) {
+	// 		for (unsigned int i = 0; i < mRect.width; i++) {
+
+	// 			// float x = (2.0f * (i + 0.5f) / (float)mRect.width - 1) * imageAspectRatio * scale; 
+	// 			// float y = (1.0f - 2.0f * (j + 0.5f) / (float)mRect.height) * scale; 
+
+	// 			// ray.direction = CameraToView * Math::normalize(Vector4(x, y, -1.0f, 1.0f));
+	// 			ray = ComputeCameraRay(cam_pos, cam_dir, cam_up, cam_right, i, j);
+	// 			mBackBuffer[i + mRect.width * j] = castRay(ray, 2);
+	// 		}
+	// 	}
+	// });
+
+
+	// threads.emplace_back([&]() {
+	// 	uint tid_tmp = 1;
+	// 	uint start_j = heightSlice * tid_tmp;
+	// 	uint end___j = heightSlice * (tid_tmp+1);
+	// 	std::cout << "ThreadID: " << tid_tmp << " start: " << start_j << " end: " << end___j << std::endl;
+	// 	for (unsigned int j = start_j; j < end___j; j++) {
+	// 		for (unsigned int i = 0; i < mRect.width; i++) {
+
+	// 			// float x = (2.0f * (i + 0.5f) / (float)mRect.width - 1) * imageAspectRatio * scale; 
+	// 			// float y = (1.0f - 2.0f * (j + 0.5f) / (float)mRect.height) * scale; 
+
+	// 			// ray.direction = CameraToView * Math::normalize(Vector4(x, y, -1.0f, 1.0f));
+	// 			ray = ComputeCameraRay(cam_pos, cam_dir, cam_up, cam_right, i, j);
+	// 			mBackBuffer[i + mRect.width * j] = castRay(ray, 2);
+	// 		}
+	// 	}
+	// });
+
+	// threads.emplace_back([&]() {
+	// 	uint tid_tmp = 2;
+	// 	uint start_j = heightSlice * tid_tmp;
+	// 	uint end___j = heightSlice * (tid_tmp+1);
+	// 	std::cout << "ThreadID: " << tid_tmp << " start: " << start_j << " end: " << end___j << std::endl;
+	// 	for (unsigned int j = start_j; j < end___j; j++) {
+	// 		for (unsigned int i = 0; i < mRect.width; i++) {
+
+	// 			// float x = (2.0f * (i + 0.5f) / (float)mRect.width - 1) * imageAspectRatio * scale; 
+	// 			// float y = (1.0f - 2.0f * (j + 0.5f) / (float)mRect.height) * scale; 
+
+	// 			// ray.direction = CameraToView * Math::normalize(Vector4(x, y, -1.0f, 1.0f));
+	// 			ray = ComputeCameraRay(cam_pos, cam_dir, cam_up, cam_right, i, j);
+	// 			mBackBuffer[i + mRect.width * j] = castRay(ray, 2);
+	// 		}
+	// 	}
+	// });
+
+	// threads.emplace_back([&]() {
+	// 	uint tid_tmp = 3;
+	// 	uint start_j = heightSlice * tid_tmp;
+	// 	uint end___j = heightSlice * (tid_tmp+1);
+	// 	std::cout << "ThreadID: " << tid_tmp << " start: " << start_j << " end: " << end___j << std::endl;
+	// 	for (unsigned int j = start_j; j < end___j; j++) {
+	// 		for (unsigned int i = 0; i < mRect.width; i++) {
+
+	// 			// float x = (2.0f * (i + 0.5f) / (float)mRect.width - 1) * imageAspectRatio * scale; 
+	// 			// float y = (1.0f - 2.0f * (j + 0.5f) / (float)mRect.height) * scale; 
+
+	// 			// ray.direction = CameraToView * Math::normalize(Vector4(x, y, -1.0f, 1.0f));
+	// 			ray = ComputeCameraRay(cam_pos, cam_dir, cam_up, cam_right, i, j);
+	// 			mBackBuffer[i + mRect.width * j] = castRay(ray, 2);
+	// 		}
+	// 	}
+	// });
+	
 	for (unsigned int j = 0; j < mRect.height; j++) {
 		for (unsigned int i = 0; i < mRect.width; i++) {
 
-			float x = (2.0f * (i + 0.5f) / (float)mRect.width - 1) * imageAspectRatio * scale; 
-            float y = (1.0f - 2.0f * (j + 0.5f) / (float)mRect.height) * scale; 
+			// float x = (2.0f * (i + 0.5f) / (float)mRect.width - 1) * imageAspectRatio * scale; 
+			// float y = (1.0f - 2.0f * (j + 0.5f) / (float)mRect.height) * scale; 
 
-			ray.direction = CameraToView * Math::normalize(Vector4(x, y, -1.0f, 1.0f));
+			// ray.direction = CameraToView * Math::normalize(Vector4(x, y, -1.0f, 1.0f));
+			ray = ComputeCameraRay(cam_pos, cam_dir, cam_up, cam_right, i, j);
 			mBackBuffer[i + mRect.width * j] = castRay(ray, 2);
 		}
 	}
+
+
+	// for (auto& t : threads)
+	// 	t.join();
+
+}
+
+Ray RayTracer::ComputeCameraRay(const Vector3& cam_pos, const Vector3& cam_dir, const Vector3& cam_up, const Vector3& cam_right, int i, int j) {
+	const float width = mRect.width; // pixels across 
+	const float height = mRect.height; // pixels high 
+	float normalized_i = (i / width) - 0.5f;
+	float normalized_j = (j / height) - 0.5f; 
+	Vector3 image_point = normalized_i * cam_right + normalized_j * cam_up + cam_pos + cam_dir; 
+	Vector3 ray_direction = image_point - cam_pos; 
+	
+	Ray ray;
+	ray.origin = cam_pos;
+	ray.direction = ray_direction;
+	return ray;
 }
 
 PixelColor RayTracer::castRay(const Ray& ray, uint bounces) {
@@ -265,7 +393,6 @@ PixelColor RayTracer::castRay(const Ray& ray, uint bounces) {
 	hit.object = nullptr;
 	hit.closest = Infinity;
 	if (rayCastHit(ray, hit)) {
-
 		Color4 diffuseColor = calculatePointColor(ray, hit);
 		PixelColor pixel;
 		pixel.r = (byte)diffuseColor.r * 255; 
@@ -276,6 +403,19 @@ PixelColor RayTracer::castRay(const Ray& ray, uint bounces) {
 	}
 
 	return {128, 128, 255, 255};
+}
+
+bool RayTracer::rayCastHit(const Ray& ray,  RaycastHit& hit) {
+
+	float nearest = Infinity;
+	for (Object& object : mObjectsList)
+		if (object.intersect(ray, hit))
+			if (hit.closest < nearest) {
+				hit.object = &object;
+				nearest = hit.closest;
+			}
+
+	return hit.object != nullptr;
 }
 
 Color4 RayTracer::calculatePointColor(const Ray& ray, const RaycastHit& hit) {
@@ -290,8 +430,8 @@ Color4 RayTracer::calculatePointColor(const Ray& ray, const RaycastHit& hit) {
 	Color4 specularColor(0, 0, 0, 1);
 	Color4 sample(1, 1, 1, 1);
 
-	if (hit.object->texture != nullptr) {
-		sample = sampleTextureLinear(hit.object->texture, st);
+	if (hit.object->texture[0] != nullptr) {
+		sample = sampleTextureLinear(hit.object->texture[0], st);
 	}
 
 	Vector3 shadowPointOrig = (Math::dot(ray.direction, N) < 0) ? hitPoint + N * bias: hitPoint - N * bias;
@@ -325,19 +465,6 @@ Color4 RayTracer::calculatePointColor(const Ray& ray, const RaycastHit& hit) {
 	return specularColor;
 }
 
-bool RayTracer::rayCastHit(const Ray& ray,  RaycastHit& hit) {
-
-	float nearest = Infinity;
-	for (Object& object : mObjectsList)
-		if (object.intersect(ray, hit))
-			if (hit.closest < nearest) {
-				hit.object = &object;
-				nearest = hit.closest;
-			}
-
-	return hit.object != nullptr;
-}
-
 float RayTracer::Diffuse(const Vector3& N, const Vector3& L) {
 	return max(0.0f, Math::dot(N, L));
 }
@@ -364,6 +491,11 @@ Color RayTracer::Phong(const Light* light, float diffuse, float specular, Color 
 }
 
 Color4 RayTracer::sampleTextureLinear(const TextureBuffer* textureBuffer, const Vector2& st) {
+	TextureFormat format = textureBuffer->format;
+	std::vector<byte> data;
+	uint size = format.width * format.height * format.channels;
+	data.assign(textureBuffer->data, textureBuffer->data + size);
+	
 	//TODO: implement another type of interpolation formats
 	uint imin = floor(st.x);
 	uint jmin = floor(st.y);
@@ -375,6 +507,7 @@ Color4 RayTracer::sampleTextureLinear(const TextureBuffer* textureBuffer, const 
 	Color4 colormax(0, 0, 0, 0);
 	textureBuffer->sample(colormin, imin, jmin);
 	textureBuffer->sample(colormax, imax, jmax);
+
 
 	return Math::mix(colormin, colormax, 0.5f);
 }

@@ -25,4 +25,10 @@ MESSAGE( STATUS "RenderEngine_SOURCE_DIR:          " ${RenderEngine_SOURCE_DIR})
     COMMAND ${CMAKE_COMMAND} -E copy
         $<TARGET_FILE:RenderEngine>
         $<TARGET_FILE_DIR:Test>)
+
+    #Copy texture
+    add_custom_command(TARGET Test POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+        ${Test_SOURCE_DIR}/checkerboard.png
+        ${Test_BINARY_DIR}/checkerboard.png)
 #endif(WIN32)

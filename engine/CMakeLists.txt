@@ -10,6 +10,7 @@ file(GLOB RenderEngine_SOURCES
     ${PROJECT_SOURCE_DIR}/src/device/*.cpp
     ${PROJECT_SOURCE_DIR}/src/graphics/*.cpp
     ${PROJECT_SOURCE_DIR}/src/scene/*.cpp
+    ${PROJECT_SOURCE_DIR}/src/loaders/*.cpp
     ${PROJECT_SOURCE_DIR}/src/assets/*.cpp
     ${PROJECT_SOURCE_DIR}/src/components/*.cpp
 )
@@ -87,8 +88,8 @@ MESSAGE( STATUS "ASSIMP_STATIC_LIB    "  ${ASSIMP_STATIC_LIB})
     # Copy RenderEngine include
     add_custom_command(TARGET RenderEngine POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${RenderEngine_SOURCE_DIR}/include/"
-    "${RenderEngine_BINARY_DIR}/exported/include")
+        "${RenderEngine_SOURCE_DIR}/include/"
+        "${RenderEngine_BINARY_DIR}/exported/include")
 
     # Copy RenderEngine dll
     add_custom_command(TARGET RenderEngine POST_BUILD

@@ -12,9 +12,12 @@ class ENGINE_API Texture : public Asset {
 
 public:
     Texture();
+    Texture(const Texture& other);
     ~Texture();
 
     void setData(byte* data, TextureFormat format);
+    void bind();
+    void unbind();
     void active(uint textureIndex);
     void deactive(uint textureIndex);
 

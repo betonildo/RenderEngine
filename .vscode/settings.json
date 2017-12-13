@@ -54,7 +54,8 @@
         "xtree": "cpp",
         "*.ipp": "cpp",
         "array": "cpp",
-        "string_view": "cpp"
+        "string_view": "cpp",
+        "*.tcc": "cpp"
     },
     "C_Cpp.intelliSenseEngine": "Default"
 }

@@ -5,8 +5,7 @@
 
 struct TextureFormat {
 
-    uint width, height;
-    byte channels;
+    int width, height, channels;
 
 };
 

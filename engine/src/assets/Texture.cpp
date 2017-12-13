@@ -7,6 +7,10 @@ Texture::Texture() {
     mTextureLocation = gl->generateTextureBuffer();
 }
 
+Texture::Texture(const Texture& other) {
+    mTextureLocation = other.mTextureLocation;
+}
+
 Texture::~Texture() {
     // TODO: unload texture buffer
 }
@@ -14,6 +18,14 @@ Texture::~Texture() {
 void Texture::setData(byte* data, TextureFormat format) {
     gl->bindTexture(mTextureLocation);
     gl->bindTextureData(data, format);
+    gl->unbindTexture(mTextureLocation);
+}
+
+void Texture::bind() {
+    gl->bindTexture(mTextureLocation);
+}
+
+void Texture::unbind() {
     gl->unbindTexture(mTextureLocation);
 }
 

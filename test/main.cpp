@@ -28,11 +28,13 @@ public:
 		light->intensity = 0.9f;
 		light->range = Infinity;
 
-		auto box = Mesh::createQuad();
+		//auto box = Mesh::createSphere();
+		//Mesh tmpChair = Resources::loadMesh("cokemachine.fbx");
+		Mesh* chair = Mesh::createQuad();
 
 		sphereHolder->transform.setLocalPosition(Vector3(0, 0, -5));
 		sphereHolder->transform.setLocalScale(Vector3(0.5, 0.5, 0.5));
-		sphereHolder->transform.setLocalRotation(Quaternion(0, 1, 0, Math::radians(90.0f)));
+		//sphereHolder->transform.setLocalRotation(Quaternion(0, 1, 0, Math::radians(90.0f)));
 
 		Quaternion applyRotation(0, 0, 0, 0);
 		cameraMan->transform.setLocalPosition(Vector3(0, 0, 10));
@@ -48,61 +50,63 @@ public:
 		material->specular = {0.8f, 0.0f, 0.8f};
 		material->diffuse = {0.4f, 0.4f, 0.0f};
 		material->shininess = 1.0f;
-		renderer->setMesh(box);
+		material->mainTexture = Resources::loadTexture("checkerboard.png");
+
+
+		renderer->setMesh(chair);
 		renderer->addMaterial(material);
 
+		Vector3* rotation = new Vector3(0, 0, 0);
+		Vector3* position = new Vector3(cameraMan->transform.getLocalPosition());
         
 		Input::addKeydownListener([=](Input::Key key) {
-			Quaternion applyRotation = cameraMan->transform.getLocalRotation();
-			Vector3 applyPosition = sphereHolder->transform.getLocalPosition();
+			
+			const Matrix4& worldMatrix = cameraMan->transform.getWorldMatrix();
+
+			Vector3 front = cameraMan->transform.getFront();
+			Vector3 right = cameraMan->transform.getRight();
 			switch(key) {
 				case Input::Key::W:
-					applyPosition.z += 1.0f;
+					(*position) += Math::normalize(front) * 0.2f;
 					break;
 
 				case Input::Key::S:
-					applyPosition.z -= 1.0f;
+					(*position) -= Math::normalize(front) * 0.2f;
 					break;
 
 				case Input::Key::D:
-					applyPosition.x += 1.0f;
+					(*position) += Math::normalize(right) * 0.1f;
 					break;
 
 				case Input::Key::A:
-					applyPosition.x -= 1.0f;
+					(*position) -= Math::normalize(right) * 0.1f;
 					break;
 
 				case Input::Key::ArrowUp:
-					applyRotation.x = 1;
-					applyRotation.y = 0;
-					applyRotation.z = 0;
-					applyRotation.w += Math::radians(10.0f);
+					rotation->x += Math::radians(10.0f);
 					break;
 
 				case Input::Key::ArrowDown:
-					applyRotation.x = 1;
-					applyRotation.y = 0;
-					applyRotation.z = 0;
-					applyRotation.w -= Math::radians(10.0f);
+					rotation->x -= Math::radians(10.0f);
 					break;
 
 				case Input::Key::ArrowLeft:
-					applyRotation.x = 0;
-					applyRotation.y = 1;
-					applyRotation.z = 0;
-					applyRotation.w += Math::radians(10.0f);
+					rotation->y += Math::radians(10.0f);
 					break;
 
 				case Input::Key::ArrowRight:
-					applyRotation.x = 0;
-					applyRotation.y = 1;
-					applyRotation.z = 0;
-					applyRotation.w -= Math::radians(10.0f);
+					rotation->y -= Math::radians(10.0f);
 					break;
 			}
 
-			cameraMan->transform.setLocalRotation(applyRotation);
-			sphereHolder->transform.setLocalPosition(applyPosition);
+			Vector3 r = *rotation;
+			
+			cameraMan->transform.setLocalPosition((*position));
+			// std::cout << "Up   vec: " << Math::to_string(cameraMan->transform.getUp()) << std::endl;
+			// std::cout << "Rightvec: " << Math::to_string(cameraMan->transform.getRight()) << std::endl;
+			// std::cout << "Frontvec: " << Math::to_string(cameraMan->transform.getFront()) << std::endl;
+			std::cout << "Position: " << Math::to_string(cameraMan->transform.getLocalPosition()) << std::endl;
+			cameraMan->transform.setLocalRotation(fromEuler(r));
 		});
 
 		add(cameraMan);
@@ -118,17 +122,21 @@ public:
 
     }
 
+	Quaternion fromEuler(const Vector3& EulerAngle) {
+		// Quaternion QuatAroundX = Quaternion(1.0, 0.0, 0.0, EulerAngle.x);
+		// Quaternion QuatAroundY = Quaternion(0.0, 1.0, 0.0, EulerAngle.y);
+		// Quaternion QuatAroundZ = Quaternion(0.0, 0.0, 1.0, EulerAngle.z);
+		// Quaternion finalOrientation = QuatAroundX * QuatAroundY * QuatAroundZ;
+		// return finalOrientation;
+
+		return Quaternion(EulerAngle);
+	}
 };
 
 
 int main( int argc, char **argv ) {
-
-    Vector3 v = {1,1,1};
-
     Application app;
     app.setScene(new MyScene());
     app.start();
-
-
     return 0;
 }
