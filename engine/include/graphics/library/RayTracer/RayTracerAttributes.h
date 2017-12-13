@@ -13,8 +13,6 @@
 #include "typedefs.h"
 #include "graphics/PixelColor.h"
 
-float Infinity = std::numeric_limits<float>::max();
-
 struct IndexBuffer
 {
     std::vector<unsigned int> data;

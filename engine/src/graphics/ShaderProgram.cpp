@@ -20,11 +20,11 @@ void ShaderProgram::setUniform(unsigned int uniformLocation, Matrix4 m) {
 }
 
 unsigned int ShaderProgram::getUniformLocation(const char* uniformName) {
-    return gl->getUniformLocation(uniformName);
+    return gl->getUniformLocation(mShaderProgramLocation, uniformName);
 }
 
 unsigned int ShaderProgram::getAttributeLocation(const char* attributeName) {
-    return gl->getAttributeLocation(attributeName);
+    return gl->getAttributeLocation(mShaderProgramLocation, attributeName);
 }
 
 void ShaderProgram::bind() {

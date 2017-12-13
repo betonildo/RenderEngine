@@ -3,8 +3,8 @@
 
 #include "OSExport.h"
 #include "typedefs.h"
+#include "graphics/TextureFormat.h"
 
-class TextureFormat;
 
 class ENGINE_API TextureLoader {
 

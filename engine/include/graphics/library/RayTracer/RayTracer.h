@@ -5,11 +5,13 @@
 #include "graphics/GraphicLibrary.h"
 #include "graphics/VertexFormat.h"
 #include "graphics/ElementFormat.h"
+#include "graphics/ShaderProgram.h"
 #include "graphics/Rect.h"
-#include "graphics/library/RayTracer/Object.h"
 #include "graphics/library/RayTracer/RaycastHit.h"
 #include <vector>
 
+
+struct RayTracerObject;
 
 class RayTracer : public GraphicLibrary {
 
@@ -26,11 +28,11 @@ public:
 	void setVector2(uint uniformLocation, const Vector2& v);
 	void setMatrix4(uint uniformLocation, const Matrix4& m);
 
-	unsigned int getUniformLocation(const char* uniformName);
-	unsigned int getAttributeLocation(const char* attributeName);
+	unsigned int getUniformLocation(uint shaderProgram, const char* uniformName);
+	unsigned int getAttributeLocation(uint shaderProgram, const char* attributeName);
 	void enableAttribute(unsigned int attributeLocation);
 	void disableAttribute(unsigned int attributeLocation);
-	unsigned int createShaderProgram(Shader* shaderSource);
+	unsigned int createShaderProgram(const Shader& shaderSource);
 	unsigned int generateVertexBuffer();
 	unsigned int generateIndexBuffer();
 
@@ -41,7 +43,6 @@ public:
 	void activeTexture(uint textureIndex);
 	void deactiveTexture(uint textureIndex);
 
-	ShaderProgram* getShaderProgram(unsigned int shaderProgramLocation);
 	void bindShaderProgram(unsigned int shaderProgramLocation);
 	void unbindShaderProgram(unsigned int shaderProgramLocation);
 	
@@ -67,9 +68,9 @@ private:
 	LightsConfig mLights;
 	const Camera* mCamera;
 
-	std::vector<Object> mObjectsList;
+	std::vector<RayTracerObject> mObjectsList;
 
-	Object mCurrentObject;
+	RayTracerObject* mCurrentObject;
 	TextureBuffer* mCurrentTextureBuffer;
 	IndexBuffer* mCurrentIndexBuffer;
 	VertexBuffer* mCurrentVertexBuffer;

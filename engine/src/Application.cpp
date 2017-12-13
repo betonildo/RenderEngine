@@ -8,7 +8,6 @@
 #include "scene/EmptyScene.h"
 #include "graphics/GraphicLibrarySingleton.h"
 #include "graphics/library/OpenGL/OpenGLRenderer.h"
-#include <thread>
 #include <iostream>
 
 Application::Application() {
@@ -34,21 +33,13 @@ void Application::start() {
         setScene(new EmptyScene());
     mDevice->start();
 
-    std::thread t([&]() {
-        std::cout << "Running thread..." << std::endl;
-        while(mDevice->isAvailable()) {
-            if (mSceneHasChanged) changeScene();
-            mScene->update();
-            mScene->render();
-        }
-    });
-
     while(mDevice->isAvailable()) {
+        if (mSceneHasChanged) changeScene();
+        mScene->update();
+        mScene->render();
         mDevice->swapBuffers();
         mDevice->pollEvents();
     }
-
-    t.join();
 }
 
 void Application::identifyOS() {

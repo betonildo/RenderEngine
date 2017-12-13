@@ -3,9 +3,10 @@
 #include "components/Camera.h"
 #include "components/Light.h"
 #include "assets/Material.h"
+#include "assets/Shader.h"
 #include "graphics/library/OpenGL/OpenGLRenderer.h"
 #include "graphics/library/OpenGL/OpenGLErrorHandling.h"
-#include "utils/FileUtils.h"
+#include "graphics/library/OpenGL/OpenGLShaderCompiler.h"
 
 OpenGLRenderer::OpenGLRenderer() {
 
@@ -42,23 +43,25 @@ void OpenGLRenderer::pushAttributeValue(AttributeType type, const void* v, uint 
 }
 
 void OpenGLRenderer::setVector3(uint uniformLocation, const Vector3& v) {
-    GLCall(glUniform3fv(uniformLocation, 3, Math::value_ptr(v)));
+    GLCall(glUniform3fv(uniformLocation, 3, &v.x));
 }
 
 void OpenGLRenderer::setVector2(uint uniformLocation, const Vector2& v) {
-    GLCall(glUniform2fv(uniformLocation, 3, Math::value_ptr(v)));
+    GLCall(glUniform2fv(uniformLocation, 3, &v.x));
 }
 
 void OpenGLRenderer::setMatrix4(uint uniformLocation, const Matrix4& m) {
-    GLCall(glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, Math::value_ptr(m)));
+    GLCall(glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, &m[0][0]));
 }
 
-unsigned int OpenGLRenderer::getUniformLocation(const char* uniformName) {
+unsigned int OpenGLRenderer::getUniformLocation(uint shaderProgram, const char* uniformName) {
+	mCurrentBoundObject.shader = shaderProgram;
     GLCall(uint uniformLocation = glGetUniformLocation(mCurrentBoundObject.shader, uniformName));
     return uniformLocation;
 }
 
-unsigned int OpenGLRenderer::getAttributeLocation(const char* attributeName) {
+unsigned int OpenGLRenderer::getAttributeLocation(uint shaderProgram, const char* attributeName) {
+	mCurrentBoundObject.shader = shaderProgram;
     GLCall(uint attributeLocation = glGetAttribLocation(mCurrentBoundObject.shader, attributeName));
     return attributeLocation;
 }
@@ -71,10 +74,12 @@ void OpenGLRenderer::disableAttribute(unsigned int attributeLocation) {
     GLCall(glDisableVertexAttribArray(attributeLocation));
 }
 
-unsigned int OpenGLRenderer::createShaderProgram(Shader* shaderSource) {
+unsigned int OpenGLRenderer::createShaderProgram(const Shader& shaderSource) {
     //TODO: GLSL shader interpretation of source
-
-	
+	OpenGLShaderCompiler compiler;
+	const char* source = shaderSource.source.c_str();
+	compiler.readVertexAndFragmentShaderFromSource(source, shaderSource.source.size());
+	return 0;
 }
 
 unsigned int OpenGLRenderer::generateVertexBuffer() {
@@ -133,10 +138,6 @@ void OpenGLRenderer::deactiveTexture(uint textureIndex) {
     GLCall(glActiveTexture(0));
 }
 
-ShaderProgram* OpenGLRenderer::getShaderProgram(unsigned int shaderProgramLocation) {
-    return &mShaderPrograms[shaderProgramLocation];
-}
-
 void OpenGLRenderer::bindShaderProgram(unsigned int shaderProgramLocation) {
     mCurrentBoundObject.shader = shaderProgramLocation;
     GLCall(glUseProgram(mCurrentBoundObject.shader));
@@ -155,12 +156,12 @@ void OpenGLRenderer::bindVertexBuffer(uint bufferLocation) {
 }
 
 void OpenGLRenderer::bindVertexBufferData(VertexFormat vertexFormat, std::vector<Vector3> data) {
-    GLCall(glBufferData(GL_ARRAY_BUFFER, data.size() * vertexFormat.getElementSize(), Math::value_ptr(data), GL_STATIC_DRAW));
+    GLCall(glBufferData(GL_ARRAY_BUFFER, data.size() * vertexFormat.getElementSize(), data.data(), GL_STATIC_DRAW));
     mCurrentBoundVertexBuffer->format = vertexFormat;
 }
 
 void OpenGLRenderer::bindVertexBufferData(VertexFormat vertexFormat, std::vector<Vector2> data) {
-    GLCall(glBufferData(GL_ARRAY_BUFFER, data.size() * vertexFormat.getElementSize(), Math::value_ptr(data), GL_STATIC_DRAW));
+    GLCall(glBufferData(GL_ARRAY_BUFFER, data.size() * vertexFormat.getElementSize(), data.data(), GL_STATIC_DRAW));
     mCurrentBoundVertexBuffer->format = vertexFormat;
 }
 
@@ -181,9 +182,9 @@ void OpenGLRenderer::bindIndexBuffer(uint bufferLocation) {
 }
 
 void OpenGLRenderer::bindIndexBufferData(ElementFormat elementFormat, std::vector<unsigned int> data) {
-    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementFormat.getSize(), Math::value_ptr(data), GL_STATIC_DRAW));
+    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementFormat.getSize(), data.data(), GL_STATIC_DRAW));
     mCurrentBoundIndexBuffer->format = elementFormat;
-    mCurrentBoundIndexBuffer->elementsPointer = (void*)Math::value_ptr(data);
+	mCurrentBoundIndexBuffer->elementsPointer = (void*)data.data();
 }
 
 void OpenGLRenderer::unbindIndexBuffer(uint bufferLocation) {
@@ -203,7 +204,7 @@ void OpenGLRenderer::drawElements() {
 }
 
 void OpenGLRenderer::processObjectList() {
-    for(Object& object : mCurrentObjectsList) {
+    for(CmdObject& object : mCurrentObjectsList) {
         object.material->bind();
 
         for (uint i = 0; i < object.vertexbufferCount; i++) {

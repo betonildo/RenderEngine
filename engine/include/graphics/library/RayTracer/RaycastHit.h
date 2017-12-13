@@ -4,12 +4,12 @@
 #include "LinearMath.h"
 #include "typedefs.h"
 
-struct Object;
+struct RayTracerObject;
 
 
 struct RaycastHit {
     float closest;
-    const Object* object;
+    const RayTracerObject* object;
     Vector2 uv;
     uint index;
 };

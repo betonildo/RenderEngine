@@ -7,7 +7,6 @@
 
 class Material;
 class Buffer;
-class ShaderProgram;
 class Shader;
 struct TextureFormat;
 struct VertexFormat;
@@ -45,12 +44,12 @@ public:
 	virtual void setVector2(uint uniformLocation, const Vector2& v) = 0;
 	virtual void setMatrix4(uint uniformLocation, const Matrix4& m) = 0;
 
-	virtual uint getUniformLocation(const char* uniformName) = 0;
-    virtual uint getAttributeLocation(const char* attributeName) = 0;
+	virtual uint getUniformLocation(uint shaderProgram, const char* uniformName) = 0;
+    virtual uint getAttributeLocation(uint shaderProgram, const char* attributeName) = 0;
     virtual void enableAttribute(uint attributeLocation) = 0;
     virtual void disableAttribute(uint attributeLocation) = 0;
 
-    virtual uint createShaderProgram(Shader* shaderSource) = 0;
+    virtual uint createShaderProgram(const Shader& shaderSource) = 0;
     virtual uint generateVertexBuffer() = 0;
     virtual uint generateIndexBuffer() = 0;
 
@@ -61,8 +60,6 @@ public:
 	virtual void activeTexture(uint textureIndex) = 0;
 	virtual void deactiveTexture(uint textureIndex) = 0;
 	
-	virtual ShaderProgram* getShaderProgram(uint shaderProgramLocation) = 0;
-
     virtual void bindShaderProgram(uint shaderProgramLocation) = 0;
     virtual void unbindShaderProgram(uint shaderProgramLocation) = 0;
 

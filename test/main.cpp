@@ -46,11 +46,20 @@ public:
 		camera->setProjectionType(Camera::ProjectionType::Perspective);
 
 
+		unsigned char* rawSource;
+		uint size = 0;
+		FileUtils::ReadText("Basic.shader", rawSource, size);
+		Shader shader;
+		shader.source.assign(rawSource, size);
+		uint shaderProgram = gl->createShaderProgram(shader);
+
 		Material* material = new Material();
 		material->specular = {0.8f, 0.0f, 0.8f};
 		material->diffuse = {0.4f, 0.4f, 0.0f};
 		material->shininess = 1.0f;
 		material->mainTexture = Resources::loadTexture("checkerboard.png");
+		material->setShaderProgram(shaderProgram);
+
 
 
 		renderer->setMesh(chair);

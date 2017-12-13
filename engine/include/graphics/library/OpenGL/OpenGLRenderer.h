@@ -1,5 +1,5 @@
-#ifndef RAYTRACER_H
-#define RAYTRACER_H
+#ifndef OPENGLRENDERER_H
+#define OPENGLRENDERER_H
 
 #include "graphics/GraphicLibrary.h"
 #include "graphics/VertexFormat.h"
@@ -28,11 +28,11 @@ public:
 	void setVector2(uint uniformLocation, const Vector2& v);
 	void setMatrix4(uint uniformLocation, const Matrix4& m);
 
-	unsigned int getUniformLocation(const char* uniformName);
-	unsigned int getAttributeLocation(const char* attributeName);
+	unsigned int getUniformLocation(uint shaderProgram, const char* uniformName);
+	unsigned int getAttributeLocation(uint shaderProgram, const char* attributeName);
 	void enableAttribute(unsigned int attributeLocation);
 	void disableAttribute(unsigned int attributeLocation);
-	unsigned int createShaderProgram(Shader* shaderSource);
+	unsigned int createShaderProgram(const Shader& shaderSource);
 	unsigned int generateVertexBuffer();
 	unsigned int generateIndexBuffer();
 
@@ -43,7 +43,6 @@ public:
 	void activeTexture(uint textureIndex);
 	void deactiveTexture(uint textureIndex);
 
-	ShaderProgram* getShaderProgram(unsigned int shaderProgramLocation);
 	void bindShaderProgram(unsigned int shaderProgramLocation);
 	void unbindShaderProgram(unsigned int shaderProgramLocation);
 	
@@ -74,7 +73,7 @@ private:
 	
 	const Camera* mCurrentCamera;
 
-	struct Object {
+	struct CmdObject {
 		Material* material;
 		uint shader;
 		VertexBuffer* vertexbuffers[10];
@@ -86,16 +85,14 @@ private:
 		Matrix4 world;
 	};
 
-	Object mCurrentBoundObject;
+	CmdObject mCurrentBoundObject;
 	VertexBuffer* mCurrentBoundVertexBuffer;
 	IndexBuffer* mCurrentBoundIndexBuffer;
 
 	std::vector<VertexBuffer> mVertexBuffers;
 	std::vector<IndexBuffer> mIndexBuffers;
-	std::vector<Object> mCurrentObjectsList;
+	std::vector<CmdObject> mCurrentObjectsList;
 	std::vector<PixelColor> mBackBufferData;
-
-	std::vector<ShaderProgram> mShaderPrograms;
 
 	Rect mViewport;
 

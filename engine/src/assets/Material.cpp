@@ -1,10 +1,13 @@
 #include "assets/Material.h"
 #include "graphics/ShaderProgram.h"
+#include "graphics/GraphicLibrary.h"
+#include "graphics/GraphicLibrarySingleton.h"
 
 Material::Material() {
     mMatrix4CacheValid = false;
     mVector3CacheValid = false;
     mVector2CacheValid = false;
+	gl = GraphicLibrarySingleton::getInstance();
 }
 
 const std::map<unsigned int, Vector3>& Material::getUniformsVector3() const {
@@ -23,7 +26,7 @@ void Material::setUniform(const std::string& name, Vector3 v) {
     if (mShaderProgram) {
         mVector3CacheValid = false;
 		const char* uniformName = name.c_str();
-        unsigned int uniformLocation = mShaderProgram->getUniformLocation(uniformName);
+        unsigned int uniformLocation = gl->getUniformLocation(mShaderProgram, uniformName);
         mUniformsVector3[uniformLocation] = v;
     }
 }
@@ -32,7 +35,7 @@ void Material::setUniform(const std::string& name, Vector2 v) {
     if (mShaderProgram) {
         mVector2CacheValid = false;
 		const char* uniformName = name.c_str();
-        unsigned int uniformLocation = mShaderProgram->getUniformLocation(uniformName);
+        unsigned int uniformLocation = gl->getUniformLocation(mShaderProgram, uniformName);
         mUniformsVector2[uniformLocation] = v;
     }
 }
@@ -41,38 +44,38 @@ void Material::setUniform(const std::string& name, Matrix4 m) {
     if (mShaderProgram) {
         mMatrix4CacheValid = false;
 		const char* uniformName = name.c_str();
-        unsigned int uniformLocation = mShaderProgram->getUniformLocation(uniformName);
+        unsigned int uniformLocation = gl->getUniformLocation(mShaderProgram, uniformName);
         mUniformsMatrix4[uniformLocation] = m;
     }
 }
 
-void Material::setShaderProgram(ShaderProgram* shaderProgram) {
+void Material::setShaderProgram(uint shaderProgram) {
 	mShaderProgram = shaderProgram;
 }
 
 void Material::bind() {
-    if (mShaderProgram) mShaderProgram->bind();
+	if (mShaderProgram) gl->bindShaderProgram(mShaderProgram);
 
     // ONLY SET TO SHADER NEW VALUES
     if (!mMatrix4CacheValid) {
         mMatrix4CacheValid = true;
         for (auto uniform : mUniformsMatrix4)
-            mShaderProgram->setUniform(uniform.first, uniform.second);
+            gl->setMatrix4(uniform.first, uniform.second);
     }
 
     if (!mVector2CacheValid) {
         mVector2CacheValid = true;
         for (auto uniform : mUniformsVector2)
-            mShaderProgram->setUniform(uniform.first, uniform.second);
+            gl->setVector2(uniform.first, uniform.second);
     }
 
     if (!mVector3CacheValid) {
         mVector3CacheValid = true;
         for (auto uniform : mUniformsVector3)
-            mShaderProgram->setUniform(uniform.first, uniform.second);
+            gl->setVector3(uniform.first, uniform.second);
     }
 }
 
 void Material::unbind() {
-    if (mShaderProgram) mShaderProgram->unbind();
+    if (mShaderProgram) gl->unbindShaderProgram(0);
 }

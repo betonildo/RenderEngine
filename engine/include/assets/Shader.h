@@ -8,6 +8,7 @@
 class ENGINE_API Shader : public Asset {
 
 public:
+	Shader(std::string source) : source(source) {}
     std::string source;
 };
 

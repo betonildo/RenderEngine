@@ -3,6 +3,7 @@
 
 #include "Application.h"
 #include "utils/MeshUtils.h"
+#include "utils/FileUtils.h"
 #include "assets/Resources.h"
 #include "assets/Mesh.h"
 #include "assets/Shader.h"

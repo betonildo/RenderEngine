@@ -4,6 +4,8 @@
 #include "graphics/ElementFormat.h"
 #include "LinearMath.h"
 #include "OSExport.h"
+#include "graphics/library/RayTracer/RayTracerAttributes.h"
+#include "graphics/library/RayTracer/RaycastHit.h"
 
 class VertexBuffer;
 class Material;
@@ -15,7 +17,7 @@ struct Triangle;
 
 static float kEpsilon = 1e-8;
 
-struct ENGINE_API Object
+struct ENGINE_API RayTracerObject
 {
 
     // TODO: Setup uv0, uv1, ... with textures0, 1, ... units like an index activation of the array
@@ -29,7 +31,7 @@ struct ENGINE_API Object
     ElementFormat format;
     Matrix4 World;
 
-    Object();
+    RayTracerObject();
 
     bool intersect(const Ray& ray, RaycastHit& hit);
     bool intersectTriangle(const Triangle& triangle, const Ray& ray, RaycastHit& hit);

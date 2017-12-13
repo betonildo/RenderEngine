@@ -59,14 +59,15 @@ if (WIN32)
     # SETUP EXPORT DLL FOR WINDOWS
     target_compile_definitions(RenderEngine PRIVATE ENGINE_EXPORTING=1)
     set(SDL2_LIBRARIES 
-        vcruntimed
-        ucrtd
+
         SDL2-static
         SDL2main
         winmm
         imm32
         version
         gdi32
+		kernel32
+		user32
     )
 endif (WIN32)
 

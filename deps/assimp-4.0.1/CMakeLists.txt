@@ -64,7 +64,7 @@ OPTION( ASSIMP_BUILD_ZLIB
 )
 option( ASSIMP_BUILD_ASSIMP_TOOLS
   "If the supplementary tools for Assimp are built in addition to the library."
-  ON
+  OFF
 )
 option ( ASSIMP_BUILD_SAMPLES
   "If the official samples are built as well (needs Glut)."
@@ -72,7 +72,7 @@ option ( ASSIMP_BUILD_SAMPLES
 )
 OPTION ( ASSIMP_BUILD_TESTS
   "If the test suite for Assimp is built in addition to the library."
-  ON
+  OFF
 )
 OPTION ( ASSIMP_COVERALLS
    "Eańable this to measure test coverage."
@@ -362,7 +362,7 @@ IF ( ASSIMP_BUILD_ASSIMP_TOOLS )
     ENDIF ( ASSIMP_BUILD_ASSIMP_VIEW )
   ENDIF ( WIN32 AND DirectX_D3DX9_LIBRARY )
 
-  ADD_SUBDIRECTORY( tools/assimp_cmd/ )
+  #ADD_SUBDIRECTORY( tools/assimp_cmd/ )
 
   # Check dependencies for assimp_qt_viewer.
   # Why here? Maybe user do not want Qt viewer and have no Qt.

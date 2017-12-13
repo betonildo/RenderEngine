@@ -1,8 +1,8 @@
-#include "graphics/library/RayTracer/Object.h"
+#include "graphics/library/RayTracer/RayTracerObject.h"
 #include "graphics/library/RayTracer/RaycastHit.h"
 #include "graphics/library/RayTracer/RayTracerAttributes.h"
 
-Object::Object() {
+RayTracerObject::RayTracerObject() {
     material = nullptr;
     texture[0] = nullptr;
     texture[1] = nullptr;
@@ -14,19 +14,7 @@ Object::Object() {
     indices = nullptr;
 }
 
-Object::Object() {
-    material = nullptr;
-    texture[0] = nullptr;
-    texture[1] = nullptr;
-    texture[2] = nullptr;
-    texture[3] = nullptr;
-    positions = nullptr;
-    normals = nullptr;
-    uvs = nullptr;
-    indices = nullptr;
-}
-
-bool Object::intersect(const Ray& ray, RaycastHit& hit) {
+bool RayTracerObject::intersect(const Ray& ray, RaycastHit& hit) {
 
     for (uint i = 0; i < indices->data.size(); i+=3) {
 
@@ -48,7 +36,7 @@ bool Object::intersect(const Ray& ray, RaycastHit& hit) {
     return false;
 }
 
-bool Object::intersectTriangle(const Triangle& triangle, const Ray& ray, RaycastHit& hit) {
+bool RayTracerObject::intersectTriangle(const Triangle& triangle, const Ray& ray, RaycastHit& hit) {
     Vector3 v0v1 = triangle.v1 - triangle.v0; 
     Vector3 v0v2 = triangle.v2 - triangle.v0; 
     Vector3 pvec = Math::cross(ray.direction, v0v2); 
@@ -72,7 +60,7 @@ bool Object::intersectTriangle(const Triangle& triangle, const Ray& ray, Raycast
     return true;
 }
 
-void Object::getSurfaceProperties(const uint32_t &index, const Vector2 &uv, Vector3 &N, Vector2 &st) const 
+void RayTracerObject::getSurfaceProperties(const uint32_t &index, const Vector2 &uv, Vector3 &N, Vector2 &st) const 
 { 
     uint iv0 = indices->data[index + 0];
     uint iv1 = indices->data[index + 1];

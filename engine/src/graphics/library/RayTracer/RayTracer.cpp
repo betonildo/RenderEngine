@@ -1,4 +1,5 @@
 #include "graphics/library/RayTracer/RayTracer.h"
+#include "graphics/library/RayTracer/RayTracerObject.h"
 #include "graphics/TextureFormat.h"
 #include "graphics/VertexFormat.h"
 #include "graphics/ElementFormat.h"
@@ -9,14 +10,15 @@
 #include "scene/Transform.h"
 #include "assets/Material.h"
 #include <string.h>
-#include <thread>
 #include <iostream>
+#include <limits>
 
 RayTracer::RayTracer() {
 	mShaderProgramsCount = 0;
 	mVertexBuffersCount = 0;
 	mIndexBuffersCount = 0;
 	mTextureBuffersCount = 0;
+	mCurrentObject = new RayTracerObject();
 }
 
 void RayTracer::pushMatrix4(MatrixType type, const Matrix4& m) {
@@ -24,13 +26,13 @@ void RayTracer::pushMatrix4(MatrixType type, const Matrix4& m) {
 	switch (type)
 	{
 	case GraphicLibrary::MatrixType::World:
-		mCurrentObject.World = m;
+		mCurrentObject->World = m;
 		break;
 	// case GraphicLibrary::MatrixType::View:
-	// 	mCurrentObject.View = m;
+	// 	mCurrentObject->View = m;
 	// 	break;
 	// case GraphicLibrary::MatrixType::Projection:
-	// 	mCurrentObject.Projection = m;
+	// 	mCurrentObject->Projection = m;
 	// 	break;
 	default:
 		break;
@@ -38,9 +40,9 @@ void RayTracer::pushMatrix4(MatrixType type, const Matrix4& m) {
 }
 
 void RayTracer::pushMaterial(const Material* material) {
-	mCurrentObject.material = (Material*)material;
-	mCurrentObject.material->mainTexture.bind();
-	mCurrentObject.material->mainTexture.active(0);
+	mCurrentObject->material = (Material*)material;
+	mCurrentObject->material->mainTexture.bind();
+	mCurrentObject->material->mainTexture.active(0);
 }
 
 void RayTracer::pushLights(const Light* lights, uint lightCount) {
@@ -56,16 +58,16 @@ void RayTracer::pushAttributeValue(AttributeType type, const void* v, uint count
 	// switch (type)
 	// {
 	// case GraphicLibrary::AttributeType::Position:
-	// 	mCurrentObject.positions.values.vectors3 = (const Vector3*)v;
-	// 	mCurrentObject.positions.count = count;
+	// 	mCurrentObject->positions.values.vectors3 = (const Vector3*)v;
+	// 	mCurrentObject->positions.count = count;
 	// 	break;
 	// case GraphicLibrary::AttributeType::Normal:
-	// 	mCurrentObject.normals.values.vectors3 = (const Vector3*)v;
-	// 	mCurrentObject.normals.count = count;
+	// 	mCurrentObject->normals.values.vectors3 = (const Vector3*)v;
+	// 	mCurrentObject->normals.count = count;
 	// 	break;
 	// case GraphicLibrary::AttributeType::UV0:
-	// 	mCurrentObject.uvs.values.vectors2 = (const Vector2*)v;
-	// 	mCurrentObject.uvs.count = count;
+	// 	mCurrentObject->uvs.values.vectors2 = (const Vector2*)v;
+	// 	mCurrentObject->uvs.count = count;
 	// 	break;
 	// case GraphicLibrary::AttributeType::UV1:
 	// 	break;
@@ -88,11 +90,11 @@ void RayTracer::setMatrix4(uint uniformLocation, const Matrix4& m) {
 
 }
 
-unsigned int RayTracer::getUniformLocation(const char* uniformName) {
+unsigned int RayTracer::getUniformLocation(uint shaderProgram, const char* uniformName) {
 	return 0;
 }
 
-unsigned int RayTracer::getAttributeLocation(const char* attributeName) {
+unsigned int RayTracer::getAttributeLocation(uint shaderProgram, const char* attributeName) {
 	return 0;
 }
 
@@ -100,13 +102,13 @@ void RayTracer::enableAttribute(unsigned int attributeLocation) {
 	VertexBuffer* buffer = &mVertexBuffers[attributeLocation];
 	switch(buffer->format.type) {
 		case GraphicLibrary::AttributeType::Position:
-			mCurrentObject.positions = buffer;
+			mCurrentObject->positions = buffer;
 			break;
 		case GraphicLibrary::AttributeType::Normal:
-			mCurrentObject.normals = buffer;
+			mCurrentObject->normals = buffer;
 			break;
 		case GraphicLibrary::AttributeType::UV0:
-			mCurrentObject.uvs = buffer;
+			mCurrentObject->uvs = buffer;
 			break;
 	}	
 }
@@ -115,7 +117,7 @@ void RayTracer::disableAttribute(unsigned int attributeLocation) {
 
 }
 
-unsigned int RayTracer::createShaderProgram(Shader* shaderSource) {
+unsigned int RayTracer::createShaderProgram(const Shader& shaderSource) {
 	unsigned int shaderProgramLocation = mShaderProgramsCount;
 	mShaderPrograms.emplace_back(shaderProgramLocation);
 	mShaderProgramsCount++;
@@ -161,16 +163,11 @@ void RayTracer::unbindTexture(uint textureLocation) {
 }
 
 void RayTracer::activeTexture(uint textureIndex) {
-	mCurrentObject.texture[0] = mCurrentTextureBuffer;
+	mCurrentObject->texture[0] = mCurrentTextureBuffer;
 }
 
 void RayTracer::deactiveTexture(uint textureIndex) {
 
-}
-
-
-ShaderProgram* RayTracer::getShaderProgram(unsigned int shaderProgramLocation) {
-	return &mShaderPrograms[shaderProgramLocation];
 }
 
 void RayTracer::bindShaderProgram(unsigned int shaderProgramLocation) {
@@ -201,8 +198,8 @@ void RayTracer::unbindVertexBuffer(uint bufferLocation) {
 
 void RayTracer::bindIndexBuffer(uint bufferLocation) {
 	mCurrentIndexBuffer = &mIndexBuffers[bufferLocation];
-	mCurrentObject.format = mCurrentIndexBuffer->format;
-	mCurrentObject.indices = mCurrentIndexBuffer;
+	mCurrentObject->format = mCurrentIndexBuffer->format;
+	mCurrentObject->indices = mCurrentIndexBuffer;
 }
 
 void RayTracer::bindIndexBufferData(ElementFormat elementFormat, std::vector<unsigned int> data) {
@@ -214,8 +211,8 @@ void RayTracer::unbindIndexBuffer(uint bufferLocation) {
 	mCurrentIndexBuffer = nullptr;
 }
 
-void RayTracer::pushBackObject() {
-	memset(&mCurrentObject, 0, sizeof(Object));
+void RayTracer::pushBackObject() {	
+	memset(&mCurrentObject, 0, sizeof(RayTracerObject));
 }
 
 void RayTracer::clearObjectList() {
@@ -223,7 +220,7 @@ void RayTracer::clearObjectList() {
 }
 
 void RayTracer::drawElements() {
-	mObjectsList.push_back(mCurrentObject);
+	mObjectsList.push_back(*mCurrentObject);
 }
 
 void RayTracer::init() {
@@ -254,106 +251,6 @@ void RayTracer::processObjectList() {
 
 	Vector3 front = mCamera->getTransform().getFront();
 
-	std::vector<std::thread> threads;
-	uint numberOfThreads = std::thread::hardware_concurrency();
-	uint heightSlice = ceil((float)mRect.height/numberOfThreads);
-	std::cout << "Height Slice: " << heightSlice << std::endl;
-	// for (uint tid = 0; tid < numberOfThreads; tid++) {		
-
-	// 	uint tid_tmp = tid;
-	// 	uint start_j = heightSlice * tid_tmp;
-	// 	uint end___j = heightSlice * (tid_tmp+1);
-		
-	// 	threads.emplace_back([&]() {
-	// 		for (unsigned int j = start_j; j < end___j; j++) {
-	// 			for (unsigned int i = 0; i < mRect.width; i++) {
-
-	// 				// float x = (2.0f * (i + 0.5f) / (float)mRect.width - 1) * imageAspectRatio * scale; 
-	// 				// float y = (1.0f - 2.0f * (j + 0.5f) / (float)mRect.height) * scale; 
-
-	// 				// ray.direction = CameraToView * Math::normalize(Vector4(x, y, -1.0f, 1.0f));
-	// 				ray = ComputeCameraRay(cam_pos, cam_dir, cam_up, cam_right, i, j);
-	// 				mBackBuffer[i + mRect.width * j] = castRay(ray, 2);
-	// 			}
-	// 		}
-	// 	});
-	// }
-
-	// for (auto& t : threads)
-	// 	t.join();
-
-	// threads.emplace_back([&]() {
-	// 	uint tid_tmp = 0;
-	// 	uint start_j = heightSlice * tid_tmp;
-	// 	uint end___j = heightSlice * (tid_tmp+1);
-	// 	std::cout << "ThreadID: " << tid_tmp << " start: " << start_j << " end: " << end___j << std::endl;
-	// 	for (unsigned int j = start_j; j < end___j; j++) {
-	// 		for (unsigned int i = 0; i < mRect.width; i++) {
-
-	// 			// float x = (2.0f * (i + 0.5f) / (float)mRect.width - 1) * imageAspectRatio * scale; 
-	// 			// float y = (1.0f - 2.0f * (j + 0.5f) / (float)mRect.height) * scale; 
-
-	// 			// ray.direction = CameraToView * Math::normalize(Vector4(x, y, -1.0f, 1.0f));
-	// 			ray = ComputeCameraRay(cam_pos, cam_dir, cam_up, cam_right, i, j);
-	// 			mBackBuffer[i + mRect.width * j] = castRay(ray, 2);
-	// 		}
-	// 	}
-	// });
-
-
-	// threads.emplace_back([&]() {
-	// 	uint tid_tmp = 1;
-	// 	uint start_j = heightSlice * tid_tmp;
-	// 	uint end___j = heightSlice * (tid_tmp+1);
-	// 	std::cout << "ThreadID: " << tid_tmp << " start: " << start_j << " end: " << end___j << std::endl;
-	// 	for (unsigned int j = start_j; j < end___j; j++) {
-	// 		for (unsigned int i = 0; i < mRect.width; i++) {
-
-	// 			// float x = (2.0f * (i + 0.5f) / (float)mRect.width - 1) * imageAspectRatio * scale; 
-	// 			// float y = (1.0f - 2.0f * (j + 0.5f) / (float)mRect.height) * scale; 
-
-	// 			// ray.direction = CameraToView * Math::normalize(Vector4(x, y, -1.0f, 1.0f));
-	// 			ray = ComputeCameraRay(cam_pos, cam_dir, cam_up, cam_right, i, j);
-	// 			mBackBuffer[i + mRect.width * j] = castRay(ray, 2);
-	// 		}
-	// 	}
-	// });
-
-	// threads.emplace_back([&]() {
-	// 	uint tid_tmp = 2;
-	// 	uint start_j = heightSlice * tid_tmp;
-	// 	uint end___j = heightSlice * (tid_tmp+1);
-	// 	std::cout << "ThreadID: " << tid_tmp << " start: " << start_j << " end: " << end___j << std::endl;
-	// 	for (unsigned int j = start_j; j < end___j; j++) {
-	// 		for (unsigned int i = 0; i < mRect.width; i++) {
-
-	// 			// float x = (2.0f * (i + 0.5f) / (float)mRect.width - 1) * imageAspectRatio * scale; 
-	// 			// float y = (1.0f - 2.0f * (j + 0.5f) / (float)mRect.height) * scale; 
-
-	// 			// ray.direction = CameraToView * Math::normalize(Vector4(x, y, -1.0f, 1.0f));
-	// 			ray = ComputeCameraRay(cam_pos, cam_dir, cam_up, cam_right, i, j);
-	// 			mBackBuffer[i + mRect.width * j] = castRay(ray, 2);
-	// 		}
-	// 	}
-	// });
-
-	// threads.emplace_back([&]() {
-	// 	uint tid_tmp = 3;
-	// 	uint start_j = heightSlice * tid_tmp;
-	// 	uint end___j = heightSlice * (tid_tmp+1);
-	// 	std::cout << "ThreadID: " << tid_tmp << " start: " << start_j << " end: " << end___j << std::endl;
-	// 	for (unsigned int j = start_j; j < end___j; j++) {
-	// 		for (unsigned int i = 0; i < mRect.width; i++) {
-
-	// 			// float x = (2.0f * (i + 0.5f) / (float)mRect.width - 1) * imageAspectRatio * scale; 
-	// 			// float y = (1.0f - 2.0f * (j + 0.5f) / (float)mRect.height) * scale; 
-
-	// 			// ray.direction = CameraToView * Math::normalize(Vector4(x, y, -1.0f, 1.0f));
-	// 			ray = ComputeCameraRay(cam_pos, cam_dir, cam_up, cam_right, i, j);
-	// 			mBackBuffer[i + mRect.width * j] = castRay(ray, 2);
-	// 		}
-	// 	}
-	// });
 	
 	for (unsigned int j = 0; j < mRect.height; j++) {
 		for (unsigned int i = 0; i < mRect.width; i++) {
@@ -367,9 +264,6 @@ void RayTracer::processObjectList() {
 		}
 	}
 
-
-	// for (auto& t : threads)
-	// 	t.join();
 
 }
 
@@ -391,7 +285,7 @@ PixelColor RayTracer::castRay(const Ray& ray, uint bounces) {
 
 	RaycastHit hit;
 	hit.object = nullptr;
-	hit.closest = Infinity;
+	hit.closest = std::numeric_limits<float>::infinity();
 	if (rayCastHit(ray, hit)) {
 		Color4 diffuseColor = calculatePointColor(ray, hit);
 		PixelColor pixel;
@@ -407,8 +301,8 @@ PixelColor RayTracer::castRay(const Ray& ray, uint bounces) {
 
 bool RayTracer::rayCastHit(const Ray& ray,  RaycastHit& hit) {
 
-	float nearest = Infinity;
-	for (Object& object : mObjectsList)
+	float nearest = std::numeric_limits<float>::infinity();
+	for (RayTracerObject& object : mObjectsList)
 		if (object.intersect(ray, hit))
 			if (hit.closest < nearest) {
 				hit.object = &object;
@@ -444,7 +338,7 @@ Color4 RayTracer::calculatePointColor(const Ray& ray, const RaycastHit& hit) {
 		float lightDistance2 = Math::dot(lightDir, lightDir);
 		lightDir = Math::normalize(lightDir);
 		float LdotN = max(0.0f, Math::dot(lightDir, N));
-		float tNearShadow = Infinity;
+		float tNearShadow = std::numeric_limits<float>::infinity();
 
 		// Verify if in the light or in the shadow
 		Ray ray;
