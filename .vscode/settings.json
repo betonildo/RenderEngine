@@ -57,5 +57,7 @@
         "string_view": "cpp",
         "*.tcc": "cpp"
     },
-    "C_Cpp.intelliSenseEngine": "Default"
+    "C_Cpp.intelliSenseEngine": "Default",
+    "explorer.autoReveal": false,
+    "editor.minimap.enabled": false
 }

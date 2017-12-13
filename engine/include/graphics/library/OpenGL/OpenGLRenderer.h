@@ -12,6 +12,7 @@
 #include <vector>
 #include <queue>
 
+
 class OpenGLRenderer : public GraphicLibrary {
 
 public:
@@ -49,6 +50,7 @@ public:
 	void bindVertexBuffer(uint bufferLocation);
 	void bindVertexBufferData(VertexFormat vertexFormat, std::vector<Vector3> data);
 	void bindVertexBufferData(VertexFormat vertexFormat, std::vector<Vector2> data);
+	void bindVertexBufferData(VertexFormat vertexFormat, void* data, uint length);
 	void unbindVertexBuffer(uint bufferLocation);
 
 	void bindIndexBuffer(uint bufferLocation);
@@ -74,15 +76,32 @@ private:
 
 	struct Object {
 		Material* material;
+		uint shader;
+		VertexBuffer* vertexbuffers[10];
+		uint vertexbufferCount = 0;
+		// TODO: have in mind, to future handle 
+		//		 multiple index buffers to draw
+		//		 different parts of a model.
+		IndexBuffer* indexbuffer;
+		Matrix4 world;
 	};
 
 	Object mCurrentBoundObject;
+	VertexBuffer* mCurrentBoundVertexBuffer;
+	IndexBuffer* mCurrentBoundIndexBuffer;
 
+	std::vector<VertexBuffer> mVertexBuffers;
+	std::vector<IndexBuffer> mIndexBuffers;
 	std::vector<Object> mCurrentObjectsList;
-
 	std::vector<PixelColor> mBackBufferData;
+
+	std::vector<ShaderProgram> mShaderPrograms;
 
 	Rect mViewport;
 
 	Matrix4 mMatrixCache[(uint)MatrixType::Count];
+
+	static uint ElementDrawModeToOpenGLMode(const ElementFormat& format);
 };
+
+#endif // OPENGLRENDERER_H

@@ -22,7 +22,8 @@ const std::map<unsigned int, Matrix4>& Material::getUniformsMatrix4() const {
 void Material::setUniform(const std::string& name, Vector3 v) {
     if (mShaderProgram) {
         mVector3CacheValid = false;
-        unsigned int uniformLocation = mShaderProgram->getUniformLocation(name);
+		const char* uniformName = name.c_str();
+        unsigned int uniformLocation = mShaderProgram->getUniformLocation(uniformName);
         mUniformsVector3[uniformLocation] = v;
     }
 }
@@ -30,7 +31,8 @@ void Material::setUniform(const std::string& name, Vector3 v) {
 void Material::setUniform(const std::string& name, Vector2 v) {
     if (mShaderProgram) {
         mVector2CacheValid = false;
-        unsigned int uniformLocation = mShaderProgram->getUniformLocation(name);
+		const char* uniformName = name.c_str();
+        unsigned int uniformLocation = mShaderProgram->getUniformLocation(uniformName);
         mUniformsVector2[uniformLocation] = v;
     }
 }
@@ -38,7 +40,8 @@ void Material::setUniform(const std::string& name, Vector2 v) {
 void Material::setUniform(const std::string& name, Matrix4 m) {
     if (mShaderProgram) {
         mMatrix4CacheValid = false;
-        unsigned int uniformLocation = mShaderProgram->getUniformLocation(name);
+		const char* uniformName = name.c_str();
+        unsigned int uniformLocation = mShaderProgram->getUniformLocation(uniformName);
         mUniformsMatrix4[uniformLocation] = m;
     }
 }

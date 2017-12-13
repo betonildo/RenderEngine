@@ -6,14 +6,14 @@
 #include "graphics/ElementFormat.h"
 #include <array>
 #include <vector>
-#include <climits>
+#include <limits>
 #include <cfloat>
 
 #include "graphics/TextureFormat.h"
 #include "typedefs.h"
 #include "graphics/PixelColor.h"
 
-static constexpr float Infinity = std::numeric_limits<float>::max();
+float Infinity = std::numeric_limits<float>::max();
 
 struct IndexBuffer
 {

@@ -4,7 +4,8 @@
 #include "graphics/VertexFormat.h"
 
 struct VertexBuffer {
-
+    uint vbo;
+    uint location;
     VertexFormat format;
 };
 
