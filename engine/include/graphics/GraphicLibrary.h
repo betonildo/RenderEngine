@@ -30,7 +30,7 @@ public:
 	};
 
 	enum class AttributeType {
-		Position, Normal, UV0, UV1, UV2,
+		Position, Tangent, Bitangent, Normal, UV0, UV1, UV2,
 
 		Count
 	};

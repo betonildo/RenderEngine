@@ -1,6 +1,8 @@
 #ifndef ELEMENTFORMAT_H
 #define ELEMENTFORMAT_H
 
+#include "graphics/FormatType.h"
+
 struct ElementFormat {
 
 	enum class Mode {
@@ -8,24 +10,13 @@ struct ElementFormat {
 		TriangleStrip, TriangleFan, Triangles, TriangleStripAdjacency, TrianglesAdjacency
 	};
 
-	enum class IndexType {
-		UnsignedByte, UnsignedShort, UnsignedInt, Count
-	};
-
-	inline static const unsigned char IndexTypeSizes(IndexType type) {
-
-		unsigned int IndexTypeSize[] = {
-			sizeof(unsigned char),
-			sizeof(unsigned short),
-			sizeof(unsigned int)
-		};
-
-		return IndexTypeSize[(unsigned int)type];
+	inline const unsigned char getSize() {
+		return GetFormatTypeSizeInBytes(type) * count;
 	}
 
 	Mode mode;
 	unsigned int count;
-	IndexType type;
+	FormatType type;
 	unsigned int firstElementOffset;
 };
 

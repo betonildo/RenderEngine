@@ -1,6 +1,18 @@
-#include "graphics/Object.h"
-#include "graphics/RaycastHit.h"
-#include "graphics/RayTracerAttributes.h"
+#include "graphics/library/RayTracer/Object.h"
+#include "graphics/library/RayTracer/RaycastHit.h"
+#include "graphics/library/RayTracer/RayTracerAttributes.h"
+
+Object::Object() {
+    material = nullptr;
+    texture[0] = nullptr;
+    texture[1] = nullptr;
+    texture[2] = nullptr;
+    texture[3] = nullptr;
+    positions = nullptr;
+    normals = nullptr;
+    uvs = nullptr;
+    indices = nullptr;
+}
 
 Object::Object() {
     material = nullptr;

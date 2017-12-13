@@ -9,10 +9,24 @@ file(GLOB RenderEngine_SOURCES
     ${PROJECT_SOURCE_DIR}/src/*.cpp
     ${PROJECT_SOURCE_DIR}/src/device/*.cpp
     ${PROJECT_SOURCE_DIR}/src/graphics/*.cpp
+    ${PROJECT_SOURCE_DIR}/src/graphics/library/RayTracer/*.cpp
+    ${PROJECT_SOURCE_DIR}/src/graphics/library/OpenGL/*.cpp
     ${PROJECT_SOURCE_DIR}/src/scene/*.cpp
     ${PROJECT_SOURCE_DIR}/src/loaders/*.cpp
     ${PROJECT_SOURCE_DIR}/src/assets/*.cpp
     ${PROJECT_SOURCE_DIR}/src/components/*.cpp
+	${PROJECT_SOURCE_DIR}/include/utils/*.cpp
+
+	${PROJECT_SOURCE_DIR}/include/*.h
+    ${PROJECT_SOURCE_DIR}/include/device/*.h
+    ${PROJECT_SOURCE_DIR}/include/graphics/*.h
+    ${PROJECT_SOURCE_DIR}/include/graphics/library/RayTracer/*.h
+    ${PROJECT_SOURCE_DIR}/include/graphics/library/OpenGL/*.h
+    ${PROJECT_SOURCE_DIR}/include/scene/*.h
+    ${PROJECT_SOURCE_DIR}/include/loaders/*.h
+    ${PROJECT_SOURCE_DIR}/include/assets/*.h
+    ${PROJECT_SOURCE_DIR}/include/components/*.h
+	${PROJECT_SOURCE_DIR}/include/utils/*.h
 )
 
 # CREATE STATIC LIBRARY (TRY USING SHARED LIBRARY FOR TESTING)

@@ -141,6 +141,8 @@ void WindowsDevice::initSDL2() {
         return;
     }
 
+	SDL_GL_CreateContext(mWindow);
+
     Rect viewport = {0, 0, mWidth, mHeight};
     gl->setViewportRect(viewport);
     

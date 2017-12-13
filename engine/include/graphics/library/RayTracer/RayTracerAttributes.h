@@ -6,27 +6,14 @@
 #include "graphics/ElementFormat.h"
 #include <array>
 #include <vector>
-#include <climits>
+#include <limits>
 #include <cfloat>
 
 #include "graphics/TextureFormat.h"
 #include "typedefs.h"
+#include "graphics/PixelColor.h"
 
-static constexpr float Infinity = std::numeric_limits<float>::max();
-
-struct PixelColor{
-    union{
-        struct {
-            byte r, g, b, a;
-        };
-
-        byte data[4];
-    };
-
-    inline byte& operator[](byte i) {
-        return data[i];
-    }
-};
+float Infinity = std::numeric_limits<float>::max();
 
 struct IndexBuffer
 {

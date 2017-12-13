@@ -30,7 +30,7 @@ public:
 
 		//auto box = Mesh::createSphere();
 		//Mesh tmpChair = Resources::loadMesh("cokemachine.fbx");
-		Mesh* chair = Mesh::createQuad();
+		Mesh* chair = MeshUtils::createQuad();
 
 		sphereHolder->transform.setLocalPosition(Vector3(0, 0, -5));
 		sphereHolder->transform.setLocalScale(Vector3(0.5, 0.5, 0.5));

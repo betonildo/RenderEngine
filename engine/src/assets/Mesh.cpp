@@ -2,6 +2,7 @@
 #include "graphics/Vertex.h"
 #include "graphics/VertexFormat.h"
 #include "graphics/ElementFormat.h"
+#include "graphics/FormatType.h"
 #include "graphics/GraphicLibrarySingleton.h"
 #include "graphics/GraphicLibrary.h"
 
@@ -25,7 +26,7 @@ void Mesh::setPositions(std::vector<Vector3>& positions) {
 	VertexFormat vertexFormat;
 	vertexFormat.attributeLocation = 0;
 	vertexFormat.attributeCount = 3;
-	vertexFormat.attributeType = VertexFormat::AttributeType::Float;
+	vertexFormat.attributeType = FormatType::Float;
 	vertexFormat.normalized = false;
 	vertexFormat.stride = 0;
 	vertexFormat.offsetFirst = 0;
@@ -40,7 +41,7 @@ void Mesh::setNormals(std::vector<Vector3>& normals) {
 	VertexFormat vertexFormat;
 	vertexFormat.attributeLocation = 1;
 	vertexFormat.attributeCount = 3;
-	vertexFormat.attributeType = VertexFormat::AttributeType::Float;
+	vertexFormat.attributeType = FormatType::Float;
 	vertexFormat.normalized = false;
 	vertexFormat.stride = 0;
 	vertexFormat.offsetFirst = 0;
@@ -55,7 +56,7 @@ void Mesh::setUV(std::vector<Vector2>& uvs) {
 	VertexFormat vertexFormat;
 	vertexFormat.attributeLocation = 0;
 	vertexFormat.attributeCount = 2;
-	vertexFormat.attributeType = VertexFormat::AttributeType::Float;
+	vertexFormat.attributeType = FormatType::Float;
 	vertexFormat.normalized = false;
 	vertexFormat.stride = 0;
 	vertexFormat.offsetFirst = 0;
@@ -71,7 +72,7 @@ void Mesh::setIndices(std::vector<unsigned int>& indices) {
 	elementFormat.mode = ElementFormat::Mode::Triangles;
 	elementFormat.firstElementOffset = 0;
 	elementFormat.count = indices.size();
-	elementFormat.type = ElementFormat::IndexType::UnsignedInt;
+	elementFormat.type = FormatType::Uint32;
 
 	gl->bindIndexBuffer(mIndexBuffer);
 	gl->bindIndexBufferData(elementFormat, indices);
